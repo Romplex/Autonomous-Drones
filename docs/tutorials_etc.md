@@ -1,5 +1,6 @@
 # USEFUL INFO
 ##LiPos Laden:
+# FIXME???!!!
 Ladestaerke 4A -> 4.1V(3S fuer 3 Zellen) -> start gedruekt halten bis piept, dann enter zur Bestaetigung der Einstellungen
 
 # USEFUL LINKS
@@ -7,3 +8,5 @@ Ladestaerke 4A -> 4.1V(3S fuer 3 Zellen) -> start gedruekt halten bis piept, dan
 [Ardupilot with Pozyx](http://ardupilot.org/copter/docs/common-pozyx.html)
 
 [Drone not arming issues](https://github.com/iNavFlight/inav/wiki/%22Something%22-is-disabled----Reasons)
+
+[iNAV GPS and COMPASS setup](https://github.com/iNavFlight/inav/wiki/GPS--and-Compass-setup)

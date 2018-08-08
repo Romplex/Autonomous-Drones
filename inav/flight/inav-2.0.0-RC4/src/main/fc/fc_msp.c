@@ -2219,6 +2219,7 @@ static mspResult_e mspFcProcessInCommand(uint16_t cmdMSP, sbuf_t *src)
 #ifdef USE_NAV
     case MSP_SET_WP:
         if (dataSize >= 21) {
+            //TODO: Check if this is where gps data is loaded from rx tx
             const uint8_t msp_wp_no = sbufReadU8(src);     // get the waypoint number
             navWaypoint_t msp_wp;
             msp_wp.action = sbufReadU8(src);    // action
