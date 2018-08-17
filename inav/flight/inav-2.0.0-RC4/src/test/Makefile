@@ -728,8 +728,21 @@ $(OBJECT_DIR)/bitarray_unittest : \
 	$(OBJECT_DIR)/bitarray_unittest.o \
 	$(OBJECT_DIR)/gtest_main.a
 
-	$(CXX) $(CXX_FLAGS) $^ -o $(OBJECT_DIR)/$@
+	$(CXX) $(CXX_FLAGS) $^ -o $(OBJECT_DIR)/$@ 
 
+
+$(OBJECT_DIR)/serial_unittest.o : \
+	$(TEST_DIR)/serial_unittest.cc \
+	$(GTEST_HEADERS)
+
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXX_FLAGS) $(TEST_CFLAGS) -c $(TEST_DIR)/serial_unittest.cc -o $@
+
+$(OBJECT_DIR)/serial_unittest : \
+	$(OBJECT_DIR)/serial_unittest.o \
+	$(OBJECT_DIR)/gtest_main.a
+
+	$(CXX) $(CXX_FLAGS) $^ -o $(OBJECT_DIR)/$@ 
 
 test: $(TESTS:%=test-%)
 

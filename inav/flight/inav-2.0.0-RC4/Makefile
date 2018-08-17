@@ -16,7 +16,7 @@
 #
 
 # The target to build, see VALID_TARGETS below
-TARGET    ?= REVO
+TARGET    ?= 
 
 # Compile-time options
 OPTIONS   ?=
@@ -76,6 +76,7 @@ HSE_VALUE       = 8000000
 FEATURES        =
 
 ALT_TARGETS     = $(sort $(filter-out target, $(basename $(notdir $(wildcard $(ROOT)/src/main/target/*/*.mk)))))
+
 
 VALID_TARGETS   = $(dir $(wildcard $(ROOT)/src/main/target/*/target.mk))
 VALID_TARGETS  := $(subst /,, $(subst ./src/main/target/,, $(VALID_TARGETS)))
@@ -355,7 +356,8 @@ $(TARGET_OBJ_DIR)/%.o: %.S
 
 
 ## all               : Build all valid targets
-all: $(VALID_TARGETS)
+#all: $(VALID_TARGETS)
+all: OMNIBUSF4PRO
 
 ## targets-group-1   : build some targets
 targets-group-1: $(GROUP_1_TARGETS)

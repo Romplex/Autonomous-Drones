@@ -40,6 +40,7 @@ extern "C" {
 
 #define DEG2RAD 0.01745329251
 
+
 static void rotateVector(int32_t mat[3][3], int32_t vec[3], int32_t *out)
 {
     int32_t tmp[3];
