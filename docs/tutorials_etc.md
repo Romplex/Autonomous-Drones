@@ -1,7 +1,9 @@
 # USEFUL INFO
 ##LiPos Laden:
 # FIXME???!!!
-Ladestaerke 4A -> 4.1V(3S fuer 3 Zellen) -> start gedruekt halten bis piept, dann enter zur Bestaetigung der Einstellungen
+Ladestaerke 5A -> 11.1V -> LiPo(3S fuer 3 Zellen) -> start gedruekt halten bis piept, dann enter zur Bestaetigung der Einstellungen
+
+
 
 # USEFUL LINKS
 
