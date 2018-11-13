@@ -31,8 +31,24 @@
 
 #define GPS_DEGREES_DIVIDER 10000000L
 
+typedef struct gpsDataPozyx_s {
+    int32_t latitude;
+    int32_t longitude;
+
+    int32_t x;
+    int32_t y;
+    int32_t z;
+
+    int x_sign;
+    int y_sign;
+    int z_sign;
+
+    int32_t altitude;
+} gpsDataPozyx_t;
+
 typedef enum {
     GPS_NMEA = 0,
+    GPS_POZYX,
     GPS_UBLOX,
     GPS_I2CNAV,
     GPS_NAZA,
@@ -107,6 +123,9 @@ typedef struct gpsLocation_s {
     int32_t lat;    // Latitude * 1e+7
     int32_t lon;    // Longitude * 1e+7
     int32_t alt;    // Altitude in centimeters (meters * 100)
+    int32_t x;
+    int32_t y;
+    int32_t z;
 } gpsLocation_t;
 
 #define HDOP_SCALE (100)

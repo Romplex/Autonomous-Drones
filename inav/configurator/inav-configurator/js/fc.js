@@ -704,6 +704,7 @@ var FC = {
     getGpsProtocols: function () {
         var data = [
             'NMEA',
+            'POZYX',
             'UBLOX',
             'I2C-NAV',
             'DJI NAZA'

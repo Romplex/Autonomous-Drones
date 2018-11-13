@@ -681,6 +681,7 @@
       "name": "gps_provider",
       "values": [
         "NMEA",
+        "POZYX",
         "UBLOX",
         "I2C-NAV",
         "NAZA",
