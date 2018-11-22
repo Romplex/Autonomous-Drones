@@ -31,6 +31,13 @@
 
 #define GPS_DEGREES_DIVIDER 10000000L
 
+
+typedef union {
+	int _i;
+	float _f;
+} FloatBits;
+
+
 typedef struct gpsDataPozyx_s {
     int32_t latitude;
     int32_t longitude;
@@ -120,8 +127,8 @@ typedef struct gpsCoordinateDDDMMmmmm_s {
 
 /* LLH Location in NEU axis system */
 typedef struct gpsLocation_s {
-    int32_t lat;    // Latitude * 1e+6
-    int32_t lon;    // Longitude * 1e+6
+    int32_t lat;    // int bits from float  // (old: Latitude * 1e+6)
+    int32_t lon;    // int bits from float // (old: Longitude * 1e+6)
     float alt;    // Altitude in meters
     int32_t x;
     int32_t y;

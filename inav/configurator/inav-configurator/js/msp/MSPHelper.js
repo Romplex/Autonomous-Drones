@@ -1,6 +1,45 @@
 /*global $, SERVO_DATA, PID_names, ADJUSTMENT_RANGES, RXFAIL_CONFIG, SERVO_CONFIG*/
 'use strict';
 
+
+function convertFloatMask(value) {
+    var exponent = 0;
+    var dezimalZahl = 1;
+    var matissa = 0;
+
+    for (var index = 31; index >= 0; index--) {
+        var mask = 1;
+        mask = mask << index;
+        var bitValue = ((mask & value) >> index);
+//			System.out.println("index: " + index + " value: " + bitValue);
+
+
+        if (index == 31) {
+            //sign bit
+        } else if (30 >= index && index >= 23) {
+            if (bitValue == 1) {
+                exponent += Math.pow(2, (index - 23));
+            }
+        } else if (22 >= index && index >= 0) {
+            //mantissa
+            var valuesBeforeComma = exponent - 127;
+            if (22 >= index && index > 22 - valuesBeforeComma) {
+
+                dezimalZahl = (dezimalZahl << 1) | bitValue;
+            } else {
+                //nachkommastelle
+                if (bitValue == 1) {
+                    var expValue = ((32 - 1 - 8) - index - (exponent - 127));
+                    matissa += Math.pow(2, -1 * expValue);
+                }
+
+            }
+
+        }
+
+    }
+    return matissa+dezimalZahl;
+}
 var mspHelper = (function (gui) {
     var self = {};
 

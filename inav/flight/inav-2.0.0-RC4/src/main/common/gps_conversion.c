@@ -108,8 +108,15 @@ void cartToSph(gpsDataPozyx_t* gps_Msg) {
 	float lat = (float)acos(z/r) * RAD_TO_DEGREE;
 	float lon = (float)atan2(y,x) * RAD_TO_DEGREE;
 
-	gps_Msg->latitude = lat*1000000;
-	gps_Msg->longitude = lon*1000000;
+	FloatBits fbitsLat;
+	fbitsLat._f = lat;
+	gps_Msg->latitude = fbitsLat._i;
+//	gps_Msg->latitude = lat*1000000;
+	FloatBits fbitsLong;
+	fbitsLong._f = lon;
+	gps_Msg->longitude = fbitsLong._i;
+//	gps_Msg->longitude = lon*1000000;
+
 	gps_Msg->altitude = (altitude + ANCHOR_ALTITUDE)/1000.0;
 }
 #endif

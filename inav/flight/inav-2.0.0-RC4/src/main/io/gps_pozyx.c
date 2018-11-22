@@ -266,7 +266,6 @@ bool gpsHandlePOZYX(void)
     case GPS_CHANGE_BAUD:
         return gpsChangeBaud();
 
-
     case GPS_CHECK_VERSION:
     case GPS_CONFIGURE:
         // No autoconfig, switch straight to receiving data

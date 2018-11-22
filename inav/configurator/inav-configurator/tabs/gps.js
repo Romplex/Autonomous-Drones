@@ -39,9 +39,10 @@ TABS.gps.initialize = function (callback) {
                 $('#waiting').show();
             }
 
-            var lat = GPS_DATA.lat / 1000000;
-            var lon = GPS_DATA.lon / 1000000;
 
+            var lat = GPS_DATA.lat / 10000;
+            var lon = GPS_DATA.lon / 10000;
+            
             var gpsFixType = chrome.i18n.getMessage('gpsFixNone');
             if (GPS_DATA.fix >= 2)
                 gpsFixType = chrome.i18n.getMessage('gpsFix3D');
