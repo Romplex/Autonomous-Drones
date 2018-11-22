@@ -29,21 +29,30 @@
 
 #ifdef USE_GPS
 
+#define DIGIT_TO_VAL(_x)    (_x - '0')
+
 // coordinates of anchor point
 // TODO[uniks] make fc read and save anchor values from gps/pozyx module
-#define ANCHOR_LAT 51.311644        // default anchor latitude 51.311644
-#define ANCHOR_LON 9.473625         // default anchor longitude 9.473625
-#define ANCHOR_ALTITUDE 166.0       // default anchor altitude 166m
+static const float ANCHOR_LAT = 51.311644;        // default anchor latitude 51.311644
+static const float ANCHOR_LON = 9.473625;         // default anchor longitude 9.473625
+static const float ANCHOR_ALTITUDE = 0;       // default anchor altitude 166m
 
-// TODO[uniks] make fc use double values correctly
-#define EARTH_R 6371001
-#define ANCHOR_X 4905236.50         // default anchor x in m
-#define ANCHOR_Y 818534.06          // default anchor y in m
-#define ANCHOR_Z 3982515.75         // default anchor z in m
+// TODO[uniks] make fc use float values correctly
+static const float EARTH_R  = 6371001000.0;          // earth radius in mm
+static const float ANCHOR_X = 4905108868.795;         // default anchor x in mm
+static const float ANCHOR_Y = 818512691.684;          // default anchor y in mm
+static const float ANCHOR_Z = 3982411041.169;         // default anchor z in mm
 
-#define RAD_TO_DEGREE 57.2957795131 // 180/PI
+/*static const float ANCHOR_LAT = 51.311644;        // default anchor latitude 51.311644
+static const float ANCHOR_LON = 9.473625;         // default anchor longitude 9.473625
+static const float ANCHOR_ALTITUDE = 166.0;       // default anchor altitude 166m
 
-#define DIGIT_TO_VAL(_x)    (_x - '0')
+static const float EARTH_R  = 6371001.0;          // earth radius in m
+static const float ANCHOR_X = 4905108.87;         // default anchor x in m
+static const float ANCHOR_Y = 818512.69;          // default anchor y in m
+static const float ANCHOR_Z = 3982411.04;         // default anchor z in m*/
+
+static const float RAD_TO_DEGREE = 180.0/M_PI; // 180/PI
 
 uint32_t GPS_coord_to_degrees(const char* coordinateString)
 {
@@ -88,19 +97,19 @@ uint32_t GPS_coord_to_degrees(const char* coordinateString)
 void cartToSph(gpsDataPozyx_t* gps_Msg) {
 	// TODO: implementation of orientation still needed for anchors
 
-	double x = (double)ANCHOR_X + (gps_Msg->x_sign * gps_Msg->x/1000);
-	double y = (double)ANCHOR_Y + (gps_Msg->y_sign * gps_Msg->y/1000);
+	float x = ANCHOR_X + (gps_Msg->x_sign * gps_Msg->x);
+	float y = ANCHOR_Y + (gps_Msg->y_sign * gps_Msg->y);
 
-	double altitude = gps_Msg->z_sign * gps_Msg->z/10;
-	double z = (double)ANCHOR_Z + altitude;
+	float altitude = gps_Msg->z_sign * gps_Msg->z;
+	float z = ANCHOR_Z + altitude;
 
-//	double r  = sqrt(x*x+y*y+z*z); // FIXME[uniks] gives wrong answer, delete?
-	double r  = (double)EARTH_R + (double)ANCHOR_ALTITUDE;
-	double lat = acos(z/r) * (double)RAD_TO_DEGREE;
-	double lon = atan2(y,x) * (double)RAD_TO_DEGREE;
+//	float r  = sqrt(x*x+y*y+z*z); // FIXME[uniks] gives wrong answer, delete?
+	float r  = EARTH_R + ANCHOR_ALTITUDE;
+	float lat = (float)acos(z/r) * RAD_TO_DEGREE;
+	float lon = (float)atan2(y,x) * RAD_TO_DEGREE;
 
-	gps_Msg->latitude = lat*10000000;
-	gps_Msg->longitude = lon*10000000;
-	gps_Msg->altitude = altitude + (double)(ANCHOR_ALTITUDE*100.0);
+	gps_Msg->latitude = lat*1000000;
+	gps_Msg->longitude = lon*1000000;
+	gps_Msg->altitude = (altitude + ANCHOR_ALTITUDE)/1000.0;
 }
 #endif
