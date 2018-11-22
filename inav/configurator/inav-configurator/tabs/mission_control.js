@@ -315,8 +315,8 @@ TABS.mission_control.initialize = function (callback) {
             return false;
         };
 
-        var lat = GPS_DATA.lat / 10000000;
-        var lon = GPS_DATA.lon / 10000000;
+        var lat = GPS_DATA.lat / 1000000;
+        var lon = GPS_DATA.lon / 1000000;
 
         map = new ol.Map({
             controls: ol.control.defaults({

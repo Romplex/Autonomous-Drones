@@ -39,8 +39,8 @@ TABS.gps.initialize = function (callback) {
                 $('#waiting').show();
             }
 
-            var lat = GPS_DATA.lat / 10000000;
-            var lon = GPS_DATA.lon / 10000000;
+            var lat = GPS_DATA.lat / 1000000;
+            var lon = GPS_DATA.lon / 1000000;
 
             var gpsFixType = chrome.i18n.getMessage('gpsFixNone');
             if (GPS_DATA.fix >= 2)
@@ -50,8 +50,8 @@ TABS.gps.initialize = function (callback) {
 
             $('.GPS_info td.fix').html(gpsFixType);
             $('.GPS_info td.alt').text(GPS_DATA.alt + ' m');
-            $('.GPS_info td.lat').text(lat.toFixed(4) + ' deg');
-            $('.GPS_info td.lon').text(lon.toFixed(4) + ' deg');
+            $('.GPS_info td.lat').text(lat.toFixed(6) + ' deg');
+            $('.GPS_info td.lon').text(lon.toFixed(6) + ' deg');
             $('.GPS_info td.speed').text(GPS_DATA.speed + ' cm/s');
             $('.GPS_info td.sats').text(GPS_DATA.numSat);
             $('.GPS_info td.distToHome').text(GPS_DATA.distanceToHome + ' m');
