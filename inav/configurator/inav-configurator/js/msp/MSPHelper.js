@@ -2892,7 +2892,9 @@ var mspHelper = (function (gui) {
     };
 
     self.getMissionInfo = function (callback) {
-        if (semver.gte(CONFIG.flightControllerVersion, "1.8.1")) {
+        if(!CONFIG || CONFIG.flightControllerVersion === "") {
+            callback()
+        } else if (semver.gte(CONFIG.flightControllerVersion, "1.8.1")) {
             MSP.send_message(MSPCodes.MSP_WP_GETINFO, false, false, callback);
         } else {
             callback();

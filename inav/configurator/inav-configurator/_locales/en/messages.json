@@ -2620,6 +2620,9 @@
     "tabMissionControl": {
         "message": "Mission Control"
     },
+    "tabPozyx": {
+        "message": "Pozyx Center"
+    },
     "loadMissionButton": {
         "message": "Load mission from FC"
     },
@@ -2631,6 +2634,12 @@
     },
     "saveEepromMissionButton": {
         "message": "Save Eeprom mission"
+    },
+    "savePOZYXMissionButton": {
+        "message": "Save POZYX mission"
+    },
+    "loadPOZYXMissionButton": {
+        "message": "Load POZYX mission"
     },
     "editPointHead": {
         "message": "Edit point"

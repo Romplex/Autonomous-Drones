@@ -123,8 +123,8 @@ TABS.setup.initialize = function (callback) {
                         gpsFixType = chrome.i18n.getMessage('gpsFix2D');
                     gpsFix_e.html(gpsFixType);
                     gpsSats_e.text(GPS_DATA.numSat);
-                    gpsLat_e.text((GPS_DATA.lat / 1000000).toFixed(6) + ' deg');
-                    gpsLon_e.text((GPS_DATA.lon / 1000000).toFixed(6) + ' deg');
+                    gpsLat_e.text(convertFloatMask(GPS_DATA.lat).toFixed(7) + ' deg');
+                    gpsLon_e.text(convertFloatMask(GPS_DATA.lon).toFixed(7) + ' deg');
                 });
             }
         }

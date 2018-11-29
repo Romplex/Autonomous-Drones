@@ -209,6 +209,8 @@ $(document).ready(function () {
                     case 'mission_control':
                         TABS.mission_control.initialize(content_ready);
                         break;
+                    case 'pozyx':
+                        TABS.pozyx.initialize(content_ready);
                     case 'mixer':
                         TABS.mixer.initialize(content_ready);
                         break;

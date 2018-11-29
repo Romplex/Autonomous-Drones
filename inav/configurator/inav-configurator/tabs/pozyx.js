@@ -1,12 +1,12 @@
 'use strict';
 
-TABS.mission_control = {};
-TABS.mission_control.isYmapLoad = false;
-TABS.mission_control.initialize = function (callback) {
+TABS.pozyx = {};
+TABS.pozyx.isYmapLoad = false;
+TABS.pozyx.initialize = function (callback) {
 
-    if (GUI.active_tab != 'mission_control') {
-        GUI.active_tab = 'mission_control';
-        googleAnalytics.sendAppView('Mission Control');
+    if (GUI.active_tab != 'pozyx') {
+        GUI.active_tab = 'pozyx';
+        googleAnalytics.sendAppView('Pozyx');
     }
 
     var loadChainer = new MSPChainerClass();
@@ -22,7 +22,7 @@ TABS.mission_control.initialize = function (callback) {
     }
 
     function loadHtml() {
-        $('#content').load("./tabs/mission_control.html", process_html);
+        $('#content').load("./tabs/pozyx.html", process_html);
     }
 
     function process_html() {
@@ -626,6 +626,6 @@ TABS.mission_control.initialize = function (callback) {
     }
 };
 
-TABS.mission_control.cleanup = function (callback) {
+TABS.pozyx.cleanup = function (callback) {
     if (callback) callback();
 };
