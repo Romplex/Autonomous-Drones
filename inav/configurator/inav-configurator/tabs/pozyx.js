@@ -219,7 +219,7 @@ TABS.pozyx.initialize = function (callback) {
             button.style = 'background: url(\'../images/CF_settings_white.svg\') no-repeat 1px -1px;background-color: rgba(0,60,136,.5);';
 
             var handleShowSettings = function () {
-                $('#MPeditPoint, #missionPalnerTotalInfo').hide();
+                $('#MPeditPoint, #missionPlanerTotalInfo').hide();
                 $('#missionPlanerSettings').fadeIn(300);
             };
 
@@ -510,7 +510,7 @@ TABS.pozyx.initialize = function (callback) {
         $('#saveSettings').on('click', function () {
             chrome.storage.local.set({'missionPlanerSettings': {speed: $('#MPdefaultPointSpeed').val(), alt: $('#MPdefaultPointAlt').val()}});
             $('#missionPlanerSettings').hide();
-            $('#missionPalnerTotalInfo').fadeIn(300);
+            $('#missionPlanerTotalInfo').fadeIn(300);
             if (selectedMarker !== null) {
                 $('#MPeditPoint').fadeIn(300);
             }
