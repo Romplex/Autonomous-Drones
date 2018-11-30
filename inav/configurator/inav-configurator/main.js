@@ -38,6 +38,22 @@ $(document).ready(function () {
             break;
     }
 
+    $('#pozyx-mode').change(function () {
+        var $this = $(this);
+        let tabPozyx = $('.tab_pozyx');
+
+        if ($this.is(':checked')) {
+            tabPozyx.show();
+            $('#tabs .tab_pozyx a').click();
+        } else {
+            tabPozyx.hide();
+            // trigger only landing page if pozyx tab is selected
+            if (tabPozyx.hasClass('active')){
+                $('#tabs .tab_landing a').click();
+            }
+        }
+    });
+
     if (typeof require !== "undefined") {
         // Load native UI library
         var gui = require('nw.gui');

@@ -2263,6 +2263,9 @@
     "wirelessModeSwitch": {
         "message": "Wireless mode"
     },
+    "pozyxModeSwitch": {
+        "message": "Pozyx mode"
+    },
     "rthConfiguration": {
         "message": "RTH and Landing Settings"
     },
