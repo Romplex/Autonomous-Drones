@@ -21,6 +21,7 @@
 #define USE_BARO
 #define USE_GPS
 #define USE_GPS_PROTO_NMEA
+#define USE_GPS_PROTO_POZYX
 #define USE_GPS_PROTO_UBLOX
 #define USE_GPS_PROTO_I2C_NAV
 #define USE_GPS_PROTO_NAZA

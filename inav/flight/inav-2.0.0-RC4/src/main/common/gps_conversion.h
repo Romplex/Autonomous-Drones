@@ -15,4 +15,8 @@
  * along with Cleanflight.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "io/gps.h"
+
 uint32_t GPS_coord_to_degrees(const char* coordinateString);
+double cartesian_coord_to_degrees(const char* coordinateString);
+void cartToSph(gpsDataPozyx_t* gps_Msg);

@@ -96,6 +96,13 @@ static gpsProviderDescriptor_t  gpsProviders[GPS_PROVIDER_COUNT] = {
     { GPS_TYPE_NA, 0, false,  NULL, NULL },
 #endif
 
+    /* POZYX GPS */
+#ifdef USE_GPS_PROTO_POZYX
+    { GPS_TYPE_SERIAL, MODE_RX, false, NULL, &gpsHandlePOZYX },
+#else
+    { GPS_TYPE_NA, 0, false,  NULL, NULL },
+#endif
+
     /* UBLOX binary */
 #ifdef USE_GPS_PROTO_UBLOX
     { GPS_TYPE_SERIAL, MODE_RXTX, false,  NULL, &gpsHandleUBLOX },
