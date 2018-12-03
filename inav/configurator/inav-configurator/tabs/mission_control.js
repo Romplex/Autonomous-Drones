@@ -314,21 +314,9 @@ TABS.mission_control.initialize = function (callback) {
             this.feature_ = null;
             return false;
         };
-
-        if(!GPS_DATA) {
-            // prepare data for map view without fc plugedd in
-            FC.resetState();
-            GPS_DATA.fix = 2;
-            GPS_DATA.numSat = 12;
-            GPS_DATA.lat = 51.311644;
-            GPS_DATA.lon = 9.473625;
-            GPS_DATA.alt = 166;
-            GPS_DATA.speed = 0;
-            GPS_DATA.ground_course = 0;
-            GPS_DATA.hdop = 1;
-        }
-        var lat = GPS_DATA.lat;
-        var lon = GPS_DATA.lon;
+        
+        var lat = convertFloatMask(GPS_DATA.lat);
+        var lon = convertFloatMask(GPS_DATA.lon);
 
         map = new ol.Map({
             controls: ol.control.defaults({
@@ -350,17 +338,6 @@ TABS.mission_control.initialize = function (callback) {
                 zoom: 14
             })
         });
-
-        // Set the attribute link to open on an external browser window, so
-        // it doesn't interfere with the configurator.
-        var interval;
-        interval = setInterval(function() {
-            var anchor = $('.ol-attribution a');
-            if (anchor.length) {
-                anchor.attr('target', '_blank');
-                clearInterval(interval);
-            }
-        }, 100);
 
         map.on('click', function (evt) {
             if (selectedMarker != null) {
@@ -491,12 +468,6 @@ TABS.mission_control.initialize = function (callback) {
         $('#saveEepromMissionButton').on('click', function () {
             GUI.log(chrome.i18n.getMessage('eeprom_saved_ok'));
             MSP.send_message(MSPCodes.MSP_WP_MISSION_SAVE, [0], false);
-        });
-
-        $('#savePOZYXMissionButton').on('click', function () {
-            GUI.log(chrome.i18n.getMessage('pozyx_saved_ok'));
-            // TODO[uniks] send mission over POZYX
-            //MSP.send_message(MSPCodes.MSP_WP_MISSION_SAVE, [0], false);
         });
 
         $('#rthEndMission').on('change', function () {

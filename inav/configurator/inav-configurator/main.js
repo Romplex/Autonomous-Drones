@@ -227,6 +227,7 @@ $(document).ready(function () {
                         break;
                     case 'pozyx':
                         TABS.pozyx.initialize(content_ready);
+                        break;
                     case 'mixer':
                         TABS.mixer.initialize(content_ready);
                         break;

@@ -240,6 +240,10 @@
         "message": "EEPROM <span style=\"color: #37a8db\">saved</span>"
     },
 
+    "pozyx_saved_ok": {
+        "message": "POZYX <span style=\"color: #37a8db\">save mission</span> sent"
+    },
+
     "defaultWelcomeIntro": {
         "message": "Welcome to <strong>INAV - Configurator</strong>, a utility designed to simplify updating, configuring and tuning of your flight controller."
     },

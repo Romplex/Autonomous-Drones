@@ -9,6 +9,8 @@ TABS.pozyx.initialize = function (callback) {
         googleAnalytics.sendAppView('Pozyx');
     }
 
+    //$('div.connect_controls a.connect').click();
+
     var loadChainer = new MSPChainerClass();
     loadChainer.setChain([
         mspHelper.getMissionInfo
@@ -46,6 +48,103 @@ TABS.pozyx.initialize = function (callback) {
         }
         localize();
 
+        function get_raw_gps_data() {
+            MSP.send_message(MSPCodes.MSP_RAW_GPS, false, false, get_comp_gps_data);
+        }
+
+        function get_comp_gps_data() {
+            MSP.send_message(MSPCodes.MSP_COMP_GPS, false, false, get_gpsstatistics_data);
+        }
+
+        function get_gpsstatistics_data() {
+            MSP.send_message(MSPCodes.MSP_GPSSTATISTICS, false, false, update_ui);
+        }
+
+        function update_ui() {
+
+            if (GPS_DATA.fix > 0) {
+                $('#loadmap').show();
+                $('#waiting').hide();
+            } else {
+                $('#loadmap').hide();
+                $('#waiting').show();
+            }
+            
+            var gpsFixType = chrome.i18n.getMessage('gpsFixNone');
+            if (GPS_DATA.fix >= 2)
+                gpsFixType = chrome.i18n.getMessage('gpsFix3D');
+            else if (GPS_DATA.fix >= 1)
+                gpsFixType = chrome.i18n.getMessage('gpsFix2D');
+
+            var lat = convertFloatMask(GPS_DATA.lat);
+            var lon = convertFloatMask(GPS_DATA.lon);
+
+            $('.GPS_info td.fix').html(gpsFixType);
+            $('.GPS_info td.alt').text(GPS_DATA.alt + ' m');
+            $('.GPS_info td.lat').text(lat.toFixed(7) + ' deg');
+            $('.GPS_info td.lon').text(lon.toFixed(7) + ' deg');
+            $('.GPS_info td.speed').text(GPS_DATA.speed + ' cm/s');
+            $('.GPS_info td.distToHome').text(GPS_DATA.distanceToHome + ' m');
+
+            var gpsRate = 0;
+            if (GPS_DATA.messageDt > 0) {
+                gpsRate = 1000 / GPS_DATA.messageDt;
+            }
+
+            $('.GPS_stat td.messages').text(GPS_DATA.packetCount);
+            $('.GPS_stat td.rate').text(gpsRate.toFixed(1) + ' Hz');
+            $('.GPS_stat td.errors').text(GPS_DATA.errors);
+            $('.GPS_stat td.timeouts').text(GPS_DATA.timeouts);
+            $('.GPS_stat td.eph').text((GPS_DATA.eph / 100).toFixed(2) + ' m');
+            $('.GPS_stat td.epv').text((GPS_DATA.epv / 100).toFixed(2) + ' m');
+            $('.GPS_stat td.hdop').text((GPS_DATA.hdop / 100).toFixed(2));
+
+            let oldCcenter = map.getView().getCenter();
+            let newCenter = ol.proj.fromLonLat([lon, lat]);
+            
+            if(oldCcenter[0] !== newCenter[0] && oldCcenter[1] !== newCenter[1]) {
+                GUI.log("[uniks] update center position")
+
+                let iconFeature = new ol.Feature({
+                    geometry: new ol.geom.Point(newCenter),
+                });
+        
+                iconFeature.setStyle(getPointIcon(false, 1));
+        
+                let vectorSource = new ol.source.Vector({
+                    features: [iconFeature]
+                });
+        
+                let vectorLayer = new ol.layer.Vector({
+                    source: vectorSource
+                });
+
+                // TODO[uniks] make position layer not clickable
+                map.removeLayer(positionLayer);
+                positionLayer = vectorLayer;
+                map.addLayer(positionLayer);
+
+                map.getView().setCenter(newCenter);
+            }
+        }
+
+        /*
+         * enable data pulling
+         * GPS is usually refreshed at 5Hz, there is no reason to pull it much more often, really...
+         */
+        helper.mspBalancedInterval.add('gps_pull', 200, 3, function gps_update() {
+            // avoid usage of the GPS commands until a GPS sensor is detected for targets that are compiled without GPS support.
+            if (!have_sensor(CONFIG.activeSensors, 'gps')) {
+                update_ui();
+                return;
+            }
+
+            if (helper.mspQueue.shouldDrop()) {
+                return;
+            }
+
+            get_raw_gps_data();
+        });
         GUI.content_ready(callback);
     }
 
@@ -54,6 +153,7 @@ TABS.pozyx.initialize = function (callback) {
     var map;
     var selectedMarker = null;
     var pointForSend = 0;
+    var positionLayer = null;
 
     function clearEditForm() {
         $('#pointLat').val('');
@@ -114,24 +214,33 @@ TABS.pozyx.initialize = function (callback) {
         map.addLayer(vectorLayer);
     }
 
-    function getPointIcon(isEdit) {
+    function getPointIcon(isEdit, id) {
+
+        let offsetX = 0;
+        if(!id)
+            id = '';
+        else {
+            offsetX = id >= 10 ? -1 : 0;
+            id = id.toString();
+        }
+
         return new ol.style.Style({
             image: new ol.style.Icon(({
                 anchor: [0.5, 1],
                 opacity: 1,
                 scale: 0.5,
                 src: '../images/icons/cf_icon_position' + (isEdit ? '_edit' : '') + '.png'
-            }))
-//            text: new ol.style.Text({
-//                text: '10',
-//                offsetX: -1,
-//                offsetY: -30,
-//                overflow: true,
-//                scale: 2,
-//                fill: new ol.style.Fill({
-//                    color: 'black'
-//                })
-//            })
+            })),
+            text: new ol.style.Text({
+                text: id,
+                offsetX: offsetX,
+                offsetY: -12,
+                overflow: true,
+                scale: 1,
+                fill: new ol.style.Fill({
+                    color: 'black'
+                })
+            })
         });
     }
 
@@ -317,9 +426,9 @@ TABS.pozyx.initialize = function (callback) {
 
         if(!GPS_DATA) {
             // prepare data for map view without fc plugedd in
+            GUI.log("FC not connected, returning static gps data...");
             FC.resetState();
             GPS_DATA.fix = 2;
-            GPS_DATA.numSat = 12;
             GPS_DATA.lat = 51.311644;
             GPS_DATA.lon = 9.473625;
             GPS_DATA.alt = 166;
@@ -327,8 +436,6 @@ TABS.pozyx.initialize = function (callback) {
             GPS_DATA.ground_course = 0;
             GPS_DATA.hdop = 1;
         }
-        var lat = GPS_DATA.lat;
-        var lon = GPS_DATA.lon;
 
         map = new ol.Map({
             controls: ol.control.defaults({
@@ -346,8 +453,8 @@ TABS.pozyx.initialize = function (callback) {
             ],
             target: document.getElementById('missionMap'),
             view: new ol.View({
-                center: ol.proj.fromLonLat([lon, lat]),
-                zoom: 14
+                center: ol.proj.fromLonLat([GPS_DATA.lon, GPS_DATA.lat]),
+                zoom: 20
             })
         });
 
@@ -547,10 +654,6 @@ TABS.pozyx.initialize = function (callback) {
         }
 
         if (pointForSend > 0) {
-            // console.log(MISSION_PLANER.bufferPoint.lon);
-            // console.log(MISSION_PLANER.bufferPoint.lat);
-            // console.log(MISSION_PLANER.bufferPoint.alt);
-            // console.log(MISSION_PLANER.bufferPoint.action);
             if (MISSION_PLANER.bufferPoint.action == 4) {
                 $('#rthEndMission').attr('checked', true);
                 $('#rthSettings').fadeIn(300);
