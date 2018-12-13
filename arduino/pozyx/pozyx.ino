@@ -7,9 +7,9 @@
 //#define USE_POZYX
 
 #ifndef USE_POZYX
-  #define X 0     // mm
-  #define Y 0     // mm
-  #define Z 1000  // mm
+  #define X 0     // cm
+  #define Y 0     // cm
+  #define Z 500   // cm
 #endif
 
 #ifndef DEBUG1
@@ -40,8 +40,8 @@ boolean  use_processing = false;                        // set this to true to o
 const uint8_t num_anchors = 4;                          // the number of anchors
 uint16_t anchors[num_anchors] = {0x6951, 0x6E59, 0x695D, 0x690B};     // the network id of the anchors: change these to the network ids of your anchors.
 // TODO: measure actual coordinates
-int32_t anchors_x[num_anchors] = {0,4800,6000,500};     // anchor x-coorindates in mm
-int32_t anchors_y[num_anchors] = {0,0,-7750,-9500};     // anchor y-coordinates in mm
+int32_t anchors_x[num_anchors] = {0,5340,6812,-541};     // anchor x-coorindates in mm
+int32_t anchors_y[num_anchors] = {0,0,-8923,-10979};     // anchor y-coordinates in mm
 int32_t heights[num_anchors] = {1500, 2000, 2500, 3000};// anchor z-coordinates in mm
 
 uint8_t algorithm = POZYX_POS_ALG_UWB_ONLY;             // positioning algorithm to use. try POZYX_POS_ALG_TRACKING for fast moving objects.
@@ -65,7 +65,7 @@ void setup() {
     Serial.flush();
 #endif
     delay(100);
-    abort();
+    //abort();
   }
 #endif
 
