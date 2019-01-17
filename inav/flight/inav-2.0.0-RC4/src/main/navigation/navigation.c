@@ -3152,7 +3152,7 @@ void onNewGPSData(void)
         GPS_home.alt = gpsSol.llh.alt;
         GPS_distanceToHome = 0;
         GPS_directionToHome = 0;
-        GPS_scaleLonDown = cos_approx((ABS((float)gpsSol.llh.lat) / 10000000.0f) * 0.0174532925f);
+        GPS_scaleLonDown = cos_approx((ABS((float)gpsSol.llh.lat) / 10000000.0f) * 0.0174532925f); // [uniks] pi/180
     }
 }
 

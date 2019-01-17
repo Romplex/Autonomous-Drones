@@ -83,6 +83,11 @@ static void test() {
 
 
 }
+typedef union {
+    int _i;
+    float _f;
+} FloatBits;
+
 static void test2() {
 	gpsDataPozyx_t d;
 	d.x = 0;
@@ -101,8 +106,20 @@ static void test2() {
 
 }
 
+
+static void test3() {
+    FloatBits fBits;
+    fBits._f = 51.3116344;
+    EXPECT_EQ(fBits._i, 1112358685) << "float mask equals expected value.";
+
+
+
+}
 TEST(SerialTest, ConversionCartToSphTest) {
 	test2();
+}
+TEST(SerialTest, FloatMaskTest) {
+	test3();
 }
 
 TEST(SerialTest, GrabFieldTest) {
