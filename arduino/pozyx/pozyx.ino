@@ -29,7 +29,7 @@ static const String ID_WP_REMOVE      = "WP_DEL"; // message ID for removing wp 
 //        ######### APPLY TAG PARAMETERS HERE #########
 //        #############################################
 
-uint16_t remote_id = 0x6000;                            // set this to the ID of the remote device
+uint16_t remote_id = 0x6760;                            // set this to the ID of the remote device
 bool     remote = false;                                // set this to true to use the remote ID
 
 boolean  use_processing = false;                        // set this to true to output data for the processing sketch
@@ -65,7 +65,7 @@ void setup() {
     Serial.flush();
 #endif
     delay(100);
-    //abort();
+    abort();
   }
 #endif
 
