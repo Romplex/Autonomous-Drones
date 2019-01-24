@@ -251,6 +251,16 @@ var mspHelper = (function (gui) {
                 GPS_DATA.ground_course = data.getUint16(14, true);
                 GPS_DATA.hdop = data.getUint16(16, true);
                 break;
+            case MSPCodes.MSP_RAW_GPS_POZYX:
+                GPS_DATA.fix = data.getUint8(0);
+                GPS_DATA.numSat = data.getUint8(1);
+                GPS_DATA.lat = data.getInt32(2, true);
+                GPS_DATA.lon = data.getInt32(6, true);
+                GPS_DATA.alt = data.getInt16(10, true);
+                GPS_DATA.speed = data.getUint16(12, true);
+                GPS_DATA.ground_course = data.getUint16(14, true);
+                GPS_DATA.hdop = data.getUint16(16, true);
+                break;
             case MSPCodes.MSP_COMP_GPS:
                 GPS_DATA.distanceToHome = data.getUint16(0, 1);
                 GPS_DATA.directionToHome = data.getUint16(2, 1);
@@ -631,6 +641,8 @@ var mspHelper = (function (gui) {
             case MSPCodes.MSP_SET_RAW_RC:
                 break;
             case MSPCodes.MSP_SET_RAW_GPS:
+                break;
+            case MSPCodes.MSP_SET_RAW_GPS_POZYX:
                 break;
             case MSPCodes.MSP_SET_PID:
                 console.log('PID settings saved');

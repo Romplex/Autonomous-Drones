@@ -48,8 +48,8 @@ TABS.pozyx.initialize = function (callback) {
         }
         localize();
 
-        function get_raw_gps_data() {
-            MSP.send_message(MSPCodes.MSP_RAW_GPS, false, false, get_comp_gps_data);
+        function get_raw_gps_pozyx_data() {
+            MSP.send_message(MSPCodes.MSP_RAW_GPS_POZYX, false, false, get_comp_gps_data);
         }
 
         function get_comp_gps_data() {
@@ -143,7 +143,7 @@ TABS.pozyx.initialize = function (callback) {
                 return;
             }
 
-            get_raw_gps_data();
+            get_raw_gps_pozyx_data();
         });
         GUI.content_ready(callback);
     }
