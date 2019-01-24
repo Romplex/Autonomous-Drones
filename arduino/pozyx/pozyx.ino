@@ -1,10 +1,8 @@
 #include <Pozyx.h>
 #include <Pozyx_definitions.h>
-//#include <Wire.h> // TODO: needed?
 
-
-//#define DEBUG
-//#define USE_POZYX
+#define DEBUG
+#define USE_POZYX
 
 #ifndef USE_POZYX
   #define X 0     // cm
@@ -13,7 +11,7 @@
 #endif
 
 #ifndef DEBUG1
-  unsigned long time;
+  unsigned long t_;
 #endif
 
 const unsigned int GPS_INTERVAL       = 250;      // every 250ms
@@ -25,7 +23,6 @@ static const String ID_MISSION_START  = "M_START";// message ID for mission star
 static const String ID_MISSION_STOP   = "M_STOP"; // message ID for mission stop
 static const String ID_WP_ADD         = "WP_ADD"; // message ID for adding wp to mission
 static const String ID_WP_REMOVE      = "WP_DEL"; // message ID for removing wp from mission
-
 
 
 //        #############################################
@@ -58,6 +55,9 @@ void setup() {
   while(!Serial);
 
 #ifdef USE_POZYX
+  #ifdef DEBUG
+    Serial.println("-   INIT POZYX   -");
+  #endif
   if(Pozyx.begin() == POZYX_FAILURE){
 #ifdef DEBUG
     Serial.println("ERROR: Unable to connect to POZYX shield");
@@ -91,9 +91,6 @@ void setup() {
   Pozyx.setPositionAlgorithm(algorithm, dimension, remote_id);
 #endif
 
-#if defined(DEBUG) && defined(USE_POZYX)
-  printCalibrationResult();
-#endif
   // TODO: delay of 2000 needed after flush?
   Serial.flush();
 #ifdef USE_POZYX
@@ -107,7 +104,7 @@ void setup() {
 
 void loop() {
 #ifndef DEBUG
-  time = millis();
+  t_ = millis();
 #endif
 
 #ifdef USE_POZYX
@@ -130,11 +127,13 @@ void loop() {
   }
 #endif
 
-#ifdef USE_POZYX
+#ifdef DEBUG1
   Serial.print("x: "); Serial.println(position.x);
   Serial.print("y: "); Serial.println(position.y);
   Serial.print("z: "); Serial.println(position.z);
-  
+#endif
+
+#ifdef USE_POZYX
   int coordinates[3] = {position.x, position.y, position.z};
 #else
   int coordinates[3] = {X,Y,Z};
@@ -147,7 +146,7 @@ void loop() {
 #ifdef DEBUG
   delay(250);
 #else
-  delay( GPS_INTERVAL - (millis() - time) );
+  delay( GPS_INTERVAL - (millis() - t_) );
 #endif
 }
 
@@ -264,8 +263,8 @@ void setAnchorsManual(){
 
 // prepares char array for Serial communication
 // TODO: add other msg IDs and format msg respectively
-String genMsg(int x, int y, int z, unsigned long time) {
-  String t = formatTime(time);
+String genMsg(int x, int y, int z, unsigned long t) {
+  String tt = formatTime(t);
 
   char x_sign = '+';
   char y_sign = '+';
@@ -288,7 +287,7 @@ String genMsg(int x, int y, int z, unsigned long time) {
 
   String str = "$"
         + ID_LOCATION+","
-        + t+","
+        + tt+","
         + x+","
         + x_sign+","
         + y+","
