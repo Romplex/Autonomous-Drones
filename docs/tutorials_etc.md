@@ -1,13 +1,14 @@
 # USEFUL INFO
-##LiPos Laden:
-# FIXME???!!!
+## Architektur fÃ¼r Kommunikation:
+![alt text](./kommunikation.png "Logo Title Text 1")
+## LiPos Laden:
 Ladestaerke 5A -> 11.1V -> LiPo(3S fuer 3 Zellen) -> start gedruekt halten bis piept, dann enter zur Bestaetigung der Einstellungen
 
 POZYX Anchor-IDs:
-	0x6951 - 1500mm
-	0x6e59 - 2000mm
-	0x695d - 2500mm
-	0x690b - 3000mm
+* 0x6951 - 1500mm
+* 0x6e59 - 2000mm
+* 0x695d - 2500mm
+* 0x690b - 3000mm
 
 
 # USEFUL LINKS
@@ -21,4 +22,4 @@ POZYX Anchor-IDs:
 [Identify Omnibus F4 board](https://www.dronetrest.com/t/how-to-identify-what-omnibus-f4-board-you-have/4735)
 
 # APROXIMATE GPS COORDINATES OF LAB
-##P1:	51.311644, 9.473625 (51¡Æ18'41.9"N 9¡Æ28'25.1"E)
+## P1:	51.311644, 9.473625 (51Â°18'41.9"N 9Â°28'25.1"E)
