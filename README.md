@@ -36,8 +36,8 @@
 
 ## Verkabelung
 ### POZYX -> Arduino Nano
-* SDA -> SDA
-* SCL -> SCL
+* SDA -> SDA (Pin A4)
+* SCL -> SCL (Pin A5)
 * GND -> GND
 
 ### PDB -> POZYX 
