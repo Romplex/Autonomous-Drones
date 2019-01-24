@@ -285,6 +285,11 @@ var MSP = {
             protocolVersion = this.protocolVersion;
         }
 
+        if (code == MSPCodes.MSP_WP_MISSION_LOAD || code == MSPCodes.MSP_WP_MISSION_SAVE || code ==  MSPCodes.MSP_WP_GETINFO|| code ==  MSPCodes.MSP_WP  || code == MSPCodes.MSP_SET_WP) {
+            console.log('[uniks - msp.js] mission load|save|info|wp');
+            console.log(data);
+        }
+
         switch (protocolVersion) {
             case this.constants.PROTOCOL_V1:
                 // TODO: Error if code is < 255 and MSPv1 is requested
