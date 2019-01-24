@@ -30,3 +30,36 @@
 [iNAV GPS and COMPASS setup](https://github.com/iNavFlight/inav/wiki/GPS--and-Compass-setup)
 
 [Identify Omnibus F4 board](https://www.dronetrest.com/t/how-to-identify-what-omnibus-f4-board-you-have/4735)
+
+## Info
+* Arduino Nano Flash: old bootloader
+
+## Verkabelung
+### POZYX -> Arduino Nano
+* SDA -> SDA
+* SCL -> SCL
+* GND -> GND
+
+### PDB -> POZYX 
+* GND -> GND
+* 5V -> 5V
+
+### PDB -> FC
+* 5Pin-PWM (Motoren) -> 5Pin-PWM
+* 5Pin-GND -> 5Pin-GND
+* VCC -> VBAT
+* GND -> GND
+
+### PDB -> Arduino Nano
+* 5V -> Vin
+
+### FC -> Arduino Nano
+* RX6 -> TX1
+* TX6 -> RX0
+
+### FC -> REC
+* 3Pin-GND -> GND
+* 5V -> 3Pin-5V
+
+
+
