@@ -606,6 +606,22 @@ TABS.pozyx.initialize = function (callback) {
             //MSP.send_message(MSPCodes.MSP_WP_MISSION_SAVE, [0], false);
         });
 
+
+        $('#runPyScriptButton').on('click', function () {
+            GUI.log('started py script');
+
+            // start py script
+            const spawn = require("child_process").spawn;
+            const pythonProcess = spawn('python',["python/script.py"]);
+
+            // listen to py script
+            pythonProcess.stdout.on('data', (data) => {
+                GUI.log(data);
+            });
+
+        });
+
+
         $('#rthEndMission').on('change', function () {
             if ($(this).is(':checked')) {
                 $('#rthSettings').fadeIn(300);

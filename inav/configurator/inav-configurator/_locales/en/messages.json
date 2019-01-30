@@ -2648,6 +2648,9 @@
     "loadPOZYXMissionButton": {
         "message": "Load POZYX mission"
     },
+    "runPyScriptButton": {
+        "message": "Start Python Script"
+    },
     "editPointHead": {
         "message": "Edit point"
     },
