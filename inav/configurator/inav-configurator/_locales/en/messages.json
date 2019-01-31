@@ -240,6 +240,10 @@
         "message": "EEPROM <span style=\"color: #37a8db\">saved</span>"
     },
 
+    "pozyx_saved_ok": {
+        "message": "POZYX <span style=\"color: #37a8db\">save mission</span> sent"
+    },
+
     "defaultWelcomeIntro": {
         "message": "Welcome to <strong>INAV - Configurator</strong>, a utility designed to simplify updating, configuring and tuning of your flight controller."
     },
@@ -2263,6 +2267,9 @@
     "wirelessModeSwitch": {
         "message": "Wireless mode"
     },
+    "pozyxModeSwitch": {
+        "message": "Pozyx mode"
+    },
     "rthConfiguration": {
         "message": "RTH and Landing Settings"
     },
@@ -2620,6 +2627,9 @@
     "tabMissionControl": {
         "message": "Mission Control"
     },
+    "tabPozyx": {
+        "message": "Pozyx Center"
+    },
     "loadMissionButton": {
         "message": "Load mission from FC"
     },
@@ -2631,6 +2641,15 @@
     },
     "saveEepromMissionButton": {
         "message": "Save Eeprom mission"
+    },
+    "savePOZYXMissionButton": {
+        "message": "Save POZYX mission"
+    },
+    "loadPOZYXMissionButton": {
+        "message": "Load POZYX mission"
+    },
+    "runPyScriptButton": {
+        "message": "Start Python Script"
     },
     "editPointHead": {
         "message": "Edit point"

@@ -8,6 +8,39 @@
     <div class="content_wrapper">
         <div class="cf_column fourth" id="missionControls">
             <div class="spacer_right">
+                <div class="gui_box grey">
+                        <div class="gui_box_titlebar">
+                            <div class="spacer_box_title" data-i18n="gpsHead"></div>
+                        </div>
+                        <div class="spacer_box GPS_info">
+                            <table class="cf_table">
+                                <tr>
+                                    <td style="width: 85px" data-i18n="gpsFix"></td>
+                                    <td class="fix" data-i18n="gpsFixNone"></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="gpsAltitude"></td>
+                                    <td class="alt">0 m</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="gpsLat"></td>
+                                    <td class="lat">0.000000 deg</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="gpsLon"></td>
+                                    <td class="lon">0.000000 deg</td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="gpsSpeed"></td>
+                                    <td class="speed">0 cm/s</td>
+                                </tr>
+                                <tr class="noboarder">
+                                    <td data-i18n="gpsDistToHome"></td>
+                                    <td class="distToHome"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 <div id="missionPlanerSettings" class="gui_box grey" style="display: none">
                     <div class="gui_box_titlebar">
                         <div class="spacer_box_title i18n-replaced" data-i18n="missionDefaultSettingsHead">Default settings</div>
@@ -58,10 +91,9 @@
                         </div>
                         <hr>
                         <div class="btn save_btn">
-                            <a id="loadMissionButton" class="save" href="#" data-i18n="loadMissionButton">Load mission from FC</a>
-                            <a id="saveMissionButton" class="save" href="#" data-i18n="saveMissionButton">Save mission to FC</a>
-                            <a id="loadEepromMissionButton" class="save" href="#" data-i18n="loadEepromMissionButton">Load Eeprom mission</a>
-                            <a id="saveEepromMissionButton" class="save" href="#" data-i18n="saveEepromMissionButton">Save Eeprom mission</a>
+                            <a id="savePOZYXMissionButton" class="save" href="#" data-i18n="savePOZYXMissionButton">Save POZYX mission</a>
+                            <a id="loadPOZYXMissionButton" class="save" href="#" data-i18n="loadPOZYXMissionButton">Load POZYX mission</a>
+                            <a id="runPyScriptButton" class="save" href="#" data-i18n="runPyScriptButton">run py script</a>
                         </div>
                         <hr>
                         <div id="removeAllPoints" class="btn btn-danger" style="padding-top: 10px; display: inline-block">

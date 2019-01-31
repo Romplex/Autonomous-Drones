@@ -20,14 +20,14 @@ appUpdater.checkRelease = function (currVersion) {
             // });
 
             GUI.log('New version aviable!');
-            modalStart = new jBox('Modal', {
+            /*modalStart = new jBox('Modal', {
                 width: 400,
                 height: 200,
                 animation: false,
                 closeOnClick: false,
                 closeOnEsc: true,
                 content: $('#appUpdateNotification')
-            }).open();
+            }).open();*/
         }
     });
 

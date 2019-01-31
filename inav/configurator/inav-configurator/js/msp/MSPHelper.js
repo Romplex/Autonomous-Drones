@@ -1,6 +1,45 @@
 /*global $, SERVO_DATA, PID_names, ADJUSTMENT_RANGES, RXFAIL_CONFIG, SERVO_CONFIG*/
 'use strict';
 
+
+function convertFloatMask(value) {
+    var exponent = 0;
+    var dezimalZahl = 1;
+    var matissa = 0;
+
+    for (var index = 31; index >= 0; index--) {
+        var mask = 1;
+        mask = mask << index;
+        var bitValue = ((mask & value) >> index);
+//			System.out.println("index: " + index + " value: " + bitValue);
+
+
+        if (index == 31) {
+            //sign bit
+        } else if (30 >= index && index >= 23) {
+            if (bitValue == 1) {
+                exponent += Math.pow(2, (index - 23));
+            }
+        } else if (22 >= index && index >= 0) {
+            //mantissa
+            var valuesBeforeComma = exponent - 127;
+            if (22 >= index && index > 22 - valuesBeforeComma) {
+
+                dezimalZahl = (dezimalZahl << 1) | bitValue;
+            } else {
+                //nachkommastelle
+                if (bitValue == 1) {
+                    var expValue = ((32 - 1 - 8) - index - (exponent - 127));
+                    matissa += Math.pow(2, -1 * expValue);
+                }
+
+            }
+
+        }
+
+    }
+    return matissa+dezimalZahl;
+}
 var mspHelper = (function (gui) {
     var self = {};
 
@@ -203,6 +242,16 @@ var mspHelper = (function (gui) {
                 }
                 break;
             case MSPCodes.MSP_RAW_GPS:
+                GPS_DATA.fix = data.getUint8(0);
+                GPS_DATA.numSat = data.getUint8(1);
+                GPS_DATA.lat = data.getInt32(2, true);
+                GPS_DATA.lon = data.getInt32(6, true);
+                GPS_DATA.alt = data.getInt16(10, true);
+                GPS_DATA.speed = data.getUint16(12, true);
+                GPS_DATA.ground_course = data.getUint16(14, true);
+                GPS_DATA.hdop = data.getUint16(16, true);
+                break;
+            case MSPCodes.MSP_RAW_GPS_POZYX:
                 GPS_DATA.fix = data.getUint8(0);
                 GPS_DATA.numSat = data.getUint8(1);
                 GPS_DATA.lat = data.getInt32(2, true);
@@ -592,6 +641,8 @@ var mspHelper = (function (gui) {
             case MSPCodes.MSP_SET_RAW_RC:
                 break;
             case MSPCodes.MSP_SET_RAW_GPS:
+                break;
+            case MSPCodes.MSP_SET_RAW_GPS_POZYX:
                 break;
             case MSPCodes.MSP_SET_PID:
                 console.log('PID settings saved');
@@ -1992,14 +2043,24 @@ var mspHelper = (function (gui) {
             case MSPCodes.MSP_SET_WP:
                 buffer.push(MISSION_PLANER.bufferPoint.number);    // sbufReadU8(src);    // number
                 buffer.push(MISSION_PLANER.bufferPoint.action);    // sbufReadU8(src);    // action
-                buffer.push(specificByte(MISSION_PLANER.bufferPoint.lat, 0));    // sbufReadU32(src);      // lat
+                /*buffer.push(specificByte(MISSION_PLANER.bufferPoint.lat, 0));    // sbufReadU32(src);      // lat
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.lat, 1));
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.lat, 2));
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.lat, 3));
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.lon, 0));    // sbufReadU32(src);      // lon
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.lon, 1));
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.lon, 2));
-                buffer.push(specificByte(MISSION_PLANER.bufferPoint.lon, 3));
+                buffer.push(specificByte(MISSION_PLANER.bufferPoint.lon, 3));*/
+
+                buffer.push(specificByte(0, 0));
+                buffer.push(specificByte(0, 1));
+                buffer.push(specificByte(0, 2));
+                buffer.push(specificByte(0, 3));
+                buffer.push(specificByte(0, 0));    // sbufReadU32(src);      // lon
+                buffer.push(specificByte(0, 1));
+                buffer.push(specificByte(0, 2));
+                buffer.push(specificByte(0, 3));
+
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.alt, 0));    // sbufReadU32(src);      // to set altitude (cm)
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.alt, 1));
                 buffer.push(specificByte(MISSION_PLANER.bufferPoint.alt, 2));
@@ -2853,7 +2914,9 @@ var mspHelper = (function (gui) {
     };
 
     self.getMissionInfo = function (callback) {
-        if (semver.gte(CONFIG.flightControllerVersion, "1.8.1")) {
+        if(!CONFIG || CONFIG.flightControllerVersion === "") {
+            callback()
+        } else if (semver.gte(CONFIG.flightControllerVersion, "1.8.1")) {
             MSP.send_message(MSPCodes.MSP_WP_GETINFO, false, false, callback);
         } else {
             callback();

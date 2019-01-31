@@ -1,20 +1,65 @@
 # Autonomous-Drones
-
-## Omnibus F4 Pro Pinout
+## Pinout:
 ![Omnibus Pinout](https://github.com/Romplex/autonomous-drones/raw/master/omnibus-f4-v3-pinout.jpg "Omnibus Pinout")
 
-## Arduino Nano Pinout
-![Arduino Nano Pinout](http://christianto.tjahyadi.com/wp-content/uploads/2014/11/nano.jpg)
+## Architektur für Kommunikation:
+![alt text](./docs/kommunikation.png "Logo Title Text 1")
 
-## Arduino Uno Pinout
-![Arduino Uno Pinout](http://foros.giltesa.com/otros/arduino/fc/docs/pinout/uno.jpg)
+## LiPos Laden:
+* Ladestärke 5A 
+* 11.1V 
+* LiPo (3S für 3 Zellen) 
+* "Start" gedrükt halten bis es piept
+* "Enter" zur Bestätigung der Einstellungen drücken
 
-# Pozyx Anchors
+## POZYX Anchor-IDs:
+* 0x6951 - 1500mm
+* 0x6e59 - 2000mm
+* 0x695d - 2500mm
+* 0x690b - 3000mm
 
-0x695d 1.5m 26973 3
+## APROXIMATE GPS COORDINATES OF LAB
+> 51.311644, 9.473625 (51°18'41.9"N 9°28'25.1"E)
 
-0x690b 2m   26891 1
+## Useful Links:
 
-0x6951 2.5m 26961 2
+[Ardupilot with Pozyx](http://ardupilot.org/copter/docs/common-pozyx.html)
 
-0x6e59 3m   28249 4
+[Drone not arming issues](https://github.com/iNavFlight/inav/wiki/%22Something%22-is-disabled----Reasons)
+
+[iNAV GPS and COMPASS setup](https://github.com/iNavFlight/inav/wiki/GPS--and-Compass-setup)
+
+[Identify Omnibus F4 board](https://www.dronetrest.com/t/how-to-identify-what-omnibus-f4-board-you-have/4735)
+
+## Info
+* Arduino Nano Flash: old bootloader
+
+## Verkabelung
+### POZYX -> Arduino Nano
+* SDA -> SDA (Pin A4)
+* SCL -> SCL (Pin A5)
+* GND -> GND
+
+### PDB -> POZYX 
+* GND -> GND
+* 5V -> 5V
+
+### PDB -> FC
+* 5Pin-PWM (Motoren) -> 5Pin-PWM
+* 5Pin-GND -> 5Pin-GND
+* VCC -> VBAT
+* GND -> GND
+
+### PDB -> Arduino Nano
+* 5V -> Vin
+
+### FC -> Arduino Nano
+* RX6 -> TX1
+* TX6 -> RX0
+
+### FC -> REC
+* 3Pin-GND -> GND
+* 5V -> 3Pin-5V
+
+
+

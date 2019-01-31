@@ -14,7 +14,8 @@ var GUI_control = function () {
     this.defaultAllowedTabsWhenDisconnected = [
         'landing',
         'firmware_flasher',
-        'help'
+        'help',
+        'pozyx'
     ];
     this.defaultAllowedTabsWhenConnected = [
         'failsafe',

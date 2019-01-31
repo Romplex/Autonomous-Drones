@@ -54,8 +54,13 @@
      - z
 */
 
-#define NO_FRAME   0
-#define FRAME_POZYX  1
+#define NO_FRAME        0
+#define FRAME_LOCATION  1
+#define FRAME_ANCHOR    2
+#define FRAME_M_START   3
+#define FRAME_M_STOP    4
+#define FRAME_WP_ADD    5
+#define FRAME_WP_DEL    6
 
 static uint32_t grab_fields(char *src, uint8_t mult)
 {                               // convert string to uint32
@@ -101,14 +106,16 @@ static bool gpsNewFramePOZYX(char c)
             if (param == 0) {       //frame identification
                 gps_frame = NO_FRAME;
                 if (strcmp(string, "POZYX") == 0) {
-                    gps_frame = FRAME_POZYX;
+                    gps_frame = FRAME_LOCATION;
+                } else if(strcmp(string, "WP_ADD") == 0) {
+                    gps_frame = FRAME_WP_ADD;
                 }
                 // TODO[uniks] add anchor init frame wich sets anchor position X,Y,Z
             }
 
             switch (gps_frame) {
-                //************* POZYX FRAME parsing *************
-                case FRAME_POZYX:
+                //************* POZYX LOCATION FRAME parsing *************
+                case FRAME_LOCATION:
                     switch (param) {
                         case 1:             // Time information
                             break;
@@ -142,6 +149,9 @@ static bool gpsNewFramePOZYX(char c)
                             break;
                     }
                     break;
+                case FRAME_WP_ADD:
+                    break;
+                // TODO[uniks]: add all remaining frames
             }
 
             param++;
@@ -159,7 +169,8 @@ static bool gpsNewFramePOZYX(char c)
                 if (checksum == parity) {
                     gpsStats.packetCount++;
                     switch (gps_frame) {
-                        case FRAME_POZYX:
+                        // TODO[uniks]: also add remaining frames here?
+                        case FRAME_LOCATION:
                             frameOK = 1;
 
                             gpsSol.numSat = 12;
@@ -254,7 +265,6 @@ bool gpsHandlePOZYX(void)
 
     case GPS_CHANGE_BAUD:
         return gpsChangeBaud();
-
 
     case GPS_CHECK_VERSION:
     case GPS_CONFIGURE:
