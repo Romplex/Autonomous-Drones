@@ -18,6 +18,8 @@
 * 0x695d - 2500mm
 * 0x690b - 3000mm
 
+![Coords for anchors](./docs/POZYX_System_Lab.png)
+
 ## APROXIMATE GPS COORDINATES OF LAB
 > 51.311644, 9.473625 (51°18'41.9"N 9°28'25.1"E)
 
