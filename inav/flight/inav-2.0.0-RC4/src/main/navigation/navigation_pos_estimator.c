@@ -235,7 +235,10 @@ void onNewGPSData(void)
                 float dT = US2S(getGPSDeltaTimeFilter(currentTimeUs - lastGPSNewDataTime));
 
                 /* Use VELNED provided by GPS if available, calculate from coordinates otherwise */
-                float gpsScaleLonDown = constrainf(cos_approx((ABS(gpsSol.llh.lat) / 10000000.0f) * 0.0174532925f), 0.01f, 1.0f);
+//                float gpsScaleLonDown = constrainf(cos_approx((ABS(gpsSol.llh.lat) / 10000000.0f) * 0.0174532925f), 0.01f, 1.0f);
+
+                //float gpsScaleLonDown = constrainf(cos_approx((ABS(gpsSol.llh.lat)) * 0.0174532925f), 0.01f, 1.0f);
+                float gpsScaleLonDown = 1.0f;
                 if (positionEstimationConfig()->use_gps_velned && gpsSol.flags.validVelNE) {
                     posEstimator.gps.vel.x = gpsSol.velNED[0];
                     posEstimator.gps.vel.y = gpsSol.velNED[1];

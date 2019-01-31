@@ -120,7 +120,8 @@ static bool gpsNewFramePOZYX(char c)
                         case 1:             // Time information
                             break;
                         case 2:
-                            gps_Msg.x = grab_fields(string,8);
+//                            gps_Msg.x = grab_fields(string,8);
+                            gps_Msg.latitude = grab_fields(string,8);
                             break;
                         case 3:
                             if (string[0] == '-')
@@ -130,7 +131,8 @@ static bool gpsNewFramePOZYX(char c)
 
                             break;
                         case 4:
-                            gps_Msg.y = grab_fields(string,8);
+//                            gps_Msg.y = grab_fields(string,8);
+                            gps_Msg.longitude = grab_fields(string,8);
                             break;
                         case 5:
                             if (string[0] == '-')
@@ -139,7 +141,8 @@ static bool gpsNewFramePOZYX(char c)
                                 gps_Msg.y_sign = 1;
                             break;
                         case 6:
-                            gps_Msg.z = grab_fields(string,8);
+//                            gps_Msg.z = grab_fields(string,8);
+                            gps_Msg.altitude = grab_fields(string,8);
                             break;
                         case 7:
                             if(string[0] == '-')
@@ -176,7 +179,7 @@ static bool gpsNewFramePOZYX(char c)
                             gpsSol.numSat = 12;
                             gpsSol.fixType = GPS_FIX_3D;
 
-                            cartToSph(&gps_Msg);
+                            //cartToSph(&gps_Msg);
 
                             gpsSol.llh.lat = gps_Msg.latitude;
                             gpsSol.llh.lon = gps_Msg.longitude;

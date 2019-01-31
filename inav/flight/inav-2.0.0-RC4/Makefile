@@ -16,7 +16,7 @@
 #
 
 # The target to build, see VALID_TARGETS below
-TARGET    ?= 
+TARGET = OMNIBUSF4PRO
 
 # Compile-time options
 OPTIONS   ?=
@@ -356,8 +356,8 @@ $(TARGET_OBJ_DIR)/%.o: %.S
 
 
 ## all               : Build all valid targets
-#all: $(VALID_TARGETS)
-all: OMNIBUSF4PRO
+all: $(VALID_TARGETS)
+#all: OMNIBUSF4PRO
 
 ## targets-group-1   : build some targets
 targets-group-1: $(GROUP_1_TARGETS)
