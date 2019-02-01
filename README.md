@@ -2,6 +2,10 @@
 ## Pinout:
 ![Omnibus Pinout](https://github.com/Romplex/autonomous-drones/raw/master/omnibus-f4-v3-pinout.jpg "Omnibus Pinout")
 
+![Arduino Nano Pinout](https://github.com/Romplex/autonomous-drones/raw/master/arduino-nano-pinout.png "Arduino Nano Pinout")
+
+![Pozyx Pinout](https://www.pozyx.io/assets/images/docs/pozyx_pins2.jpg "Pozyx Pinout")
+
 ## Architektur für Kommunikation:
 ![alt text](./docs/kommunikation.png "Logo Title Text 1")
 
