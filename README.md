@@ -16,6 +16,9 @@
 * "Start" gedrükt halten bis es piept
 * "Enter" zur Bestätigung der Einstellungen drücken
 
+## POZYX Channel Settings
+ultra-wideband channel 5, preamble length 1024, prf 64MHz, and bitrate 110kbps
+
 ## POZYX Anchor-IDs:
 * 0x6951 - 1500mm
 * 0x6e59 - 2000mm
