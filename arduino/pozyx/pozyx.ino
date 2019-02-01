@@ -53,19 +53,20 @@ int32_t height = 1000;                                  // height of device, req
 void setup() {
   Serial.begin(115200); // 57600 or 115200
   while(!Serial);
+  delay(2000); // wait for pozyx to power up
 
 #ifdef USE_POZYX
   #ifdef DEBUG
     Serial.println("-   INIT POZYX   -");
   #endif
-  if(Pozyx.begin() == POZYX_FAILURE){
+  while(Pozyx.begin() == POZYX_FAILURE){
 #ifdef DEBUG
     Serial.println("ERROR: Unable to connect to POZYX shield");
-    Serial.println("Reset required");
+//    Serial.println("Reset required");
     Serial.flush();
 #endif
-    delay(100);
-    abort();
+    delay(1000);
+//    abort();
   }
 #endif
 
