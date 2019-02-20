@@ -525,6 +525,17 @@ TABS.pozyx.initialize = function (callback) {
             }
         });
 
+        $('#sericalConnect').on('click', function () {
+            GUI.log("connect serial pressed...");
+            var selected_baud = parseInt($baud.val());
+            var selected_port = $port.find('option:selected').data().isManual ?
+                $portOverride.val() :
+                String($port.val());
+
+            serial.connect(selected_port, {bitrate: selected_baud}, onOpen);
+
+        });
+
         $('#removePoint').on('click', function () {
             if (selectedMarker) {
 
@@ -641,6 +652,15 @@ TABS.pozyx.initialize = function (callback) {
 
         updateTotalInfo();
     }
+
+    function onOpen(openInfo) {
+        if(openInfo) {
+            GUI.log("opened serial...")
+        } else {
+            GUI.log("failed to open serial")
+        }
+    }
+
 
     function removeAllPoints() {
         for (var i in markers) {
