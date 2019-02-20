@@ -4,7 +4,7 @@
 
 ![Arduino Nano Pinout](https://github.com/Romplex/autonomous-drones/raw/master/arduino-nano-pinout.png "Arduino Nano Pinout")
 
-![Pozyx Pinout](https://www.pozyx.io/assets/images/docs/pozyx_pins2.jpg "Pozyx Pinout")
+![Pozyx Pinout](https://www.pozyx.io/web/image/4563/tag_pinout.jpg "Pozyx Pinout")
 
 ## Architektur für Kommunikation:
 ![alt text](./docs/kommunikation.png "Logo Title Text 1")
