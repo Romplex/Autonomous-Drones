@@ -65,8 +65,8 @@ ultra-wideband channel 5, preamble length 1024, prf 64MHz, and bitrate 110kbps
 * 5V -> Vin
 
 ### FC -> Arduino Nano
-* RX6 -> TX1
-* TX6 -> RX0
+* RX1 -> TX1
+* TX1 -> RX0
 
 ### FC -> REC
 * 3Pin-GND -> GND
