@@ -525,6 +525,22 @@ TABS.pozyx.initialize = function (callback) {
             }
         });
 
+        var $port = $('#port'),
+            $baud = $('#baud'),
+            $portOverride = $('#port-override');
+
+        $('#sericalConnect').on('click', function () {
+            var selected_baud = parseInt($baud.val());
+            var selected_port = $port.find('option:selected').data().isManual ?
+                $portOverride.val() :
+                String($port.val());
+            $('#port, #baud, #delay').prop('disabled', true);
+            $('div.connect_controls a.connect_state').text(chrome.i18n.getMessage('connecting'));
+
+            serial.connect(selected_port, {bitrate: selected_baud}, onOpen);
+
+        });
+
         $('#removePoint').on('click', function () {
             if (selectedMarker) {
 
@@ -640,6 +656,37 @@ TABS.pozyx.initialize = function (callback) {
         });
 
         updateTotalInfo();
+    }
+
+    function onOpen(openInfo) {
+        if(openInfo) {
+            // update connected_to
+            GUI.connected_to = GUI.connecting_to;
+
+            // reset connecting_to
+            GUI.connecting_to = false;
+
+            GUI.log("serial connected...")
+            serial.onReceive.addListener(read_serial)
+
+        } else {
+            GUI.log("failed to open serial")
+        }
+    }
+
+    function read_serial(readInfo){
+        var data = new Uint8Array(readInfo.data),
+        text = "";
+        for (var i = 0; i < data.length; i++) {
+            // try to catch part of valid CLI enter message
+            this.validateText += String.fromCharCode(data[i]);
+            text += String.fromCharCode(data[i]);
+        }
+        GUI.log("text: " +text);
+        if (!CONFIGURATOR.cliValid) {
+            CONFIGURATOR.cliValid = true;
+            this.validateText = "";
+        }
     }
 
     function removeAllPoints() {

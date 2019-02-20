@@ -382,7 +382,7 @@ function onClosed(result) {
     $('#quad-status_wrapper').hide();
 }
 
-function read_serial(info) {
+function  read_serial(info) {
     if (!CONFIGURATOR.cliActive) {
         MSP.read(info);
     } else if (CONFIGURATOR.cliActive) {

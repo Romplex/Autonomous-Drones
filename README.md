@@ -38,6 +38,8 @@ ultra-wideband channel 5, preamble length 1024, prf 64MHz, and bitrate 110kbps
 
 [iNAV GPS and COMPASS setup](https://github.com/iNavFlight/inav/wiki/GPS--and-Compass-setup)
 
+[Omnibus F4 board infos](https://github.com/iNavFlight/inav/blob/master/docs/Board%20-%20Omnibus%20F4.md)
+
 [Identify Omnibus F4 board](https://www.dronetrest.com/t/how-to-identify-what-omnibus-f4-board-you-have/4735)
 
 ## Info
@@ -65,8 +67,8 @@ ultra-wideband channel 5, preamble length 1024, prf 64MHz, and bitrate 110kbps
 * 5V -> Vin
 
 ### FC -> Arduino Nano
-* RX6 -> TX1
-* TX6 -> RX0
+* RX1 -> TX1
+* TX1 -> RX0
 
 ### FC -> REC
 * 3Pin-GND -> GND
