@@ -125,9 +125,7 @@ static bool gpsNewFramePOZYX(char c)
                             break;
                         case 3:
                             if (string[0] == '-')
-                                gps_Msg.x_sign = -1;
-                            else
-                                gps_Msg.x_sign = 1;
+                                gps_Msg.latitude *= -1;
 
                             break;
                         case 4:
@@ -136,9 +134,7 @@ static bool gpsNewFramePOZYX(char c)
                             break;
                         case 5:
                             if (string[0] == '-')
-                                gps_Msg.y_sign = -1;
-                            else
-                                gps_Msg.y_sign = 1;
+                                gps_Msg.longitude *= -1;
                             break;
                         case 6:
 //                            gps_Msg.z = grab_fields(string,8);
@@ -146,9 +142,7 @@ static bool gpsNewFramePOZYX(char c)
                             break;
                         case 7:
                             if(string[0] == '-')
-                                gps_Msg.z_sign = -1;
-                            else
-                                gps_Msg.z_sign = 1;
+                                gps_Msg.altitude *= -1;
                             break;
                     }
                     break;
