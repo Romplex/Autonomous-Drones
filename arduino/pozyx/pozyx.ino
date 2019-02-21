@@ -1,5 +1,6 @@
 #include <Pozyx.h>
 #include <Pozyx_definitions.h>
+#include <Wire.h>
 
 #define DEBUG
 #define USE_POZYX
@@ -29,7 +30,11 @@ static const String ID_WP_REMOVE      = "WP_DEL"; // message ID for removing wp 
 //        ######### APPLY TAG PARAMETERS HERE #########
 //        #############################################
 
-uint16_t remote_id = 0x6760;                            // set this to the ID of the remote device
+uint16_t source_id = 0x6760;                            // set this to the ID of the remote device
+uint16_t destination_id = 0;        // the destination network id. 0 means the message is broadcasted to every device in range
+String inputString = "";            // a string to hold incoming data
+boolean stringComplete = false;     // whether the string is complete
+
 bool     remote = false;                                // set this to true to use the remote ID
 
 boolean  use_processing = false;                        // set this to true to output data for the processing sketch
@@ -84,12 +89,18 @@ void setup() {
 #endif
 
 #ifdef USE_POZYX
+  // read the network id of this device
+  Pozyx.regRead(POZYX_NETWORK_ID, (uint8_t*)&source_id, 2);
+
+  // reserve 100 bytes for the inputString:
+  inputString.reserve(100);
+  
   // clear all previous devices in the device list
-  Pozyx.clearDevices(remote_id);
+  Pozyx.clearDevices(source_id);
   // sets the anchor manually
   setAnchorsManual();
   // sets the positioning algorithm
-  Pozyx.setPositionAlgorithm(algorithm, dimension, remote_id);
+  Pozyx.setPositionAlgorithm(algorithm, dimension, source_id);
 #endif
 
   // TODO: delay of 2000 needed after flush?
@@ -101,9 +112,55 @@ void setup() {
 #ifdef DEBUG
   Serial.println(F("Starting positioning: "));
 #endif
+
 }
 
 void loop() {
+
+// check if we received a newline character and if so, broadcast the inputString.
+  if(stringComplete){
+    Serial.print("Ox");
+    Serial.print(source_id, HEX);
+    Serial.print(": ");
+    Serial.println(inputString);
+
+    int length = inputString.length();
+    uint8_t buffer[length];
+    inputString.getBytes(buffer, length);
+
+    // write the message to the transmit (TX) buffer
+    int status = Pozyx.writeTXBufferData(buffer, length);
+    // broadcast the contents of the TX buffer
+    status = Pozyx.sendTXBufferData(destination_id);
+
+    inputString = "";
+    stringComplete = false;
+  }
+
+  // we wait up to 50ms to see if we have received an incoming message (if so we receive an RX_DATA interrupt)
+  if(Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA,50))
+  {
+    // we have received a message!
+
+    uint8_t length = 0;
+    uint16_t messenger = 0x00;
+    delay(1);
+    // Let's read out some information about the message (i.e., how many bytes did we receive and who sent the message)
+    Pozyx.getLastDataLength(&length);
+    Pozyx.getLastNetworkId(&messenger);
+
+    char data[length];
+
+    // read the contents of the receive (RX) buffer, this is the message that was sent to this device
+    Pozyx.readRXBufferData((uint8_t *) data, length);
+    Serial.print("Ox");
+    Serial.print(messenger, HEX);
+    Serial.print(": ");
+    Serial.println(data);
+  }
+// -----------------------------------------------------------------------------------
+
+  
 #ifndef DEBUG
   t_ = millis();
 #endif
@@ -112,7 +169,7 @@ void loop() {
   coordinates_t position;
   int status;
   if(remote){
-    status = Pozyx.doRemotePositioning(remote_id, &position, dimension, height, algorithm);
+    status = Pozyx.doRemotePositioning(source_id, &position, dimension, height, algorithm);
   }else{
     status = Pozyx.doPositioning(&position, dimension, height, algorithm);
   }
@@ -155,7 +212,7 @@ void loop() {
 
 // prints the coordinates for either humans or for processing
 void printCoordinates(coordinates_t coor){
-  uint16_t network_id = remote_id;
+  uint16_t network_id = source_id;
   if (network_id == NULL){
     network_id = 0;
   }
@@ -183,7 +240,7 @@ void printCoordinates(coordinates_t coor){
 // error printing function for debugging
 void printErrorCode(String operation){
   uint8_t error_code;
-  if (remote_id == NULL){
+  if (source_id == NULL){
     Pozyx.getErrorCode(&error_code);
     Serial.print("ERROR ");
     Serial.print(operation);
@@ -191,12 +248,12 @@ void printErrorCode(String operation){
     Serial.println(error_code, HEX);
     return;
   }
-  int status = Pozyx.getErrorCode(&error_code, remote_id);
+  int status = Pozyx.getErrorCode(&error_code, source_id);
   if(status == POZYX_SUCCESS){
     Serial.print("ERROR ");
     Serial.print(operation);
     Serial.print(" on ID 0x");
-    Serial.print(remote_id, HEX);
+    Serial.print(source_id, HEX);
     Serial.print(", error code: 0x");
     Serial.println(error_code, HEX);
   }else{
@@ -213,7 +270,7 @@ void printCalibrationResult(){
   uint8_t list_size;
   int status;
 
-  status = Pozyx.getDeviceListSize(&list_size, remote_id);
+  status = Pozyx.getDeviceListSize(&list_size, source_id);
   Serial.print("list size: ");
   Serial.println(status*list_size);
 
@@ -223,7 +280,7 @@ void printCalibrationResult(){
   }
 
   uint16_t device_ids[list_size];
-  status &= Pozyx.getDeviceIds(device_ids, list_size, remote_id);
+  status &= Pozyx.getDeviceIds(device_ids, list_size, source_id);
 
   Serial.println(F("Calibration result:"));
   Serial.print(F("Anchors found: "));
@@ -236,7 +293,7 @@ void printCalibrationResult(){
     Serial.print("0x");
     Serial.print(device_ids[i], HEX);
     Serial.print(",");
-    Pozyx.getDeviceCoordinates(device_ids[i], &anchor_coor, remote_id);
+    Pozyx.getDeviceCoordinates(device_ids[i], &anchor_coor, source_id);
     Serial.print(anchor_coor.x);
     Serial.print(",");
     Serial.print(anchor_coor.y);
@@ -254,10 +311,10 @@ void setAnchorsManual(){
     anchor.pos.x = anchors_x[i];
     anchor.pos.y = anchors_y[i];
     anchor.pos.z = heights[i];
-    Pozyx.addDevice(anchor, remote_id);
+    Pozyx.addDevice(anchor, source_id);
   }
   if (num_anchors > 4){
-    Pozyx.setSelectionOfAnchors(POZYX_ANCHOR_SEL_AUTO, num_anchors, remote_id);
+    Pozyx.setSelectionOfAnchors(POZYX_ANCHOR_SEL_AUTO, num_anchors, source_id);
   }
 }
 
@@ -347,4 +404,20 @@ String calcCRC(char* buff, byte buff_len) {
     return "-1";
   }
   return String(crc, HEX);
+}
+
+void serialEvent() {
+  while (Serial.available()) {
+    // get the new byte:
+    char inChar = (char)Serial.read();
+
+    // if the incoming character is a newline, set a flag
+    // so the main loop can do something about it.
+    // otherwise, add it to the inputString:
+    if (inChar == '\n') {
+      stringComplete = true;
+    }else{
+      inputString += inChar;
+    }
+  }
 }
