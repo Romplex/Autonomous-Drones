@@ -135,7 +135,6 @@ COMMON_SRC = \
             cms/cms_menu_vtx_smartaudio.c \
             cms/cms_menu_vtx_tramp.c \
             common/colorconversion.c \
-            common/gps_conversion.c \
             drivers/display_ug2864hsweg01.c \
             drivers/rangefinder/rangefinder_hcsr04.c \
             drivers/rangefinder/rangefinder_hcsr04_i2c.c \

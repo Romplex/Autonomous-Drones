@@ -30,7 +30,6 @@
 #include "build/debug.h"
 
 #include "common/axis.h"
-#include "common/gps_conversion.h"
 #include "common/maths.h"
 #include "common/utils.h"
 

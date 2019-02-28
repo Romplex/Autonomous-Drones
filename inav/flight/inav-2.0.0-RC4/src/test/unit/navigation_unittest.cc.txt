@@ -59,7 +59,6 @@ extern "C" {
     #include "flight/imu.h"
     #include "flight/mixer.h"
     #include "flight/failsafe.h"
-    #include "flight/gps_conversion.h"
     #include "flight/navigation_rewrite.h"
 
     #include "config/runtime_config.h"
