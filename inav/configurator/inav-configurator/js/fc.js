@@ -57,6 +57,8 @@ var CONFIG,
     OUTPUT_MAPPING,
     SETTINGS;
 
+var POZYX = require('./resources/pozyx-settings.json');
+
 var FC = {
     MAX_SERVO_RATE: 125,
     MIN_SERVO_RATE: 0,

@@ -8,6 +8,38 @@
     <div class="content_wrapper">
         <div class="cf_column fourth" id="missionControls">
             <div class="spacer_right">
+                 <div class="gui_box grey">
+                        <div class="gui_box_titlebar">
+                            <div class="spacer_box_title" data-i18n="pozyxHead"></div>
+                            <div class="pozyxswitch">
+                                <a href="#" id="showPozyxSettings">Show</a>
+                            </div>
+                            <div>
+                                <a id="savePozyxAnchorSettings" class="is-hidden" href="#" data-i18n="editPointButtonSave">Save</a>
+                            </div>
+                        </div>
+                        <div class="spacer_box GPS_info">
+                            <table class="cf_table is-hidden" id="pozyxAnchorSettingTable">
+                                <tr visible="false">
+                                    <td data-i18n="pozyxAnchorId"></td>
+                                    <!-- uniks TODO: read values from pozyx-settings.json -->
+                                    <td class="pozyxAnchorId pozyxAnchorSettingData" contenteditable></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="pozyxAnchorAlt"></td>
+                                    <td class="pozyxAnchorAlt pozyxAnchorSettingData" contenteditable></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="pozyxAnchorLat"></td>
+                                    <td class="pozyxAnchorLat pozyxAnchorSettingData" contenteditable></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="pozyxAnchorLon"></td>
+                                    <td class="pozyxAnchorLon pozyxAnchorSettingData" contenteditable></td>
+                                </tr>
+                            </table>
+                        </div>
+                </div>
                 <div class="gui_box grey">
                         <div class="gui_box_titlebar">
                             <div class="spacer_box_title" data-i18n="gpsHead"></div>

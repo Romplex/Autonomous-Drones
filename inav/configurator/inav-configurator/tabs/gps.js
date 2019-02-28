@@ -39,9 +39,13 @@ TABS.gps.initialize = function (callback) {
                 $('#waiting').show();
             }
 
+            //uniks
+            //var lat = convertFloatMask(GPS_DATA.lat);
+            //var lon = convertFloatMask(GPS_DATA.lon);
 
-            var lat = convertFloatMask(GPS_DATA.lat);
-            var lon = convertFloatMask(GPS_DATA.lon);
+            // 51.311635, 9.473620
+            var lat = 51.311635 + GPS_DATA.lat;
+            var lon = 9.473620 + GPS_DATA.lon;
             
             var gpsFixType = chrome.i18n.getMessage('gpsFixNone');
             if (GPS_DATA.fix >= 2)

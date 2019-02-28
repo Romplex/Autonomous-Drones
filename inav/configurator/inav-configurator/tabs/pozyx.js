@@ -1,5 +1,7 @@
 'use strict';
 
+var fs = require('fs');
+
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function (callback) {
@@ -76,8 +78,8 @@ TABS.pozyx.initialize = function (callback) {
             else if (GPS_DATA.fix >= 1)
                 gpsFixType = chrome.i18n.getMessage('gpsFix2D');
 
-            var lat = convertFloatMask(GPS_DATA.lat);
-            var lon = convertFloatMask(GPS_DATA.lon);
+            var lat = GPS_DATA.lat;
+            var lon = GPS_DATA.lon;
 
             $('.GPS_info td.fix').html(gpsFixType);
             $('.GPS_info td.alt').text(GPS_DATA.alt + ' m');
@@ -332,6 +334,38 @@ TABS.pozyx.initialize = function (callback) {
                 $('#missionPlanerSettings').fadeIn(300);
             };
 
+            var handleChangePozyxSettings = function () {
+                $('#savePozyxAnchorSettings').removeClass('is-hidden');
+            };
+
+            $('#savePozyxAnchorSettings').on('click', function() {
+                // save anchor settings in resource/pozyx-settings.json
+                $('#savePozyxAnchorSettings').addClass('is-hidden');
+                let data = $('.pozyxAnchorSettingData');
+                for(i = 0; i < data.length; i++) {
+                    //write values to POZYX json object
+                    let newData = data[i].textContent;
+                    let nrData = parseFloat(newData);
+                    if(newData.length === parseFloat(nrData).length) newData = nrData;
+                    POZYX.anchor[data[i].className.split(" ")[0].replace("pozyxAnchor", "").toLowerCase()] = newData;
+                };
+
+                let newPozyxSettings = JSON.stringify(POZYX);
+                fs.writeFile('./resources/pozyx-settings.json', newPozyxSettings, (err) => {  
+                    if (err) {
+                        console.log(err);
+                        throw err
+                    };
+                    console.log('Data written to file');
+                });
+            });
+
+            // add change listener on pozyx settings
+            let data = document.getElementsByClassName('pozyxAnchorSettingData');
+            for(i = 0; i < data.length; i++) {
+                data[i].addEventListener('input', handleChangePozyxSettings);
+            }
+
             button.addEventListener('click', handleShowSettings, false);
             button.addEventListener('touchstart', handleShowSettings, false);
 
@@ -429,9 +463,9 @@ TABS.pozyx.initialize = function (callback) {
             GUI.log("FC not connected, returning static gps data...");
             FC.resetState();
             GPS_DATA.fix = 2;
-            GPS_DATA.lat = 51.311644;
-            GPS_DATA.lon = 9.473625;
-            GPS_DATA.alt = 166;
+            GPS_DATA.lat = parseFloat(POZYX.anchor.lat);
+            GPS_DATA.lon = parseFloat(POZYX.anchor.lon);
+            GPS_DATA.alt = parseInt(POZYX.anchor.alt);
             GPS_DATA.speed = 0;
             GPS_DATA.ground_course = 0;
             GPS_DATA.hdop = 1;
@@ -622,6 +656,26 @@ TABS.pozyx.initialize = function (callback) {
             //MSP.send_message(MSPCodes.MSP_WP_MISSION_SAVE, [0], false);
         });
 
+        $("#showPozyxSettings").on('click', function() {
+            var visible = $(this).data('visible');
+        
+            if (visible) {
+                $('#pozyxAnchorSettingTable').addClass('is-hidden');
+                
+                visible = false;
+            }else{
+                // show pozyx anchor data                
+                $('.GPS_info td.pozyxAnchorId').text(POZYX.anchor.id);
+                $('.GPS_info td.pozyxAnchorAlt').text(parseInt(POZYX.anchor.alt) + ' m');
+                $('.GPS_info td.pozyxAnchorLat').text(parseFloat(POZYX.anchor.lat).toFixed(7) + ' deg');
+                $('.GPS_info td.pozyxAnchorLon').text(parseFloat(POZYX.anchor.lon).toFixed(7) + ' deg');
+
+                $('#pozyxAnchorSettingTable').removeClass('is-hidden');
+                visible = true;
+            }
+            $(this).text(visible ? 'Hide' : 'Show');
+            $(this).data('visible', visible);
+        });
 
         $('#runPyScriptButton').on('click', function () {
             GUI.log('started py script');

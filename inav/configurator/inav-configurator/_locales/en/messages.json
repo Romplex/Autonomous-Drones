@@ -1346,6 +1346,9 @@
     "gpsHead": {
         "message": "GPS"
     },
+    "pozyxHead": {
+        "message": "POZYX Settings"
+    },
     "gpsStatHead": {
         "message": "GPS Statistics"
     },
@@ -1387,6 +1390,18 @@
     },
     "gpsDistToHome": {
         "message": "Dist to Home:"
+    },
+    "pozyxAnchorAlt": {
+        "message": "Anchor Altitude"
+    },
+    "pozyxAnchorLat": {
+        "message": "Anchor Latitude:"
+    },
+    "pozyxAnchorLon": {
+        "message": "Anchor Longitude:"
+    },
+    "pozyxAnchorId": {
+        "message": "Anchor ID:"
     },
     "gpsHDOP": {
         "message": "HDOP:"

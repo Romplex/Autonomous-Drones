@@ -254,8 +254,14 @@ var mspHelper = (function (gui) {
             case MSPCodes.MSP_RAW_GPS_POZYX:
                 GPS_DATA.fix = data.getUint8(0);
                 GPS_DATA.numSat = data.getUint8(1);
-                GPS_DATA.lat = data.getInt32(2, true);
-                GPS_DATA.lon = data.getInt32(6, true);
+                
+                // uniks
+                // get pozyx cartesian coordinates and convert them to spherical coordiantes with magic nr
+                let x = data.getInt32(2, true);
+                let y = data.getInt32(6, true);
+                GPS_DATA.lat = parseFloat(POZYX.anchor.lat) + x/1.113195e8;
+                GPS_DATA.lon = parseFloat(POZYX.anchor.lon) + y/1.113195e8;
+
                 GPS_DATA.alt = data.getInt16(10, true);
                 GPS_DATA.speed = data.getUint16(12, true);
                 GPS_DATA.ground_course = data.getUint16(14, true);

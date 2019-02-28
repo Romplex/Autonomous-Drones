@@ -315,6 +315,7 @@ TABS.mission_control.initialize = function (callback) {
             return false;
         };
         
+        // uniks
         var lat = convertFloatMask(GPS_DATA.lat);
         var lon = convertFloatMask(GPS_DATA.lon);
 
