@@ -139,16 +139,20 @@ class Test(object):
 
     def loop(self):
         """Performs positioning and displays/expor the results."""
-        pozyx.sendData(0x6760, b)
-        #print(pozyx.waitForFlag(0, 50))
+        pozyx.sendData(0, b)  # value 0 sendet an Alle
 
-        pozyx.getRead(address=0x84, data=u)
-        #pozyx.readRXBufferData(data=u)
-        print(u)
-        print(u.load_hex_string())
-        print(u.bytes_to_data())
-        sleep(1)
-            #print("erfolgreich")
+        if (pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 1)): #wartet auf nachricht
+            pozyx.getRead(address=0x84, data=l)  # laenge
+            print(l.value)  # print laenge
+
+            d = Data(([0] * l.value), 'B' * l.value)  # container mit laenge x listen jede im Byte format
+
+            pozyx.readRXBufferData(data=d)
+            print(d)
+            for i in range(0, l.value - 1):
+                print(chr(d.__getitem__(i)))
+
+        # sleep(1)
 
 if __name__ == "__main__":
     # Check for the latest PyPozyx version. Skip if this takes too long or is not needed by setting to False.
@@ -194,13 +198,12 @@ if __name__ == "__main__":
     pozyx: PozyxSerial = PozyxSerial(serial_port)
     r = Test(pozyx, osc_udp_client, anchors, algorithm, dimension, height, remote_id)
 
-
-    message = "Sende mit python"
+    message = "Hallo"
+    l = SingleRegister()
     b = message.encode('utf-8')
-   # print(b.decode('utf-8'))
-    u = SingleRegister()
-    r.setup()
     pozyx.setUWBChannel(1)
+    r.setup()
+
 
     while True:
         r.loop()
