@@ -161,6 +161,53 @@ void loop() {
 // -----------------------------------------------------------------------------------
 
   
+
+// check if we received a newline character and if so, broadcast the inputString.
+#ifdef USE_POZYX
+  if(stringComplete){
+    Serial.print("Ox");
+    Serial.print(source_id, HEX);
+    Serial.print(": ");
+    Serial.println(inputString);
+
+    int length = inputString.length();
+    uint8_t buffer[length];
+    inputString.getBytes(buffer, length);
+
+    // write the message to the transmit (TX) buffer
+    int status = Pozyx.writeTXBufferData(buffer, length);
+    // broadcast the contents of the TX buffer
+    status = Pozyx.sendTXBufferData(destination_id);
+
+    inputString = "";
+    stringComplete = false;
+  }
+
+  // we wait up to 50ms to see if we have received an incoming message (if so we receive an RX_DATA interrupt)
+  if(Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA,50))
+  {
+    // we have received a message!
+
+    uint8_t length = 0;
+    uint16_t messenger = 0x00;
+    delay(1);
+    // Let's read out some information about the message (i.e., how many bytes did we receive and who sent the message)
+    Pozyx.getLastDataLength(&length);
+    Pozyx.getLastNetworkId(&messenger);
+
+    char data[length];
+
+    // read the contents of the receive (RX) buffer, this is the message that was sent to this device
+    Pozyx.readRXBufferData((uint8_t *) data, length);
+    Serial.print("Ox");
+    Serial.print(messenger, HEX);
+    Serial.print(": ");
+    Serial.println(data);
+  }
+// -----------------------------------------------------------------------------------
+#endif
+
+  
 #ifndef DEBUG
   t_ = millis();
 #endif
