@@ -39,18 +39,19 @@ typedef union {
 
 
 typedef struct gpsDataPozyx_s {
+	bool fix;
     int32_t latitude;
     int32_t longitude;
-
-    int32_t x;
-    int32_t y;
-    int32_t z;
-
-    int x_sign;
-    int y_sign;
-    int z_sign;
+	uint8_t numSat;
 
     float altitude;
+	//uint16_t altitude TODO uniks use uint16_t instead of float?
+
+	uint16_t speed;
+	uint16_t ground_course;
+	uint16_t hdop;
+	uint32_t time;
+	uint32_t date;
 } gpsDataPozyx_t;
 
 typedef enum {

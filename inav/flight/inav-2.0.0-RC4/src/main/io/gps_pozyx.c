@@ -55,11 +55,14 @@
 
 #define NO_FRAME        0
 #define FRAME_LOCATION  1
+#define FRAME_COURSE    2
+/*
 #define FRAME_ANCHOR    2
 #define FRAME_M_START   3
 #define FRAME_M_STOP    4
 #define FRAME_WP_ADD    5
 #define FRAME_WP_DEL    6
+*/
 
 static uint32_t grab_fields(char *src, uint8_t mult)
 {                               // convert string to uint32
@@ -104,10 +107,10 @@ static bool gpsNewFramePOZYX(char c)
             string[offset] = 0;
             if (param == 0) {       //frame identification
                 gps_frame = NO_FRAME;
-                if (strcmp(string, "POZYX") == 0) {
+                if (strcmp(string, "GPS") == 0) {
                     gps_frame = FRAME_LOCATION;
-                } else if(strcmp(string, "WP_ADD") == 0) {
-                    gps_frame = FRAME_WP_ADD;
+                } else if (strcmp(string, "MAG") == 0) {
+                    gps_frame = FRAME_COURSE;
                 }
                 // TODO[uniks] add anchor init frame wich sets anchor position X,Y,Z
             }
@@ -145,7 +148,21 @@ static bool gpsNewFramePOZYX(char c)
                             break;
                     }
                     break;
-                case FRAME_WP_ADD:
+                case FRAME_COURSE:
+                    switch (param) {
+                        case 1:
+                            gps_Msg.time = grab_fields(string, 2);
+                            break;
+                        case 2:
+                            gps_Msg.speed = ((grab_fields(string, 1) * 5144L) / 1000L);    // speed in cm/s added by Mis TODO uniks use m/s???
+                            break;
+                        case 3:
+                            gps_Msg.ground_course = (grab_fields(string, 1));      // ground course deg * 10
+                            break;
+                        case 4:
+                            gps_Msg.date = grab_fields(string, 0);
+                            break;
+                    }
                     break;
                 // TODO[uniks]: add all remaining frames
             }
@@ -178,12 +195,6 @@ static bool gpsNewFramePOZYX(char c)
                             gpsSol.llh.lon = gps_Msg.longitude;
                             gpsSol.llh.alt = gps_Msg.altitude;
 
-                            // TODO[uniks]: keep?
-                            gpsSol.llh.x = gps_Msg.x;
-                            gpsSol.llh.y = gps_Msg.y;
-                            gpsSol.llh.z = gps_Msg.z;
-                            // TODO[uniks]: keep?
-
                             // EPH/EPV are unreliable for NMEA as they are not real accuracy
                             gpsSol.hdop = gpsConstrainHDOP(HDOP_SCALE);
                             gpsSol.eph = gpsConstrainEPE(HDOP_SCALE * GPS_HDOP_TO_EPH_MULTIPLIER);
@@ -194,6 +205,25 @@ static bool gpsNewFramePOZYX(char c)
                             // NMEA does not report VELNED
                             gpsSol.flags.validVelNE = 0;
                             gpsSol.flags.validVelD = 0;
+                            break;
+                        case FRAME_COURSE:
+                            gpsSol.groundSpeed = gps_Msg.speed;
+                            gpsSol.groundCourse = gps_Msg.ground_course;
+
+                            // This check will miss 00:00:00.00, but we shouldn't care - next report will be valid
+                            if (gps_Msg.date != 0 && gps_Msg.time != 0) {
+                                gpsSol.time.year = (gps_Msg.date % 100) + 2000;
+                                gpsSol.time.month = (gps_Msg.date / 100) % 100;
+                                gpsSol.time.day = (gps_Msg.date / 10000) % 100;
+                                gpsSol.time.hours = (gps_Msg.time / 1000000) % 100;
+                                gpsSol.time.minutes = (gps_Msg.time / 10000) % 100;
+                                gpsSol.time.seconds = (gps_Msg.time / 100) % 100;
+                                gpsSol.time.millis = (gps_Msg.time & 100) * 10;
+                                gpsSol.flags.validTime = 1;
+                            }
+                            else {
+                                gpsSol.flags.validTime = 0;
+                            }
                             break;
                     } // end switch
                 } else {

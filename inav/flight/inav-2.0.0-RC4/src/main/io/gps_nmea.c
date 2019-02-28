@@ -132,14 +132,14 @@ static bool gpsNewFrameNMEA(char c)
             //          case 1:             // Time information
             //              break;
                         case 2:
-                            gps_Msg.latitude = GPS_coord_to_degrees(string);
+//                            gps_Msg.latitude = GPS_coord_to_degrees(string);
                             break;
                         case 3:
                             if (string[0] == 'S')
                                 gps_Msg.latitude *= -1;
                             break;
                         case 4:
-                            gps_Msg.longitude = GPS_coord_to_degrees(string);
+//                            gps_Msg.longitude = GPS_coord_to_degrees(string);
                             break;
                         case 5:
                             if (string[0] == 'W')

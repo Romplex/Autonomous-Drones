@@ -12,13 +12,16 @@
 #endif
 
 #ifndef DEBUG1
-  unsigned long t_;
+  unsigned long t_gps;
+  unsigned long t_mag;
 #endif
 
 const unsigned int GPS_INTERVAL       = 250;      // every 250ms
+const unsigned int MAG_INTERVAL       = 30;       // every   30ms
 
 // TODO: use numbers instead of strings!
-static const String ID_LOCATION       = "POZYX";  // message ID for location data
+static const String ID_LOCATION       = "GPS";    // message ID for location data
+static const String ID_COURSE         = "MAG";    // message ID for course data
 static const String ID_ANCHOR         = "ANCHOR"; // message ID for anchor calibration
 static const String ID_MISSION_START  = "M_START";// message ID for mission start
 static const String ID_MISSION_STOP   = "M_STOP"; // message ID for mission stop
@@ -34,6 +37,8 @@ uint16_t source_id = 0x6760;                            // set this to the ID of
 uint16_t destination_id = 0;        // the destination network id. 0 means the message is broadcasted to every device in range
 String inputString = "";            // a string to hold incoming data
 boolean stringComplete = false;     // whether the string is complete
+
+sensor_raw_t sensor_raw;
 
 bool     remote = false;                                // set this to true to use the remote ID
 
@@ -59,6 +64,10 @@ void setup() {
   Serial.begin(115200); // 57600 or 115200
   while(!Serial);
   delay(2000); // wait for pozyx to power up
+
+  // setup time variables for gps and mag messages
+  t_gps = 0;
+  t_mag = 0;
 
 #ifdef USE_POZYX
   #ifdef DEBUG
@@ -117,6 +126,7 @@ void setup() {
 
 void loop() {
 
+#ifdef USE_POZYX
 // check if we received a newline character and if so, broadcast the inputString.
   if(stringComplete){
     Serial.print("Ox");
@@ -160,59 +170,6 @@ void loop() {
   }
 // -----------------------------------------------------------------------------------
 
-  
-
-// check if we received a newline character and if so, broadcast the inputString.
-#ifdef USE_POZYX
-  if(stringComplete){
-    Serial.print("Ox");
-    Serial.print(source_id, HEX);
-    Serial.print(": ");
-    Serial.println(inputString);
-
-    int length = inputString.length();
-    uint8_t buffer[length];
-    inputString.getBytes(buffer, length);
-
-    // write the message to the transmit (TX) buffer
-    int status = Pozyx.writeTXBufferData(buffer, length);
-    // broadcast the contents of the TX buffer
-    status = Pozyx.sendTXBufferData(destination_id);
-
-    inputString = "";
-    stringComplete = false;
-  }
-
-  // we wait up to 50ms to see if we have received an incoming message (if so we receive an RX_DATA interrupt)
-  if(Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA,50))
-  {
-    // we have received a message!
-
-    uint8_t length = 0;
-    uint16_t messenger = 0x00;
-    delay(1);
-    // Let's read out some information about the message (i.e., how many bytes did we receive and who sent the message)
-    Pozyx.getLastDataLength(&length);
-    Pozyx.getLastNetworkId(&messenger);
-
-    char data[length];
-
-    // read the contents of the receive (RX) buffer, this is the message that was sent to this device
-    Pozyx.readRXBufferData((uint8_t *) data, length);
-    Serial.print("Ox");
-    Serial.print(messenger, HEX);
-    Serial.print(": ");
-    Serial.println(data);
-  }
-// -----------------------------------------------------------------------------------
-#endif
-
-  
-#ifndef DEBUG
-  t_ = millis();
-#endif
-
-#ifdef USE_POZYX
   coordinates_t position;
   int status;
   if(remote){
@@ -244,15 +201,24 @@ void loop() {
   int coordinates[3] = {X,Y,Z};
 #endif
 
-  String msg = genMsg(coordinates[0], coordinates[1], coordinates[2], millis()); 
+  String gps_msg;
+  String mag_msg;
+
+  long currentTime = millis();
   
-  Serial.println(msg);
-  Serial.flush();
-#ifdef DEBUG
-  delay(250);
-#else
-  delay( GPS_INTERVAL - (millis() - t_) );
-#endif
+  if(currentTime - t_gps >= GPS_INTERVAL) {
+    t_gps = millis();
+    gps_msg = genGpsMsg(coordinates[0], coordinates[1], coordinates[2], currentTime);
+    Serial.println(gps_msg);
+  }
+
+  currentTime = millis();
+
+  if(currentTime - t_mag >= MAG_INTERVAL) {
+    t_mag = millis();
+    mag_msg = genMagMsg(0.0, currentTime);
+    Serial.println(mag_msg);
+  }
 }
 
 
@@ -365,10 +331,52 @@ void setAnchorsManual(){
   }
 }
 
+String genMagMsg(float groundSpeed, unsigned long t) {
+  //$GPRMC , 161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598, ,*10
+
+#ifdef USE_POZYX
+  Pozyx.getRawSensorData(&sensor_raw);
+  float heading = atan2(sensor_raw.magnetic[1], sensor_raw.magnetic[0]);
+  float declinationAngle = 0.047; // declination angle 2°46' for Kassel
+  heading += declinationAngle;
+  
+  // Correct for when signs are reversed.
+  if(heading < 0)
+    heading += 2*PI;
+    
+  // Check for wrap due to addition of declination.
+  if(heading > 2*PI)
+    heading -= 2*PI;
+   
+  // Convert radians to degrees for readability.
+  float groundCourse = heading * 180/M_PI;
+#else
+  float groundCourse = 45.0;
+#endif
+
+  
+  String tt = formatTime(t);
+  
+  String date = "011219";
+
+  String str = "$"
+        + ID_COURSE+","
+        + tt+","
+        + groundSpeed+","
+        + groundCourse+","
+        + date+","
+        + "*";
+  byte len = str.length()+1;
+  char buff[len];
+
+  // TODO: fix String->Char, Char->String conversions!
+  str.toCharArray(buff, len);
+  String msg = str + calcCRC(buff, sizeof(buff));
+  return msg;
+}
 
 // prepares char array for Serial communication
-// TODO: add other msg IDs and format msg respectively
-String genMsg(int x, int y, int z, unsigned long t) {
+String genGpsMsg(int x, int y, int z, unsigned long t) {
   String tt = formatTime(t);
 
   char x_sign = '+';
@@ -409,8 +417,8 @@ String genMsg(int x, int y, int z, unsigned long t) {
   return msg;
 }
 
-String genMsg(double x, double y, double altitude) {
-  return genMsg(x, y, altitude, millis());
+String genGpsMsg(double x, double y, double altitude) {
+  return genGpsMsg(x, y, altitude, millis());
 }
 
 // format time: hhmmss.sss
