@@ -1,0 +1,75 @@
+# version
+# INAV/OMNIBUSF4PRO 2.0.0 Jan 24 2019 / 15:51:05 (81500f6)
+
+# resources
+
+# mixer
+mmix 0  1.000 -1.000  1.000 -1.000
+mmix 1  1.000 -1.000 -1.000  1.000
+mmix 2  1.000  1.000  1.000  1.000
+mmix 3  1.000  1.000 -1.000 -1.000
+
+# servo mix
+
+# servo
+
+# feature
+feature GPS
+feature PWM_OUTPUT_ENABLE
+
+# beeper
+
+# map
+
+# serial
+serial 0 2 115200 115200 0 115200
+serial 5 64 115200 38400 0 115200
+
+# led
+
+# color
+
+# mode_color
+
+# aux
+aux 0 0 5 1850 2000
+aux 1 3 6 1675 2100
+
+# adjrange
+
+# rxrange
+
+# osd_layout
+
+# master
+set acc_hardware = MPU6000
+set acczero_x = 89
+set acczero_y = 1
+set acczero_z = -343
+set accgain_x = 4097
+set accgain_y = 4077
+set accgain_z = 4010
+set mag_hardware = NONE
+set baro_hardware = BMP280
+set pitot_hardware = NONE
+set receiver_type = SERIAL
+set serialrx_provider = SBUS
+set blackbox_device = SERIAL
+set min_throttle = 1070
+set max_throttle = 1935
+set model_preview_type = 3
+set gps_provider = POZYX
+set gps_sbas_mode = AUTO
+
+# profile
+profile 1
+
+set roll_rate = 10
+set pitch_rate = 10
+set yaw_rate = 10
+
+# battery_profile
+battery_profile 1
+
+
+# 

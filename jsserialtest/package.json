@@ -1,0 +1,15 @@
+{
+  "name": "jsserialtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.html",
+  "scripts": {
+    "start": "nw"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "nw": "^0.36.2-sdk"
+  }
+}
