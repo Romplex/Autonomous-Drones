@@ -1,6 +1,7 @@
 'use strict';
 
 var fs = require('fs');
+var serialWorker;
 
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
@@ -563,16 +564,33 @@ TABS.pozyx.initialize = function (callback) {
             $baud = $('#baud'),
             $portOverride = $('#port-override');
 
-        $('#sericalConnect').on('click', function () {
-            var selected_baud = parseInt($baud.val());
-            var selected_port = $port.find('option:selected').data().isManual ?
-                $portOverride.val() :
-                String($port.val());
-            $('#port, #baud, #delay').prop('disabled', true);
-            $('div.connect_controls a.connect_state').text(chrome.i18n.getMessage('connecting'));
+        $('#serialConnect').click(function () {
+            let $port = $('#port');
+            let selected_baud = parseInt($('#baud').val());
+            let selected_port = $port.find('option:selected').data().isManual 
+                ? $('#port-override').val() : String($port.val());
+            
+            serial.getConnections(function(connectionInfos) {
+                if(connectionInfos.length === 0) {
+                    // don't connect if no device is present
+                    if(!selected_port.toLowerCase().includes("usb")) {
+                        return;
+                    }
 
-            serial.connect(selected_port, {bitrate: selected_baud}, onOpen);
-
+                    serial.connect(selected_port, {bitrate: selected_baud}, function(info) {
+                        $('#port, #baud, #delay').prop('disabled', true);
+                        $('div.connect_controls a.connect_state').text(chrome.i18n.getMessage('connecting'));
+                        setInterval(function(){
+                            // unpause serial connection
+                            serialWorker = serial.setPaused(false);
+                        }, 50);
+                    });
+                } else {
+                    serial.disconnect(function() {
+                        clearInterval(serialWorker);
+                    });
+                }
+            });                
         });
 
         $('#removePoint').on('click', function () {
@@ -710,37 +728,6 @@ TABS.pozyx.initialize = function (callback) {
         });
 
         updateTotalInfo();
-    }
-
-    function onOpen(openInfo) {
-        if(openInfo) {
-            // update connected_to
-            GUI.connected_to = GUI.connecting_to;
-
-            // reset connecting_to
-            GUI.connecting_to = false;
-
-            GUI.log("serial connected...")
-            serial.onReceive.addListener(read_serial)
-
-        } else {
-            GUI.log("failed to open serial")
-        }
-    }
-
-    function read_serial(readInfo){
-        var data = new Uint8Array(readInfo.data),
-        text = "";
-        for (var i = 0; i < data.length; i++) {
-            // try to catch part of valid CLI enter message
-            this.validateText += String.fromCharCode(data[i]);
-            text += String.fromCharCode(data[i]);
-        }
-        GUI.log("text: " +text);
-        if (!CONFIGURATOR.cliValid) {
-            CONFIGURATOR.cliValid = true;
-            this.validateText = "";
-        }
     }
 
     function removeAllPoints() {

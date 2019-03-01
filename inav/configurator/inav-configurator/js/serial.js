@@ -1,6 +1,7 @@
 'use strict';
 
 /*global chrome*/
+const decoder = new TextDecoder('utf-8');
 
 var serial = {
     connectionId:    false,
@@ -32,11 +33,17 @@ var serial = {
                 self.openRequested = false;
 
                 self.onReceive.addListener(function log_bytesReceived(info) {
-                    self.bytesReceived += info.data.byteLength;
+                    if($('#pozyx-mode').is(':checked')) {
+                        // TODO uniks Do something with received messages
+                        const data = decoder.decode(info.data);
+                        console.log(data); 
+                    } else
+                        self.bytesReceived += info.data.byteLength;
                 });
 
                 self.onReceiveError.addListener(function watch_for_on_receive_errors(info) {
-                    console.error(info);
+                    if(!$('#pozyx-mode').is(':checked'))
+                        console.error(info);
                     googleAnalytics.sendException('Serial: ' + info.error, false);
 
                     switch (info.error) {
@@ -202,11 +209,22 @@ var serial = {
     getInfo: function (callback) {
         chrome.serial.getInfo(this.connectionId, callback);
     },
+    getConnections: function (connectionInfos) {
+        chrome.serial.getConnections(connectionInfos);
+    },
     getControlSignals: function (callback) {
         chrome.serial.getControlSignals(this.connectionId, callback);
     },
     setControlSignals: function (signals, callback) {
         chrome.serial.setControlSignals(this.connectionId, signals, callback);
+    },
+    flush: function(){
+        if(self.connectionId)
+            chrome.serial.flush(self.connectionId, function(){});
+    },
+    setPaused: function(status) {
+        if(self.connectionId)
+            chrome.serial.setPaused(self.connectionId, status, function(){});
     },
     send: function (data, callback) {
         var self = this;
