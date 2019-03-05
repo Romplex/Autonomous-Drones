@@ -223,6 +223,14 @@ var FC = {
             timeouts: 0,
             packetCount: 0
         };
+        
+        if(serial.pozyxMode) {
+            GPS_DATA.lat = parseFloat(POZYX.anchor.lat);
+            GPS_DATA.lon = parseFloat(POZYX.anchor.lon);
+            GPS_DATA.fix = 2;
+            GPS_DATA.alt = parseInt(POZYX.anchor.alt);
+            GPS_DATA.hdop = 1;
+        };
 
         MISSION_PLANER = {
             maxWaypoints: 0,

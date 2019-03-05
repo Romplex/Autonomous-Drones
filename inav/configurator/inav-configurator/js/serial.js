@@ -4,13 +4,15 @@
 const decoder = new TextDecoder('utf-8');
 
 var serial = {
-    connectionId:    false,
-    openRequested:   false,
-    openCanceled:    false,
-    bitrate:         0,
-    bytesReceived:   0,
-    bytesSent:       0,
-    failed:          0,
+    connectionId:       false,
+    openRequested:      false,
+    openCanceled:       false,
+    bitrate:            0,
+    bytesReceived:      0,
+    bytesSent:          0,
+    failed:             0,
+    pozyxMode:          false,
+    pozyxSerialWorker:  undefined,
 
     transmitting:   false,
     outputBuffer:  [],
@@ -33,18 +35,19 @@ var serial = {
                 self.openRequested = false;
 
                 self.onReceive.addListener(function log_bytesReceived(info) {
-                    if($('#pozyx-mode').is(':checked')) {
-                        // TODO uniks Do something with received messages
+                    if(self.pozyxMode) {
+                        // TODO uniks better use serial_backend.js read_serial
                         const data = decoder.decode(info.data);
-                        console.log(data); 
-                    } else
-                        self.bytesReceived += info.data.byteLength;
+                        GUI.log("[uniks] - DATA: " + data);
+                    }
+                    self.bytesReceived += info.data.byteLength;
                 });
 
                 self.onReceiveError.addListener(function watch_for_on_receive_errors(info) {
-                    if(!$('#pozyx-mode').is(':checked'))
+                    if(!self.pozyxMode) {
                         console.error(info);
-                    googleAnalytics.sendException('Serial: ' + info.error, false);
+                        googleAnalytics.sendException('Serial: ' + info.error, false);
+                    }
 
                     switch (info.error) {
                         case 'system_error': // we might be able to recover from this one
@@ -163,6 +166,9 @@ var serial = {
 
         if (self.connectionId) {
             self.emptyOutputBuffer();
+
+            if(self.pozyxSerialWorker)
+                clearInterval(self.pozySerialWorker);
 
             // remove listeners
             for (var i = (self.onReceive.listeners.length - 1); i >= 0; i--) {

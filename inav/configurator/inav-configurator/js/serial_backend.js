@@ -1,6 +1,8 @@
 /*global chrome, chrome.i18n*/
 'use strict';
 
+var pozySerialWorker;
+
 $(document).ready(function () {
 
     var $port = $('#port'),
@@ -103,6 +105,19 @@ $(document).ready(function () {
             }
             else if (selected_port != '0') {
                 if (!clicks) {
+                    if(serial.pozyxMode) {
+                        serial.getConnections(function(connectionInfos) {
+                            if(connectionInfos.length === 0) {
+                                // don't connect if no device is present
+                                if(!selected_port.toLowerCase().includes("usb")) {
+                                    GUI.log(chrome.i18n.getMessage('serialPortOpenFail') + ' - no usb device found');
+                                    $('div.connect_controls a.connect').click();
+                                    return;
+                                }
+                            }
+                        });
+                    }
+                    
                     console.log('Connecting to: ' + selected_port);
                     GUI.connecting_to = selected_port;
 
@@ -286,7 +301,7 @@ function onOpen(openInfo) {
             if (!CONFIGURATOR.connectionValid) {
                 GUI.log(chrome.i18n.getMessage('noConfigurationReceived'));
 
-                $('div.connect_controls ').click(); // disconnect
+                $('a.connect').click(); // disconnect
             }
         }, 10000);
 
@@ -339,7 +354,7 @@ function onConnect() {
     $('#connectbutton a.connect_state').text(chrome.i18n.getMessage('disconnect')).addClass('active');
     $('#connectbutton a.connect').addClass('active');
 
-    if(!$('#pozyx-mode').is(':checked')) {
+    if(!serial.pozyxMode) {
         $('.mode-disconnected').hide();
         $('.mode-connected').show();
     }

@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-var serialWorker;
 
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
@@ -463,13 +462,6 @@ TABS.pozyx.initialize = function (callback) {
             // prepare data for map view without fc plugedd in
             GUI.log("FC not connected, returning static gps data...");
             FC.resetState();
-            GPS_DATA.fix = 2;
-            GPS_DATA.lat = parseFloat(POZYX.anchor.lat);
-            GPS_DATA.lon = parseFloat(POZYX.anchor.lon);
-            GPS_DATA.alt = parseInt(POZYX.anchor.alt);
-            GPS_DATA.speed = 0;
-            GPS_DATA.ground_course = 0;
-            GPS_DATA.hdop = 1;
         }
 
         map = new ol.Map({
