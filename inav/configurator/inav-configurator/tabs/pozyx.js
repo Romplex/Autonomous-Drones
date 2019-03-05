@@ -552,39 +552,6 @@ TABS.pozyx.initialize = function (callback) {
             }
         });
 
-        var $port = $('#port'),
-            $baud = $('#baud'),
-            $portOverride = $('#port-override');
-
-        $('#serialConnect').click(function () {
-            let $port = $('#port');
-            let selected_baud = parseInt($('#baud').val());
-            let selected_port = $port.find('option:selected').data().isManual 
-                ? $('#port-override').val() : String($port.val());
-            
-            serial.getConnections(function(connectionInfos) {
-                if(connectionInfos.length === 0) {
-                    // don't connect if no device is present
-                    if(!selected_port.toLowerCase().includes("usb")) {
-                        return;
-                    }
-
-                    serial.connect(selected_port, {bitrate: selected_baud}, function(info) {
-                        $('#port, #baud, #delay').prop('disabled', true);
-                        $('div.connect_controls a.connect_state').text(chrome.i18n.getMessage('connecting'));
-                        setInterval(function(){
-                            // unpause serial connection
-                            serialWorker = serial.setPaused(false);
-                        }, 50);
-                    });
-                } else {
-                    serial.disconnect(function() {
-                        clearInterval(serialWorker);
-                    });
-                }
-            });                
-        });
-
         $('#removePoint').on('click', function () {
             if (selectedMarker) {
 
