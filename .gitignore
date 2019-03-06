@@ -4,3 +4,9 @@
 inav/flight/inav-2\.0\.0-RC4/\.idea
 
 inav/flight/inav-2\.0\.0-RC4/cmake-build-debug/CMakeFiles/
+
+inav/configurator/inav-configurator/package-lock\.json
+
+test/package-lock\.json
+
+test/\.vscode/settings\.json

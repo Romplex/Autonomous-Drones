@@ -1,8 +1,6 @@
 /*global chrome, chrome.i18n*/
 'use strict';
 
-var pozySerialWorker;
-
 $(document).ready(function () {
 
     var $port = $('#port'),
@@ -105,28 +103,51 @@ $(document).ready(function () {
             }
             else if (selected_port != '0') {
                 if (!clicks) {
-                    if(serial.pozyxMode) {
+                    if(pozyx.pozyxMode) {
                         serial.getConnections(function(connectionInfos) {
                             if(connectionInfos.length === 0) {
-                                // don't connect if no device is present
-                                if(!selected_port.toLowerCase().includes("usb")) {
-                                    GUI.log(chrome.i18n.getMessage('serialPortOpenFail') + ' - no usb device found');
+                                // don't connect if no pozyx device is present
+                                if(!selected_port.toLowerCase().includes("acm")) {
+                                    GUI.log(chrome.i18n.getMessage('serialPortOpenFail') + ' - no pozyx device found');
                                     $('div.connect_controls a.connect').click();
                                     return;
+                                } else {
+                                    // start pozyx bridge
+                                    if(!pozyx.pozyxWorker.positioning) {
+                                        GUI.connecting_to = selected_port;
+
+                                        // lock port select & baud while we are connecting / connected
+                                        //$('#port, #baud, #delay').prop('disabled', true);
+                                        pozyx.pozyxWorker.positioning = setInterval(function(){
+                                            // get pozyx position every 50ms
+                                            // TODO uniks use python bridge here
+                                            
+                                        }, 50);
+                                        $('#connectbutton a.connect_state').text(chrome.i18n.getMessage('disconnect')).addClass('active');
+                                        $('#connectbutton a.connect').addClass('active');
+                                    }
                                 }
                             }
                         });
+                    } else {
+                        console.log('Connecting to: ' + selected_port);
+                        GUI.connecting_to = selected_port;
+    
+                        // lock port select & baud while we are connecting / connected
+                        $('#port, #baud, #delay').prop('disabled', true);
+                        $('div.connect_controls a.connect_state').text(chrome.i18n.getMessage('connecting'));
+    
+                        serial.connect(selected_port, {bitrate: selected_baud}, onOpen);
+
                     }
-                    
-                    console.log('Connecting to: ' + selected_port);
-                    GUI.connecting_to = selected_port;
-
-                    // lock port select & baud while we are connecting / connected
-                    $('#port, #baud, #delay').prop('disabled', true);
-                    $('div.connect_controls a.connect_state').text(chrome.i18n.getMessage('connecting'));
-
-                    serial.connect(selected_port, {bitrate: selected_baud}, onOpen);
                 } else {
+
+                    // stop pozyx positioning worker
+                    if(pozyx.pozyxWorker.positioning) {
+                        clearInterval(pozyx.pozyxWorker.positioning);
+                        pozyx.pozyxWorker.positioning = undefined;
+                    }
+
                     var wasConnected = CONFIGURATOR.connectionValid;
 
                     helper.timeout.killAll();
@@ -239,12 +260,13 @@ function onValidFirmware()
                 GUI.log(chrome.i18n.getMessage('uniqueDeviceIdReceived', [CONFIG.uid[0].toString(16) + CONFIG.uid[1].toString(16) + CONFIG.uid[2].toString(16)]));
 
                 CONFIGURATOR.connectionValid = true;
-                if(!$('#pozyx-mode').is(':checked')) {
+                if(!pozyx.pozyxMode) {
                     // continue as usually
                     GUI.allowedTabs = GUI.defaultAllowedTabsWhenConnected.slice();
                     $('#tabs ul.mode-connected .tab_setup a').click();
                 }
                 onConnect();
+                $('#tabs .tab_cli a').click();
             });
         });
     });
@@ -354,7 +376,7 @@ function onConnect() {
     $('#connectbutton a.connect_state').text(chrome.i18n.getMessage('disconnect')).addClass('active');
     $('#connectbutton a.connect').addClass('active');
 
-    if(!serial.pozyxMode) {
+    if(!pozyx.pozyxMode) {
         $('.mode-disconnected').hide();
         $('.mode-connected').show();
     }

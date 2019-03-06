@@ -224,7 +224,7 @@ var FC = {
             packetCount: 0
         };
         
-        if(serial.pozyxMode) {
+        if(pozyx.pozyxMode) {
             GPS_DATA.lat = parseFloat(POZYX.anchor.lat);
             GPS_DATA.lon = parseFloat(POZYX.anchor.lon);
             GPS_DATA.fix = 2;
