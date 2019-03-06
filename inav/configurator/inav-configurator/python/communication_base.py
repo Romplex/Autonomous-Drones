@@ -20,18 +20,24 @@ height = 1000
 # pozyx tag on drone
 remote_id = 0x6760
 
+# shortcut to not have to find out the port yourself
+serial_port = get_first_pozyx_serial_port()
+if serial_port is None:
+    print('No Pozyx connected. Check your USB cable or your driver!')
+    quit()
+
+pozyx = PozyxSerial(serial_port)
+
+
+def send_test_message(msg):
+    while True:
+        status = pozyx.sendData(0x6760, msg.encode('utf-8'))
+        if status == POZYX_SUCCESS:
+            break
+
 
 def get_remote_position():
     """Send position data to configurator"""
-
-    # shortcut to not have to find out the port yourself
-    serial_port = get_first_pozyx_serial_port()
-    if serial_port is None:
-        print('No Pozyx connected. Check your USB cable or your driver!')
-        quit()
-
-    pozyx = PozyxSerial(serial_port)
-    pozyx.setUWBChannel(1)
 
     # set anchors
     status = pozyx.clearDevices(remote_id=remote_id)
@@ -53,5 +59,6 @@ def get_remote_position():
 
 if __name__ == '__main__':
     get_remote_position()
+    send_test_message("XD")
 
 
