@@ -1,29 +1,28 @@
-from pypozyx import PozyxSerial, get_first_pozyx_serial_port, Data
-from pypozyx.definitions.bitmasks import POZYX_INT_STATUS_RX_DATA
+from pypozyx import PozyxSerial, get_first_pozyx_serial_port, DeviceCoordinates, Coordinates, PozyxConstants
 from pypozyx.definitions.constants import POZYX_SUCCESS
 
 
-def loop():
-    """ communication with pozyx tag on drone """
+# necessary data for calibration
+anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
+           DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
+           DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
+           DeviceCoordinates(0x690b, 4, Coordinates(-541, -10979, 3000))]
 
-    print("start loop")
+# positioning algorithm to use
+algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
 
-    while True:
-        if pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 50):
-            # works for messages with length >= 5
-            data_format = 'bbbbbb'
-            data = Data([0] * len(data_format), data_format)
-            flag = pozyx.readRXBufferData(data)
-            received_msg = data.data
-            if flag == POZYX_SUCCESS and received_msg != []:
-                for d in received_msg:
-                    print(str(chr(d)))
-                message = 'Nachricht erhalten'.encode('utf-8')
-                pozyx.sendData(0x6760, message)
+# positioning dimension. Others are PozyxConstants.DIMENSION_2D, PozyxConstants.DIMENSION_2_5D
+dimension = PozyxConstants.DIMENSION_3D
+
+# height of device, required in 2.5D positioning
+height = 1000
+
+# pozyx tag on drone
+remote_id = 0x6760
 
 
-if __name__ == "__main__":
-    """ setup """
+def get_remote_position():
+    """Send position data to configurator"""
 
     # shortcut to not have to find out the port yourself
     serial_port = get_first_pozyx_serial_port()
@@ -34,4 +33,25 @@ if __name__ == "__main__":
     pozyx = PozyxSerial(serial_port)
     pozyx.setUWBChannel(1)
 
-    loop()
+    # set anchors
+    status = pozyx.clearDevices(remote_id=remote_id)
+    for anchor in anchors:
+        status &= pozyx.addDevice(anchor, remote_id=remote_id)
+
+    # start positioning
+    while True:
+        position = Coordinates()
+        status = pozyx.doPositioning(position, dimension, height, algorithm, remote_id=remote_id)
+        if status == POZYX_SUCCESS:
+            print(position)
+            return {
+                'x': position.x,
+                'y': position.y,
+                'z': position.z
+            }
+
+
+if __name__ == '__main__':
+    get_remote_position()
+
+
