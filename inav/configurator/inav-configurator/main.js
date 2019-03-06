@@ -43,11 +43,11 @@ $(document).ready(function () {
         let tabPozyx = $('.tab_pozyx');
 
         if ($this.is(':checked')) {
-            serial.pozyxMode = true;
+            pozyx.pozyxMode = true;
             tabPozyx.removeClass('is-hidden');
             $('#tabs .tab_pozyx a').click();
         } else {
-            serial.pozyxMode = false;
+            pozyx.pozyxMode = false;
             tabPozyx.addClass('is-hidden');
             // trigger only landing page if pozyx tab is selected
             if (tabPozyx.hasClass('active')){

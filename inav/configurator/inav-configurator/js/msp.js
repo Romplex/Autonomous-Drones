@@ -348,7 +348,13 @@ var MSP = {
             message.retryCounter = 10;
         }
 
-        helper.mspQueue.put(message);
+        // send data via pozyx tag if present
+        if(pozyx.pozyxMode) {
+            // TODO uniks use python bridge to send msp data as payload with pozyx message
+            console.log("remove me - send msp data via pozyx");
+        } else {
+            helper.mspQueue.put(message);
+        }
 
         return true;
     },

@@ -2,6 +2,13 @@
 
 var fs = require('fs');
 
+var pozyx = {
+    pozyxMode:      false,
+    pozyxWorker: {
+        positioning:    undefined
+    }
+};
+
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function (callback) {
