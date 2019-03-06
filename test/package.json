@@ -9,11 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
     "jquery": "^3.3.1",
-    "node-fetch": "^2.3.0",
     "nw": "sdk",
-    "request-promise": "^4.2.4"
+    "python-bridge": "^1.0.3"
   }
 }

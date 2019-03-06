@@ -1,49 +1,29 @@
 // -- app.js --
-const express = require('express') ;
 const $ = require('jquery');
-const fetch = require("node-fetch")
+const pythonBridge = require('python-bridge');
 
-var app = express();
+$('#pozyxBtn', document).click(() => {
+  const python = pythonBridge();
+  python.ex`
+  from pypozyx import get_first_pozyx_serial_port, PozyxSerial, SingleRegister
+  from pypozyx.definitions.registers import POZYX_WHO_AM_I
+  
+  def doSomething():
+      port = get_first_pozyx_serial_port()
+      print('Port:', port)
+      p = PozyxSerial(port)
+  
+      whoami = SingleRegister()
+      p.regRead(POZYX_WHO_AM_I, whoami)
+  
+      print('WhoAmI:', whoami)
+      return port, whoami.data`.catch(python.Exception, console.error);
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000...")
-});
+  python`doSomething()`
+    .then(data => {
+      console.log(`Port: ${data[0]}, WhoAmI: ${data[1][0]}`);
+    })
+    .catch(python.Exception, console.error);
 
-app.get("/js/getpozyx", (req, res, next) => {
-  res.json(["x",1.0, "y",2.2, "z", -3.3]);
-});
-
-const getData = async options => {
-  try {
-    const response = await fetch(options.uri, options);
-    
-    // data you received from python server
-    const json = await response.json();
-    $('#serialdata', document).append(JSON.stringify(json) + "\n");
-    console.log(json);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-$('#btn', document).click(function() {
-  console.log("btn");
-  // data you want to send to python server
-  let d = {
-    data0: "pozyx",
-    data1: "position"
-  };
-  let i = JSON.stringify(d);
-  let options = {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    uri: 'http://localhost:5000/py/getpozyx',
-    body: i,
-    json: true
-  }
-
-  getData(options);
+  python.end();
 });
