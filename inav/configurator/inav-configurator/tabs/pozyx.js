@@ -672,7 +672,7 @@ TABS.pozyx.initialize = function (callback) {
             pythonProcess.stdout.on('data', (data) => {
                 GUI.log(data);
             });
-
+            
         });
 
 
