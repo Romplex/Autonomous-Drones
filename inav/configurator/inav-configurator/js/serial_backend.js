@@ -53,21 +53,34 @@ function getPosition(py) {
   # pozyx tag on drone
   remote_id = 0x6760
 
-  # shortcut to not have to find out the port yourself
+  POZYX_CONNECTED_TO_BASE = True
+
+   # shortcut to not have to find out the port yourself
   serial_port = get_first_pozyx_serial_port()
   if serial_port is None:
-    print('No Pozyx connected. Check your USB cable or your driver!')
-    quit()
-
-  pozyx = PozyxSerial(serial_port)
+      POZYX_CONNECTED_TO_BASE = False
+  else:
+      pozyx = PozyxSerial(serial_port)
 
   def get_remote_position():
     """Send position data to configurator"""
+    
+    if not POZYX_CONNECTED_TO_BASE:
+        return {
+            'error_msg': 'No Pozyx connected. Check your USB cable or your driver!'
+        }
+    
 
     # set anchors
     status = pozyx.clearDevices(remote_id=remote_id)
     for anchor in anchors:
       status &= pozyx.addDevice(anchor, remote_id=remote_id)
+      
+    if status == POZYX_FAILURE:
+        return {
+            'error_msg': 'At least one anchor inactive. Check power supply!'
+        }
+
 
     # start positioning
     while True:
