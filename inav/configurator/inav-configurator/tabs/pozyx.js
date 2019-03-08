@@ -354,7 +354,7 @@ TABS.pozyx.initialize = function (callback) {
                     let newData = data[i].textContent;
                     let nrData = parseFloat(newData);
                     if(newData.length === parseFloat(nrData).length) newData = nrData;
-                    POZYX.anchor[data[i].className.split(" ")[0].replace("pozyxAnchor", "").toLowerCase()] = newData;
+                    POZYX.anchors[0][data[i].className.split(" ")[0].replace("pozyxAnchor", "").toLowerCase()] = newData;
                 };
 
                 let newPozyxSettings = JSON.stringify(POZYX);
@@ -649,10 +649,10 @@ TABS.pozyx.initialize = function (callback) {
                 visible = false;
             }else{
                 // show pozyx anchor data                
-                $('.GPS_info td.pozyxAnchorId').text(POZYX.anchor.id);
-                $('.GPS_info td.pozyxAnchorAlt').text(parseInt(POZYX.anchor.alt) + ' m');
-                $('.GPS_info td.pozyxAnchorLat').text(parseFloat(POZYX.anchor.lat).toFixed(7) + ' deg');
-                $('.GPS_info td.pozyxAnchorLon').text(parseFloat(POZYX.anchor.lon).toFixed(7) + ' deg');
+                $('.GPS_info td.pozyxAnchorId').text(POZYX.anchors[0].id);
+                $('.GPS_info td.pozyxAnchorAlt').text(parseInt(POZYX.anchors[0].alt) + ' m');
+                $('.GPS_info td.pozyxAnchorLat').text(parseFloat(POZYX.anchors[0].lat).toFixed(7) + ' deg');
+                $('.GPS_info td.pozyxAnchorLon').text(parseFloat(POZYX.anchors[0].lon).toFixed(7) + ' deg');
 
                 $('#pozyxAnchorSettingTable').removeClass('is-hidden');
                 visible = true;

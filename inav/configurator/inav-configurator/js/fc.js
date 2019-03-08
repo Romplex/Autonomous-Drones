@@ -225,10 +225,10 @@ var FC = {
         };
         
         if(pozyx.pozyxMode) {
-            GPS_DATA.lat = parseFloat(POZYX.anchor.lat);
-            GPS_DATA.lon = parseFloat(POZYX.anchor.lon);
+            GPS_DATA.lat = parseFloat(POZYX.anchors[0].lat);
+            GPS_DATA.lon = parseFloat(POZYX.anchors[0].lon);
             GPS_DATA.fix = 2;
-            GPS_DATA.alt = parseInt(POZYX.anchor.alt);
+            GPS_DATA.alt = parseInt(POZYX.anchors[0].alt);
             GPS_DATA.hdop = 1;
         };
 
