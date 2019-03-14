@@ -1,0 +1,19 @@
+
+Nachrichten von Drohne zu Ground:
+
+Mission Start
+Mission Ende
+Fehler
+
+Sensordaten:
+Speed
+temperatur
+akkustand(?)
+
+Nachrichten von Ground zu Drohen:
+
+Missionplan(Waypoints)
+start
+pause
+stop gehe direkt zu ziel waypoint
+abbruch lande direkt

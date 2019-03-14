@@ -73,8 +73,8 @@ def get_received_message():
             print(chr(d.__getitem__(i)))  # do something with every char
         return d
 
-def get_device_list():
-    """returns array with all devices stored"""
+def get_device_list_ground():
+    """returns array with all devices stored as pozyx devicelist"""
     pozyx.doDiscovery(discovery_type=PozyxConstants.DISCOVERY_ALL_DEVICES)
     list_size = SingleRegister()
     pozyx.getDeviceListSize(list_size)
@@ -82,18 +82,16 @@ def get_device_list():
     pozyx.getDeviceIds(device_list)
     return device_list
 
-def get_tags_list():
+def get_tags_list_ground():
+    """returns array with all tags stored as pozyx devicelist"""
     pozyx.doDiscovery(discovery_type=PozyxConstants.DISCOVERY_ALL_DEVICES)
     list_size = SingleRegister()
     pozyx.getDeviceListSize(list_size)
-    device_list = get_d
-    pozyx.getDeviceIds(device_list)
-
-    print(list_size[0])
+    device_list = get_device_list_ground()
     tag_list = DeviceList(list_size=list_size[0] - 4)
-
     for i in range(0, list_size[0] - 4):
         tag_list[i] = device_list[i + 4]
+    return tag_list
 
 if __name__ == '__main__':
     get_remote_position()
