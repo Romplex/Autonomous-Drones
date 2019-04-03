@@ -123,12 +123,17 @@ $(document).ready(function() {
                       // get pozyx position every 50ms
                       // TODO uniks use python bridge here
 
+                      // uniks FIXME use position
+                      // pozyxPy
+                      //   .getPosition(0x6758)
+                      //   .then(pos => {
+                      //     console.log(pos);
+                      //   })
+                      //   .catch(pozyxPy.py.Exception, console.error);
                       pozyxPy
-                        .getPosition(0x6775)
-                        .then(pos => {
-                          console.log(pos);
-                        })
-                        .catch(pozyxPy.py.Exception, console.error);
+                        .getWhoAmI()
+                        .then(console.log)
+                        .catch(console.error);
                     }, 500);
                     $('#connectbutton a.connect_state')
                       .text(chrome.i18n.getMessage('disconnect'))

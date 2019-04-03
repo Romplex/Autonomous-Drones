@@ -11,7 +11,7 @@ const PozyxPy = function() {
 
   // python imports
   this.py.ex`
-    from pypozyx import PozyxSerial, get_first_pozyx_serial_port, DeviceCoordinates, Coordinates, POZYX_SUCCESS, PozyxConstants
+    from pypozyx import PozyxSerial, get_first_pozyx_serial_port, DeviceCoordinates, Coordinates, POZYX_SUCCESS, PozyxConstants, SingleRegister
     print('POZYXPY: got imports')
     `.catch(this.py.Exception, printPozyxError);
 
@@ -59,6 +59,11 @@ const PozyxPy = function() {
                 if status == POZYX_SUCCESS:
                   return {'x': position.x, 'y': position.y, 'z': position.z}
 
+    def who_am_i():
+        whoami = SingleRegister()
+        pozyx.getWhoAmI(whoami)
+        return whoami.data
+
     print('POZYXPY: defined functions')
     `.catch(this.py.Exception, printPozyxError);
 };
@@ -69,4 +74,8 @@ PozyxPy.prototype.getPosition = function(tagId) {
   }
 
   return this.py`get_position()`;
+};
+
+PozyxPy.prototype.getWhoAmI = function() {
+  return this.py`who_am_i()`;
 };
