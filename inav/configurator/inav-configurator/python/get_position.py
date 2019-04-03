@@ -1,7 +1,9 @@
 from pypozyx import PozyxSerial, get_first_pozyx_serial_port, DeviceCoordinates, Coordinates, POZYX_SUCCESS, \
-    PozyxConstants
+    PozyxConstants, SingleRegister, POZYX_FAILURE
 
 # positioning algorithm to use
+from pypozyx.tools.version_check import perform_latest_version_check
+
 algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
 
 # positioning dimension. Others are PozyxConstants.DIMENSION_2D, PozyxConstants.DIMENSION_2_5D
@@ -32,14 +34,14 @@ def get_remote_position():
     """Send position data to configurator"""
 
     # set anchors
-    status = pozyx.clearDevices(remote_id=remote_id)
+    status = pozyx.clearDevices()
     for anchor in anchors:
-        status &= pozyx.addDevice(anchor, remote_id=remote_id)
+        status &= pozyx.addDevice(anchor)
 
     # start positioning
     while True:
         position = Coordinates()
-        status = pozyx.doPositioning(position, dimension, height, algorithm, remote_id=remote_id)
+        status = pozyx.doPositioning(position, dimension, height, algorithm)
         if status == POZYX_SUCCESS:
             print(position)
             return {
@@ -50,4 +52,5 @@ def get_remote_position():
 
 
 if __name__ == '__main__':
-    get_remote_position()
+    while True:
+        get_remote_position()

@@ -124,7 +124,7 @@ $(document).ready(function() {
                       // TODO uniks use python bridge here
 
                       pozyxPy
-                        .getPosition()
+                        .getPosition(0x6775)
                         .then(pos => {
                           console.log(pos);
                         })
