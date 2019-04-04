@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env pozyx_scripts
 """
 The Pozyx ready to localize tutorial (c) Pozyx Labs
 Please read the tutorial that accompanies this sketch:

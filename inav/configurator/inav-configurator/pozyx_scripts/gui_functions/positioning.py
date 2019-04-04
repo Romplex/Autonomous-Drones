@@ -1,5 +1,6 @@
 from pypozyx import PozyxSerial, get_first_pozyx_serial_port, DeviceCoordinates, Coordinates, PozyxConstants, \
-    POZYX_FAILURE
+    POZYX_FAILURE, SingleRegister, Data
+from pypozyx.definitions.bitmasks import POZYX_INT_STATUS_RX_DATA
 from pypozyx.definitions.constants import POZYX_SUCCESS
 
 
@@ -33,20 +34,6 @@ else:
 MAX_TRIES = 20
 
 
-def send_test_message(msg):
-    if not POZYX_CONNECTED_TO_BASE:
-        return {
-            'error_msg': 'No Pozyx connected. Check your USB cable or your driver!'
-        }
-    while True:
-        tries = 0
-        while True:
-            status = pozyx.sendData(0, msg.encode('utf-8'))
-            tries += 1
-            if status == POZYX_SUCCESS or tries == MAX_TRIES:
-                break
-
-
 def get_remote_position():
     """Send position data to configurator"""
 
@@ -76,10 +63,3 @@ def get_remote_position():
                 'y': position.y,
                 'z': position.z
             }
-
-
-if __name__ == '__main__':
-    get_remote_position()
-    # send_test_message("msg ")
-
-
