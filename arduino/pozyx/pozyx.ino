@@ -2,7 +2,7 @@
 #include <Pozyx_definitions.h>
 #include <Wire.h>
 
-#define DEBUG
+//#define DEBUG
 #define USE_POZYX
 
 #ifndef USE_POZYX
@@ -11,44 +11,27 @@
   #define Z 500   // cm
 #endif
 
-#ifndef DEBUG1
-  unsigned long t_gps;
-  unsigned long t_mag;
-#endif
+unsigned long t_gps;
+unsigned long t_mag;
 
 const unsigned int GPS_INTERVAL       = 250;      // every 250ms
-const unsigned int MAG_INTERVAL       = 30;       // every   30ms
+const unsigned int MAG_INTERVAL       = 30;       // every  30ms
 
 // TODO: use numbers instead of strings!
-static const String ID_LOCATION       = "GPS";    // message ID for location data
-static const String ID_COURSE         = "MAG";    // message ID for course data
-static const String ID_ANCHOR         = "ANCHOR"; // message ID for anchor calibration
-static const String ID_MISSION_START  = "M_START";// message ID for mission start
-static const String ID_MISSION_STOP   = "M_STOP"; // message ID for mission stop
-static const String ID_WP_ADD         = "WP_ADD"; // message ID for adding wp to mission
-static const String ID_WP_REMOVE      = "WP_DEL"; // message ID for removing wp from mission
+static const String ID_LOCATION       = "GPS";          // message ID for location data
+static const String ID_COURSE         = "MAG";          // message ID for course data
 
+uint16_t source_id;                                     // the network id of the connected device
+sensor_raw_t sensor_raw;
 
 //        #############################################
 //        ######### APPLY TAG PARAMETERS HERE #########
 //        #############################################
 
-uint16_t source_id = 0x6760;                            // set this to the ID of the remote device
-uint16_t destination_id = 0;        // the destination network id. 0 means the message is broadcasted to every device in range
-String inputString = "";            // a string to hold incoming data
-boolean stringComplete = false;     // whether the string is complete
-
-sensor_raw_t sensor_raw;
-
-bool     remote = false;                                // set this to true to use the remote ID
-
-boolean  use_processing = false;                        // set this to true to output data for the processing sketch
-
 const uint8_t num_anchors = 4;                          // the number of anchors
-uint16_t anchors[num_anchors] = {0x6951, 0x6E59, 0x695D, 0x690B};     // the network id of the anchors: change these to the network ids of your anchors.
-// TODO: measure actual coordinates
-int32_t anchors_x[num_anchors] = {0,5340,6812,-541};     // anchor x-coorindates in mm
-int32_t anchors_y[num_anchors] = {0,0,-8923,-10979};     // anchor y-coordinates in mm
+uint16_t anchors[num_anchors] = {0x6951, 0x6E59, 0x695D, 0x690B};  // the network ids of the anchors: change these to the network ids of your anchors
+int32_t anchors_x[num_anchors] = {0,5340,6812,-541};    // anchor x-coorindates in mm
+int32_t anchors_y[num_anchors] = {0,0,-8923,-10979};    // anchor y-coordinates in mm
 int32_t heights[num_anchors] = {1500, 2000, 2500, 3000};// anchor z-coordinates in mm
 
 uint8_t algorithm = POZYX_POS_ALG_UWB_ONLY;             // positioning algorithm to use. try POZYX_POS_ALG_TRACKING for fast moving objects.
@@ -73,46 +56,31 @@ void setup() {
   #ifdef DEBUG
     Serial.println("-   INIT POZYX   -");
   #endif
-  while(Pozyx.begin() == POZYX_FAILURE){
+  while(Pozyx.begin(false, MODE_INTERRUPT) == POZYX_FAILURE){
 #ifdef DEBUG
     Serial.println("ERROR: Unable to connect to POZYX shield");
-//    Serial.println("Reset required");
     Serial.flush();
 #endif
     delay(1000);
-//    abort();
   }
-#endif
-
-#ifdef DEBUG
-  Serial.println(F("----------POZYX POSITIONING V1.1----------"));
-  Serial.println(F("NOTES:"));
-  Serial.println(F("- No parameters required."));
-  Serial.println();
-  Serial.println(F("- System will auto start anchor configuration"));
-  Serial.println();
-  Serial.println(F("- System will auto start positioning"));
-  Serial.println(F("----------POZYX POSITIONING V1.1----------"));
-  Serial.println();
-  Serial.println(F("Performing manual anchor configuration:"));
 #endif
 
 #ifdef USE_POZYX
   // read the network id of this device
   Pozyx.regRead(POZYX_NETWORK_ID, (uint8_t*)&source_id, 2);
 
-  // reserve 100 bytes for the inputString:
-  inputString.reserve(100);
+#ifdef DEBUG
+  Serial.print("Source ID: ");Serial.println(source_id, HEX);
+#endif
   
   // clear all previous devices in the device list
   Pozyx.clearDevices(source_id);
   // sets the anchor manually
   setAnchorsManual();
   // sets the positioning algorithm
-  Pozyx.setPositionAlgorithm(algorithm, dimension, source_id);
+  Pozyx.setPositionAlgorithm(algorithm, dimension, NULL);
 #endif
 
-  // TODO: delay of 2000 needed after flush?
   Serial.flush();
 #ifdef USE_POZYX
   delay(2000);
@@ -127,98 +95,24 @@ void setup() {
 void loop() {
 
 #ifdef USE_POZYX
-// check if we received a newline character and if so, broadcast the inputString.
-  if(stringComplete){
-    Serial.print("Ox");
-    Serial.print(source_id, HEX);
-    Serial.print(": ");
-    Serial.println(inputString);
-
-    int length = inputString.length();
-    uint8_t buffer[length];
-    inputString.getBytes(buffer, length);
-
-    // write the message to the transmit (TX) buffer
-    int status = Pozyx.writeTXBufferData(buffer, length);
-    // broadcast the contents of the TX buffer
-    status = Pozyx.sendTXBufferData(destination_id);
-
-    inputString = "";
-    stringComplete = false;
-  }
-
-  // we wait up to 50ms to see if we have received an incoming message (if so we receive an RX_DATA interrupt)
-  if(Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA,50))
-  {
+  // TODO wait only 1ms or even 0?
+  // we wait up to 2ms to see if we have received an incoming message (if so we receive an RX_DATA interrupt)
+  if(Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA,2))
     // we have received a message!
-
-    uint8_t length = 0;
-    uint16_t messenger = 0x00;
-    delay(1);
-    // Let's read out some information about the message (i.e., how many bytes did we receive and who sent the message)
-    Pozyx.getLastDataLength(&length);
-    Pozyx.getLastNetworkId(&messenger);
-
-    char data[length];
-
-    // read the contents of the receive (RX) buffer, this is the message that was sent to this device
-    Pozyx.readRXBufferData((uint8_t *) data, length);
-    Serial.print("Ox");
-    Serial.print(messenger, HEX);
-    Serial.print(": ");
-    Serial.println(data);
-  }
-// -----------------------------------------------------------------------------------
-
-  coordinates_t position;
-  int status;
-  if(remote){
-    status = Pozyx.doRemotePositioning(source_id, &position, dimension, height, algorithm);
-  }else{
-    status = Pozyx.doPositioning(&position, dimension, height, algorithm);
-  }
+    forwardMsg();
 #endif
 
-#if defined(DEBUG1) && defined(USE_POZYX)
-  if (status == POZYX_SUCCESS){
-    // prints out the result
-    printCoordinates(position);
-  }else{
-    // prints out the error code
-    printErrorCode("positioning");
-  }
-#endif
+  unsigned long currentTime = millis();
 
-#ifdef DEBUG1
-  Serial.print("x: "); Serial.println(position.x);
-  Serial.print("y: "); Serial.println(position.y);
-  Serial.print("z: "); Serial.println(position.z);
-#endif
-
-#ifdef USE_POZYX
-  int coordinates[3] = {position.x, position.y, position.z};
-#else
-  int coordinates[3] = {X,Y,Z};
-#endif
-
-  String gps_msg;
-  String mag_msg;
-
-  long currentTime = millis();
-  
-  if(currentTime - t_gps >= GPS_INTERVAL) {
-    t_gps = millis();
-    gps_msg = genGpsMsg(coordinates[0], coordinates[1], coordinates[2], currentTime);
-    Serial.println(gps_msg);
-  }
+  if(currentTime - t_gps >= GPS_INTERVAL)
+    // time to send position
+    forwardPosition(currentTime);
 
   currentTime = millis();
 
-  if(currentTime - t_mag >= MAG_INTERVAL) {
-    t_mag = millis();
-    mag_msg = genMagMsg(0.0, currentTime);
-    Serial.println(mag_msg);
-  }
+  if(currentTime - t_mag >= MAG_INTERVAL)
+    // time to send orientation
+    forwardOrientation(currentTime);
 }
 
 
@@ -229,25 +123,15 @@ void printCoordinates(coordinates_t coor){
   if (network_id == NULL){
     network_id = 0;
   }
-  if(!use_processing){
-    Serial.print("POS ID 0x");
-    Serial.print(network_id, HEX);
-    Serial.print(", x(mm): ");
-    Serial.print(coor.x);
-    Serial.print(", y(mm): ");
-    Serial.print(coor.y);
-    Serial.print(", z(mm): ");
-    Serial.println(coor.z);
-  }else{
-    Serial.print("POS,0x");
-    Serial.print(network_id,HEX);
-    Serial.print(",");
-    Serial.print(coor.x);
-    Serial.print(",");
-    Serial.print(coor.y);
-    Serial.print(",");
-    Serial.println(coor.z);
-  }
+  
+  Serial.print("POS,0x");
+  Serial.print(network_id,HEX);
+  Serial.print(",");
+  Serial.print(coor.x);
+  Serial.print(",");
+  Serial.print(coor.y);
+  Serial.print(",");
+  Serial.println(coor.z);
 }
 
 // error printing function for debugging
@@ -278,43 +162,6 @@ void printErrorCode(String operation){
   }
 }
 
-// print out the anchor coordinates
-void printCalibrationResult(){
-  uint8_t list_size;
-  int status;
-
-  status = Pozyx.getDeviceListSize(&list_size, source_id);
-  Serial.print("list size: ");
-  Serial.println(status*list_size);
-
-  if(list_size == 0){
-    printErrorCode("configuration");
-    return;
-  }
-
-  uint16_t device_ids[list_size];
-  status &= Pozyx.getDeviceIds(device_ids, list_size, source_id);
-
-  Serial.println(F("Calibration result:"));
-  Serial.print(F("Anchors found: "));
-  Serial.println(list_size);
-
-  coordinates_t anchor_coor;
-  for(int i = 0; i < list_size; i++)
-  {
-    Serial.print("ANCHOR,");
-    Serial.print("0x");
-    Serial.print(device_ids[i], HEX);
-    Serial.print(",");
-    Pozyx.getDeviceCoordinates(device_ids[i], &anchor_coor, source_id);
-    Serial.print(anchor_coor.x);
-    Serial.print(",");
-    Serial.print(anchor_coor.y);
-    Serial.print(",");
-    Serial.println(anchor_coor.z);
-  }
-}
-
 // function to manually set the anchor coordinates
 void setAnchorsManual(){
   for(int i = 0; i < num_anchors; i++){
@@ -332,7 +179,7 @@ void setAnchorsManual(){
 }
 
 String genMagMsg(float groundSpeed, unsigned long t) {
-  //$GPRMC , 161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598, ,*10
+  //example msg: $GPRMC , 161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598, ,*10
 
 #ifdef USE_POZYX
   Pozyx.getRawSensorData(&sensor_raw);
@@ -353,12 +200,9 @@ String genMagMsg(float groundSpeed, unsigned long t) {
 #else
   float groundCourse = 45.0;
 #endif
-
   
   String tt = formatTime(t);
-  
   String date = "011219";
-
   String str = "$"
         + ID_COURSE+","
         + tt+","
@@ -461,18 +305,58 @@ String calcCRC(char* buff, byte buff_len) {
   return String(crc, HEX);
 }
 
-void serialEvent() {
-  while (Serial.available()) {
-    // get the new byte:
-    char inChar = (char)Serial.read();
+void forwardMsg() {
+  uint8_t msg_length = 0;
+  uint16_t messenger = 0x00;
+  delay(1);
+  
+  // Let's read out some information about the message (i.e., how many bytes did we receive and who sent the message)
+  Pozyx.getLastDataLength(&msg_length);
+  Pozyx.getLastNetworkId(&messenger);
+  char data[msg_length];
 
-    // if the incoming character is a newline, set a flag
-    // so the main loop can do something about it.
-    // otherwise, add it to the inputString:
-    if (inChar == '\n') {
-      stringComplete = true;
-    }else{
-      inputString += inChar;
-    }
+  // read the contents of the receive (RX) buffer, this is the message that was sent to this device
+  // TODO: what if msg is greater than pozyx buffer?! 24byte?
+  Pozyx.readRXBufferData((uint8_t *) data, msg_length);
+
+#ifdef DEBUG
+  Serial.print("Ox");
+  Serial.print(messenger, HEX);
+  Serial.print(": ");
+#endif
+
+  // send data over uart to fc
+  // TODO use softserial port and send only msp messages over this port instead of gps, mag and msp. check if fc has another empty port
+  Serial.println(data);
+}
+
+void forwardPosition(unsigned long currentTime) {
+  coordinates_t position;
+  
+#ifdef USE_POZYX
+  int coordinates[3] = {position.x, position.y, position.z};
+  int status = Pozyx.doPositioning(&position, dimension, height, algorithm);
+#ifdef DEBUG
+  if (status == POZYX_SUCCESS){
+    // prints out the result
+    printCoordinates(position);
+  }else{
+    // prints out the error code
+    printErrorCode("positioning");
   }
+#endif
+#else
+  int coordinates[3] = {X,Y,Z};
+#endif
+
+  t_gps = millis();
+  String gps_msg = genGpsMsg(coordinates[0], coordinates[1], coordinates[2], currentTime);
+  Serial.println(gps_msg);
+}
+
+void forwardOrientation(unsigned long currentTime) {
+  t_mag = millis();
+  float groundSpeed = 0.0;
+  String mag_msg = genMagMsg(groundSpeed, currentTime);
+  Serial.println(mag_msg);
 }
