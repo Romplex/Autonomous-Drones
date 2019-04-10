@@ -618,7 +618,7 @@ TABS.pozyx.initialize = function (callback) {
             sendNextPoint();
         });
 
-        $('#loadEepromMissionButton').on('click', function () {
+        $('#loadPOZYXMissionButton').on('click', function () {
             if (markers.length) {
                 if (!confirm(chrome.i18n.getMessage('confirm_delete_all_points'))) {
                     return;
@@ -629,15 +629,14 @@ TABS.pozyx.initialize = function (callback) {
 
             MSP.send_message(MSPCodes.MSP_WP_MISSION_LOAD, [0], getPointsFromEprom);
         });
-        $('#saveEepromMissionButton').on('click', function () {
-            GUI.log(chrome.i18n.getMessage('eeprom_saved_ok'));
-            MSP.send_message(MSPCodes.MSP_WP_MISSION_SAVE, [0], false);
-        });
 
         $('#savePOZYXMissionButton').on('click', function () {
             GUI.log(chrome.i18n.getMessage('pozyx_saved_ok'));
-            // TODO[uniks] send mission over POZYX
-            //MSP.send_message(MSPCodes.MSP_WP_MISSION_SAVE, [0], false);
+            $(this).addClass('disabled');
+            GUI.log('Start send point');
+
+            pointForSend = 0;
+            sendNextPoint();
         });
 
         $("#showPozyxSettings").on('click', function() {
@@ -795,7 +794,7 @@ TABS.pozyx.initialize = function (callback) {
 
         MSP.send_message(MSPCodes.MSP_WP_GETINFO, false, false, updateTotalInfo);
 
-        $('#saveMissionButton').removeClass('disabled');
+        $('#savePOZYXMissionButton').removeClass('disabled');
     }
 };
 
