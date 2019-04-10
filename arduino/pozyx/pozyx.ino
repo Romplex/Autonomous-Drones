@@ -1,6 +1,7 @@
 #include <Pozyx.h>
 #include <Pozyx_definitions.h>
 #include <Wire.h>
+#include <SoftwareSerial.h>
 
 //#define DEBUG
 #define USE_POZYX
@@ -10,6 +11,8 @@
   #define Y 0     // cm
   #define Z 500   // cm
 #endif
+
+SoftwareSerial msp(A1, A2); // rx/tx
 
 unsigned long t_gps;
 unsigned long t_mag;
@@ -44,8 +47,10 @@ int32_t height = 1000;                                  // height of device, req
 
 
 void setup() {
-  Serial.begin(115200); // 57600 or 115200
+  Serial.begin(115200); // 115200 mag and gps baudrate
+  msp.begin(9600);      // 9600 softserial baudrate for msp
   while(!Serial);
+  while(!msp);
   delay(2000); // wait for pozyx to power up
 
   // setup time variables for gps and mag messages
@@ -313,7 +318,7 @@ void forwardMsg() {
   // Let's read out some information about the message (i.e., how many bytes did we receive and who sent the message)
   Pozyx.getLastDataLength(&msg_length);
   Pozyx.getLastNetworkId(&messenger);
-  char data[msg_length];
+  uint8_t data[msg_length];
 
   // read the contents of the receive (RX) buffer, this is the message that was sent to this device
   // TODO: what if msg is greater than pozyx buffer?! 24byte?
@@ -327,7 +332,7 @@ void forwardMsg() {
 
   // send data over uart to fc
   // TODO use softserial port and send only msp messages over this port instead of gps, mag and msp. check if fc has another empty port
-  Serial.println(data);
+  msp.write(data, sizeof(data)/sizeof(data[0]));
 }
 
 void forwardPosition(unsigned long currentTime) {

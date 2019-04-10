@@ -6,6 +6,9 @@
 
 ![Pozyx Pinout](https://www.pozyx.io/web/image/4563/tag_pinout.jpg "Pozyx Pinout")
 
+## Inav Settings:
+![Inav Configurator Ports](./Ports_settings.png "Inav ports")
+
 ## Architektur für Kommunikation:
 ![alt text](./docs/kommunikation.png "Logo Title Text 1")
 
