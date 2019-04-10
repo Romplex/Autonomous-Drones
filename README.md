@@ -4,6 +4,8 @@
 
 ![Arduino Nano Pinout](https://github.com/Romplex/autonomous-drones/raw/master/arduino-nano-pinout.png "Arduino Nano Pinout")
 
+![Inav Configurator Ports](./Ports_settings.png "Inav ports")
+
 ![Pozyx Pinout](https://www.pozyx.io/web/image/4563/tag_pinout.jpg "Pozyx Pinout")
 
 ## Architektur für Kommunikation:
