@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-
 var pozyx = {
     pozyxMode:      false,
     pozyxWorker: {
@@ -12,12 +11,12 @@ var pozyx = {
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function (callback) {
-
     if (GUI.active_tab != 'pozyx') {
         GUI.active_tab = 'pozyx';
         googleAnalytics.sendAppView('Pozyx');
     }
 
+    const pozyxpy = new PozyxPy();
     //$('div.connect_controls a.connect').click();
 
     var loadChainer = new MSPChainerClass();
@@ -635,9 +634,19 @@ TABS.pozyx.initialize = function (callback) {
         });
 
         $('#savePOZYXMissionButton').on('click', function () {
-            GUI.log(chrome.i18n.getMessage('pozyx_saved_ok'));
-            // TODO[uniks] send mission over POZYX
-            //MSP.send_message(MSPCodes.MSP_WP_MISSION_SAVE, [0], false);
+            GUI.log("button clicked");
+            pozyxpy
+                .getPosition()
+                .then(data => {
+                    if (data['error']) {
+                        confirm(data['error']);
+                    }
+                    else {
+                        GUI.log("x: " + data['x'] + " y: " + data['y'] + " z: " + data['z']);
+                    }
+                })
+                .catch((err) => GUI.log(err));
+
         });
 
         $("#showPozyxSettings").on('click', function() {

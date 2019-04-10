@@ -1,7 +1,9 @@
-from pypozyx import PozyxSerial, get_first_pozyx_serial_port, DeviceCoordinates, Coordinates, PozyxConstants, \
+from pypozyx import PozyxSerial, DeviceCoordinates, Coordinates, PozyxConstants, \
     SingleRegister, Data
 from pypozyx.definitions.bitmasks import POZYX_INT_STATUS_RX_DATA
 from threading import Thread
+
+from gui_functions.serial_ports import get_pozyx_serial_port
 
 
 # necessary data for calibration
@@ -25,7 +27,7 @@ remote_id = 0
 POZYX_CONNECTED_TO_BASE = True
 
 # shortcut to not have to find out the port yourself
-serial_port = get_first_pozyx_serial_port()
+serial_port = get_pozyx_serial_port()
 if serial_port is None:
     POZYX_CONNECTED_TO_BASE = False
 else:

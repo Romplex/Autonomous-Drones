@@ -1,8 +1,9 @@
-from pypozyx import PozyxSerial, get_first_pozyx_serial_port, DeviceCoordinates, Coordinates, PozyxConstants, \
-    POZYX_FAILURE, SingleRegister, Data
-from pypozyx.definitions.bitmasks import POZYX_INT_STATUS_RX_DATA
+from pypozyx import PozyxSerial, DeviceCoordinates, Coordinates, PozyxConstants, \
+    POZYX_FAILURE
 from pypozyx.definitions.constants import POZYX_SUCCESS
+from functools import wraps
 
+from gui_functions.serial_ports import get_pozyx_serial_port
 
 # necessary data for calibration
 anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
@@ -20,12 +21,12 @@ dimension = PozyxConstants.DIMENSION_3D
 height = 1000
 
 # pozyx tag on drone
-remote_id = 0x6760
+remote_id = 0x6748
 
 POZYX_CONNECTED_TO_BASE = True
 
 # shortcut to not have to find out the port yourself
-serial_port = get_first_pozyx_serial_port()
+serial_port = get_pozyx_serial_port()
 if serial_port is None:
     POZYX_CONNECTED_TO_BASE = False
 else:
@@ -34,32 +35,40 @@ else:
 MAX_TRIES = 20
 
 
+def check_connection(func):
+    @wraps(func)
+    def check():
+        if not POZYX_CONNECTED_TO_BASE:
+            return {'error': 'No pozyx device connected! check usb connection.'}
+        return func()
+    return check
+
+
+@check_connection
 def get_remote_position():
     """Send position data to configurator"""
 
-    if not POZYX_CONNECTED_TO_BASE:
-        return {
-            'error_msg': 'No Pozyx connected. Check your USB cable or your driver!'
-        }
-
     # set anchors
-    status = pozyx.clearDevices(remote_id=remote_id)
+    status = pozyx.clearDevices()
     for anchor in anchors:
-        status &= pozyx.addDevice(anchor, remote_id=remote_id)
-
-    if status == POZYX_FAILURE:
-        return {
-            'error_msg': 'At least one anchor inactive. Check power supply!'
-        }
+        status &= pozyx.addDevice(anchor)
 
     # start positioning
-    while True:
+    tries = MAX_TRIES
+    while tries > 0:
         position = Coordinates()
-        status = pozyx.doPositioning(position, dimension, height, algorithm, remote_id=remote_id)
+        status = pozyx.doPositioning(position, dimension, height, algorithm)
         if status == POZYX_SUCCESS:
-            print(position)
             return {
                 'x': position.x,
                 'y': position.y,
                 'z': position.z
             }
+        tries -= 1
+    return {'error': 'At least one anchor inactive! Check connection to power supply.'}
+
+
+if __name__ == '__main__':
+    for i in range(10):
+        x = get_remote_position()
+        print(x)
