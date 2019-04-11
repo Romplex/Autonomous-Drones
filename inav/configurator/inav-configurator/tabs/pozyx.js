@@ -636,19 +636,6 @@ TABS.pozyx.initialize = function (callback) {
 
             pointForSend = 0;
             sendNextPoint();
-            GUI.log("button clicked");
-            pozyxpy
-                .getPosition()
-                .then(data => {
-                    if (data['error']) {
-                        confirm(data['error']);
-                    }
-                    else {
-                        GUI.log("x: " + data['x'] + " y: " + data['y'] + " z: " + data['z']);
-                    }
-                })
-                .catch((err) => GUI.log(err));
-
         });
 
         $("#showPozyxSettings").on('click', function() {
@@ -673,17 +660,19 @@ TABS.pozyx.initialize = function (callback) {
         });
 
         $('#runPyScriptButton').on('click', function () {
-            GUI.log('started py script');
-
-            // start py script
-            const spawn = require("child_process").spawn;
-            const pythonProcess = spawn('python',["python/script.py"]);
-
-            // listen to py script
-            pythonProcess.stdout.on('data', (data) => {
-                GUI.log(data);
-            });
-            
+            // TODO uni.ks.
+            GUI.log("button clicked");
+            pozyxpy
+                .getPosition()
+                .then(data => {
+                    if (data['error']) {
+                        confirm(data['error']);
+                    }
+                    else {
+                        GUI.log("x: " + data['x'] + " y: " + data['y'] + " z: " + data['z']);
+                    }
+                })
+                .catch((err) => GUI.log(err));
         });
 
 
