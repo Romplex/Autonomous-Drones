@@ -20,7 +20,7 @@ def inspect_port(port):
         pass
     try:
         # assure it is NOT the flight controller
-        if "0483:" in port.hwid and not port.serial_number.startswith('0X'):
+        if "0483:" in port.hwid and not port.serial_number.lower().startswith('0x'):
             return True
     except TypeError:
         pass
