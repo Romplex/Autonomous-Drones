@@ -1,5 +1,4 @@
 $(document).ready(function() {
-  const pozyxPy = new PozyxPy();
 
   var $port = $('#port'),
     $baud = $('#baud'),
@@ -116,25 +115,6 @@ $(document).ready(function() {
                   // start pozyx bridge
                   if (!pozyx.pozyxWorker.positioning) {
                     GUI.connecting_to = selected_port;
-
-                    // lock port select & baud while we are connecting / connected
-                    //$('#port, #baud, #delay').prop('disabled', true);
-                    pozyx.pozyxWorker.positioning = setInterval(function() {
-                      // get pozyx position every 50ms
-                      // TODO uniks use python bridge here
-
-                      // uniks FIXME use position
-                      // pozyxPy
-                      //   .getPosition(0x6758)
-                      //   .then(pos => {
-                      //     console.log(pos);
-                      //   })
-                      //   .catch(pozyxPy.py.Exception, console.error);
-                      pozyxPy
-                        .getWhoAmI()
-                        .then(console.log)
-                        .catch(console.error);
-                    }, 500);
                     $('#connectbutton a.connect_state')
                       .text(chrome.i18n.getMessage('disconnect'))
                       .addClass('active');

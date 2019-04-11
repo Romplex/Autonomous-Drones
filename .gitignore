@@ -10,3 +10,5 @@ inav/configurator/inav-configurator/package-lock\.json
 test/package-lock\.json
 
 test/\.vscode/settings\.json
+
+inav/configurator/inav-configurator/pozyx_scripts/gui_functions/__pycache__/

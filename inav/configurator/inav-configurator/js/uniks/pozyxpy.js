@@ -1,6 +1,7 @@
-const pythonBridge = require('python-bridge');
+// const pythonBridge = require('python-bridge');
 
 function printPozyxError(err) {
+  console.error(err);
   GUI.log('POZYX-Error: ' + err);
 }
 
@@ -8,12 +9,14 @@ const PozyxPy = function() {
   const coords = POZYX.anchors.map(a => a.Coordinates);
   this.py = pythonBridge();
 
+  this.py.exFile('./pozyx_scripts/test.py').catch(printPozyxError);
+
   // python imports
   this.py.ex`
       from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, Coordinates, POZYX_SUCCESS, PozyxConstants, SingleRegister
       from functools import wraps
       print('POZYXPY: got imports')
-      `.catch(this.py.Exception, (err) => printPozyxError(err.message));
+      `.catch(this.py.Exception, err => printPozyxError(err.message));
 
   // python global values
   this.py.ex`
@@ -60,7 +63,9 @@ const PozyxPy = function() {
           pozyx = PozyxSerial(serial_port)
       
       MAX_TRIES = 20
-      print('POZYXPY: set globals')`.catch(this.py.Exception, (err) => printPozyxError(err.message));
+      print('POZYXPY: set globals')`.catch(this.py.Exception, err =>
+    printPozyxError(err.message)
+  );
 
   // python functions
   this.py.ex`
@@ -98,7 +103,7 @@ const PozyxPy = function() {
           whoami = SingleRegister()
           pozyx.getWhoAmI(whoami)
           return {'i_am': 'XD'}
-    `.catch(this.py.Exception, (err) => printPozyxError(err.message));
+    `.catch(this.py.Exception, err => printPozyxError(err.message));
 };
 
 PozyxPy.prototype.getPosition = function(tagId) {
@@ -109,6 +114,6 @@ PozyxPy.prototype.getPosition = function(tagId) {
   return this.py`get_position()`;
 };
 
-  PozyxPy.prototype.getWhoAmI = function() {
+PozyxPy.prototype.getWhoAmI = function() {
   return this.py`who_am_i()`;
 };

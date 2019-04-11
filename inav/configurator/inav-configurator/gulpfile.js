@@ -69,6 +69,7 @@ sources.js = [
   './js/helpers.js',
   './node_modules/inflection/inflection.min.js',
   './node_modules/bluebird/js/browser/bluebird.min.js',
+  './js/libraries/python_bridge/python_bridge.js',
   './js/uniks/*',
   './js/injected_methods.js',
   './js/intervals.js',
