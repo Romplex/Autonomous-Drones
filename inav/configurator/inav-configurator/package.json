@@ -35,7 +35,6 @@
     "minimist": "^1.2.0",
     "nw": "sdk",
     "openlayers": "^4.6.5",
-    "python-bridge": "^1.0.3",
     "temp": "^0.8.3",
     "three": "0.72.0"
   },
