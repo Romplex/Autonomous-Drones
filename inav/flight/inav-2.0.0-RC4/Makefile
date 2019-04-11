@@ -16,7 +16,7 @@
 #
 
 # The target to build, see VALID_TARGETS below
-TARGET = OMNIBUSF4PRO
+TARGET = OMNIBUSF4
 
 # Compile-time options
 OPTIONS   ?=
