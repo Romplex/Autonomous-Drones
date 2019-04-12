@@ -47,6 +47,10 @@ typedef struct gpsDataPozyx_s {
     float altitude;
 	//uint16_t altitude TODO uniks use uint16_t instead of float?
 
+    uint16_t mag_x;
+    uint16_t mag_y;
+    uint16_t mag_z;
+
 	uint16_t speed;
 	uint16_t ground_course;
 	uint16_t hdop;

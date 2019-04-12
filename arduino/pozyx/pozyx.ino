@@ -17,6 +17,9 @@ SoftwareSerial msp(A1, A2); // rx/tx
 unsigned long t_gps;
 unsigned long t_mag;
 
+String inputString = "";            // a string to hold incoming data
+boolean stringComplete = false;     // whether the string is complete
+
 const unsigned int GPS_INTERVAL       = 250;      // every 250ms
 const unsigned int MAG_INTERVAL       = 30;       // every  30ms
 
@@ -51,7 +54,7 @@ void setup() {
   msp.begin(9600);      // 9600 softserial baudrate for msp
   while(!Serial);
   while(!msp);
-  delay(2000); // wait for pozyx to power up
+  delay(1500); // wait for pozyx to power up
 
   // setup time variables for gps and mag messages
   t_gps = 0;
@@ -99,44 +102,51 @@ void setup() {
 
 void loop() {
 
+  unsigned long currentTime = millis();
+
+  if(currentTime - t_gps >= GPS_INTERVAL) {
+    // time to send position
+    forwardPosition(currentTime);
+    return;
+  }
+
+  currentTime = millis();
+
+  if(currentTime - t_mag >= MAG_INTERVAL) {
+    // time to send orientation
+    forwardOrientation(currentTime);
+    return;
+  }
+
 #ifdef USE_POZYX
   // TODO wait only 1ms or even 0?
   // we wait up to 2ms to see if we have received an incoming message (if so we receive an RX_DATA interrupt)
   if(Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA,2))
     // we have received a message!
-    forwardMsg();
+    forwardMsgToFC();
+    return;
 #endif
 
-  unsigned long currentTime = millis();
+  while(msp.available()) {
+    // get msp msg from fc
+    char inChar = (char)msp.read();
 
-  if(currentTime - t_gps >= GPS_INTERVAL)
-    // time to send position
-    forwardPosition(currentTime);
+    // TODO check when msp message ends (probably not '\n')
+    if (inChar == '\n') {
+      stringComplete = true;
+    }else{
+      inputString += inChar;
+    }
 
-  currentTime = millis();
-
-  if(currentTime - t_mag >= MAG_INTERVAL)
-    // time to send orientation
-    forwardOrientation(currentTime);
-}
-
-
-
-// prints the coordinates for either humans or for processing
-void printCoordinates(coordinates_t coor){
-  uint16_t network_id = source_id;
-  if (network_id == NULL){
-    network_id = 0;
+#ifdef DEBUG
+    Serial.print("incoming msp msg: ");Serial.println(inputString);
+#endif
   }
-  
-  Serial.print("POS,0x");
-  Serial.print(network_id,HEX);
-  Serial.print(",");
-  Serial.print(coor.x);
-  Serial.print(",");
-  Serial.print(coor.y);
-  Serial.print(",");
-  Serial.println(coor.z);
+
+  if(stringComplete){
+    forwardMsgToPOZYX();
+    return;
+  }
 }
 
 // error printing function for debugging
@@ -202,8 +212,11 @@ String genMagMsg(float groundSpeed, unsigned long t) {
    
   // Convert radians to degrees for readability.
   float groundCourse = heading * 180/M_PI;
+
+  float32_t magnetic[3] = {sensor_raw.magnetic[0], sensor_raw.magnetic[1], sensor_raw.magnetic[2]};
 #else
   float groundCourse = 45.0;
+  float32_t magnetic[3] = {1.0,2.0,3.0};
 #endif
   
   String tt = formatTime(t);
@@ -214,6 +227,9 @@ String genMagMsg(float groundSpeed, unsigned long t) {
         + groundSpeed+","
         + groundCourse+","
         + date+","
+        + magnetic[0]+","
+        + magnetic[1]+","
+        + magnetic[2]
         + "*";
   byte len = str.length()+1;
   char buff[len];
@@ -310,7 +326,26 @@ String calcCRC(char* buff, byte buff_len) {
   return String(crc, HEX);
 }
 
-void forwardMsg() {
+void forwardMsgToPOZYX() {
+  Serial.print("Ox");
+  Serial.print(source_id, HEX);
+  Serial.print(": ");
+  Serial.println(inputString);
+
+  int length = inputString.length();
+  uint8_t buffer[length];
+  inputString.getBytes(buffer, length);
+
+  // write the message to the transmit (TX) buffer
+  int status = Pozyx.writeTXBufferData(buffer, length);
+  // broadcast the contents of the TX buffer
+  status = Pozyx.sendTXBufferData(0);
+
+  inputString = "";
+  stringComplete = false;
+}
+
+void forwardMsgToFC() {
   uint8_t msg_length = 0;
   uint16_t messenger = 0x00;
   delay(1);
@@ -318,34 +353,31 @@ void forwardMsg() {
   // Let's read out some information about the message (i.e., how many bytes did we receive and who sent the message)
   Pozyx.getLastDataLength(&msg_length);
   Pozyx.getLastNetworkId(&messenger);
-  uint8_t data[msg_length];
+  char data[msg_length];
 
   // read the contents of the receive (RX) buffer, this is the message that was sent to this device
-  // TODO: what if msg is greater than pozyx buffer?! 24byte?
+  // TODO: what if msg is greater than pozyx buffer?!
   Pozyx.readRXBufferData((uint8_t *) data, msg_length);
 
 #ifdef DEBUG
   Serial.print("Ox");
   Serial.print(messenger, HEX);
   Serial.print(": ");
+  Serial.print(data);
 #endif
 
   // send data over uart to fc
-  // TODO use softserial port and send only msp messages over this port instead of gps, mag and msp. check if fc has another empty port
-  msp.write(data, sizeof(data)/sizeof(data[0]));
+  msp.write(data, msg_length);
 }
 
 void forwardPosition(unsigned long currentTime) {
   coordinates_t position;
   
 #ifdef USE_POZYX
-  int coordinates[3] = {position.x, position.y, position.z};
   int status = Pozyx.doPositioning(&position, dimension, height, algorithm);
+  int coordinates[3] = {position.x, position.y, position.z};
 #ifdef DEBUG
-  if (status == POZYX_SUCCESS){
-    // prints out the result
-    printCoordinates(position);
-  }else{
+  if (status != POZYX_SUCCESS){
     // prints out the error code
     printErrorCode("positioning");
   }

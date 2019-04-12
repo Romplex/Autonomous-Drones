@@ -162,6 +162,15 @@ static bool gpsNewFramePOZYX(char c)
                         case 4:
                             gps_Msg.date = grab_fields(string, 0);
                             break;
+                        case 5:
+                            gps_Msg.mag_x = grab_fields(string, 2);
+                            break;
+                        case 6:
+                            gps_Msg.mag_y = grab_fields(string, 2);
+                            break;
+                        case 7:
+                            gps_Msg.mag_z = grab_fields(string, 2);
+                            break;
                     }
                     break;
                 // TODO[uniks]: add all remaining frames
@@ -182,14 +191,11 @@ static bool gpsNewFramePOZYX(char c)
                 if (checksum == parity) {
                     gpsStats.packetCount++;
                     switch (gps_frame) {
-                        // TODO[uniks]: also add remaining frames here?
                         case FRAME_LOCATION:
                             frameOK = 1;
 
                             gpsSol.numSat = 12;
                             gpsSol.fixType = GPS_FIX_3D;
-
-                            //cartToSph(&gps_Msg);
 
                             gpsSol.llh.lat = gps_Msg.latitude;
                             gpsSol.llh.lon = gps_Msg.longitude;
@@ -201,12 +207,15 @@ static bool gpsNewFramePOZYX(char c)
                             gpsSol.epv = gpsConstrainEPE(HDOP_SCALE * GPS_HDOP_TO_EPH_MULTIPLIER);
                             gpsSol.flags.validEPE = 0;
 
-
-                            // NMEA does not report VELNED
                             gpsSol.flags.validVelNE = 0;
                             gpsSol.flags.validVelD = 0;
                             break;
                         case FRAME_COURSE:
+                            gpsSol.magData[0] = gps_Msg.mag_x;
+                            gpsSol.magData[1] = gps_Msg.mag_y;
+                            gpsSol.magData[2] = gps_Msg.mag_z;
+                            gpsSol.flags.validMag = 1;
+
                             gpsSol.groundSpeed = gps_Msg.speed;
                             gpsSol.groundCourse = gps_Msg.ground_course;
 

@@ -98,7 +98,7 @@ static gpsProviderDescriptor_t  gpsProviders[GPS_PROVIDER_COUNT] = {
 
     /* POZYX GPS */
 #ifdef USE_GPS_PROTO_POZYX
-    { GPS_TYPE_SERIAL, MODE_RX, false, NULL, &gpsHandlePOZYX },
+    { GPS_TYPE_SERIAL, MODE_RX, true, NULL, &gpsHandlePOZYX },
 #else
     { GPS_TYPE_NA, 0, false,  NULL, NULL },
 #endif
