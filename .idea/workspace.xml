@@ -1,0 +1,1090 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="false">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9dd99d60-d923-4c6b-a3fc-4281b2254e2a" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="439572673">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="ino" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="ObjectiveC" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="ino" value="21" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="ObjectiveC" value="21" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/arduino/pozyx/pozyx.ino">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-493" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$USER_HOME$/Desktop/test/test.ino">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="527">
+              <caret line="97" column="3" lean-forward="true" selection-start-line="97" selection-start-column="3" selection-end-line="97" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$USER_HOME$/Desktop/test/test.ino" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/abbrev/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/accepts/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/acorn/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/after/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ajv/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/align-text/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/align-text/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/amdefine/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-align/node_modules/ansi-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-align/node_modules/is-fullwidth-code-point/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-align/node_modules/string-width/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-align/node_modules/strip-ansi/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-align/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-colors/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-gray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-styles/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ansi-wrap/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/any-promise/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/anymatch/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/append-buffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/aproba/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/archiver-utils/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/archiver/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/archy/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/are-we-there-yet/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/arr-diff/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/arr-filter/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/arr-flatten/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/arr-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/arr-union/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-each/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-initial/node_modules/is-number/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-initial/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-last/node_modules/is-number/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-last/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-slice/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-sort/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-sort/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-union/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-uniq/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/array-unique/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/arraybuffer.slice/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/asn1/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/assert-plus/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/assign-symbols/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/async-done/node_modules/process-nextick-args/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/async-done/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/async-each/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/async-limiter/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/async-settle/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/async/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/asynckit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/atob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/aws-sign2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/aws4/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/babylon/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/bach/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/backo2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/balanced-match/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/base/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/base/node_modules/is-accessor-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/base/node_modules/is-data-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/base/node_modules/is-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/base/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/base64-arraybuffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/base64-js/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/base64id/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/bcrypt-pbkdf/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/better-assert/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/binary-extensions/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/binary/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/bl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/blob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/bluebird/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/node_modules/ansi-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/node_modules/ansi-styles/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/node_modules/camelcase/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/node_modules/chalk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/node_modules/is-fullwidth-code-point/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/node_modules/string-width/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/node_modules/strip-ansi/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/node_modules/supports-color/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/boxen/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/brace-expansion/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/braces/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/braces/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-alloc-unsafe/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-alloc/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-crc32/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-equal/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-fill/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-from/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-to-vinyl/node_modules/clone-stats/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-to-vinyl/node_modules/clone/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-to-vinyl/node_modules/replace-ext/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-to-vinyl/node_modules/vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer-to-vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/buffers/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/builtin-modules/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/cache-base/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/callsite/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/camelcase/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/capture-stack-trace/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/caseless/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/catharsis/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/caw/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/center-align/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/chainsaw/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/chalk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/charm/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/chokidar/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/chownr/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ci-info/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/class-utils/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/class-utils/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/cli-boxes/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/cliui/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/clone-buffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/clone-stats/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/clone/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/cloneable-readable/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/closure-util/.deps/library/947e46b02fd5e472c2daa86669c09303ca3e7033/closure/bin/generate_closure_unit_tests/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/closure-util/.deps/library/947e46b02fd5e472c2daa86669c09303ca3e7033/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/closure-util/node_modules/async/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/closure-util/node_modules/fs-extra/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/closure-util/node_modules/jsonfile/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/closure-util/node_modules/lodash/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/closure-util/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/co/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/code-point-at/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/collection-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/collection-visit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/color-convert/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/color-name/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/color-support/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/combined-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/commander/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/component-bind/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/component-emitter/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/component-inherit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/compress-commons/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/concat-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/concat-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/concat-with-sourcemaps/node_modules/source-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/concat-with-sourcemaps/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/config-chain/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/configstore/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/console-control-strings/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/convert-source-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/cookie/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/copy-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/copy-props/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/core-util-is/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/crc/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/crc32-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/create-error-class/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/cross-spawn/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/crypto-random-string/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/d/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/dashdash/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/debug/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decamelize/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decode-uri-component/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/node_modules/clone-stats/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/node_modules/clone/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/node_modules/object-assign/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/node_modules/readable-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/node_modules/string_decoder/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/node_modules/through2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/node_modules/vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tar/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/node_modules/clone-stats/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/node_modules/clone/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/node_modules/object-assign/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/node_modules/readable-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/node_modules/string_decoder/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/node_modules/through2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/node_modules/vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-tarbz2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/node_modules/clone-stats/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/node_modules/clone/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/node_modules/object-assign/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/node_modules/readable-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/node_modules/string_decoder/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/node_modules/through2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/node_modules/vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-targz/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-unzip/node_modules/clone-stats/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-unzip/node_modules/clone/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-unzip/node_modules/replace-ext/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-unzip/node_modules/vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-unzip/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-zip/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-zip/node_modules/readable-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-zip/node_modules/string_decoder/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress-zip/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/arr-diff/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/array-unique/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/braces/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/clone-stats/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/clone/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/expand-brackets/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/extglob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/glob-stream/node_modules/readable-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/glob-stream/node_modules/through2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/glob-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/is-extglob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/is-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/is-valid-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/micromatch/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/ordered-read-streams/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/replace-ext/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/string_decoder/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/to-absolute-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/vinyl-fs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/node_modules/vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/decompress/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/deep-extend/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/default-compare/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/default-compare/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/default-resolution/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/define-properties/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/define-property/node_modules/is-accessor-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/define-property/node_modules/is-data-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/define-property/node_modules/is-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/del/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/delayed-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/delegates/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/depd/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/deprecate/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/destroy/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/detect-file/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/dot-prop/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/decompress-tar/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/decompress-tarbz2/node_modules/file-type/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/decompress-tarbz2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/decompress-targz/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/decompress-unzip/node_modules/file-type/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/decompress-unzip/node_modules/get-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/decompress-unzip/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/decompress/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/file-type/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/is-natural-number/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/pify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/node_modules/strip-dirs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/download/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/duplexer2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/duplexer3/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/duplexify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/each-props/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ecc-jsbn/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ee-first/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/encodeurl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/end-of-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/engine.io-client/node_modules/debug/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/engine.io-client/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/engine.io-parser/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/engine.io/node_modules/debug/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/engine.io/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/error-ex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/es5-ext/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/es6-iterator/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/es6-symbol/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/es6-weak-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/escape-html/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/escape-string-regexp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/estree-walker/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/etag/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/execa/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-brackets/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-brackets/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-brackets/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-range/node_modules/fill-range/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-range/node_modules/is-number/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-range/node_modules/isobject/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-range/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-range/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/expand-tilde/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extend-shallow/node_modules/is-extendable/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extend/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extglob/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extglob/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extglob/node_modules/is-accessor-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extglob/node_modules/is-data-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extglob/node_modules/is-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extglob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extract-zip/node_modules/fd-slicer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extract-zip/node_modules/yauzl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extract-zip/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/extsprintf/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fancy-log/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fast-deep-equal/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fast-json-stable-stringify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fd-slicer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/file-exists/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/file-type/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/filename-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/filename-reserved-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/filenamify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fill-keys/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fill-range/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fill-range/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/find-up/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/findup-sync/node_modules/is-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/findup-sync/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fined/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/first-chunk-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/flagged-respawn/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/flush-write-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/for-in/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/for-own/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/foreachasync/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/forever-agent/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/form-data/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fragment-cache/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fresh/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fs-constants/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fs-extra/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fs-mkdirp-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/fs.realpath/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/function-bind/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gauge/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gaze/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-caller-file/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/ajv/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/assert-plus/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/aws-sign2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/boom/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/cryptiles/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/form-data/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/har-schema/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/har-validator/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/hawk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/hoek/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/http-signature/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/performance-now/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/qs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/request/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/sntp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/node_modules/uuid/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-down/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-proxy/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-stdin/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/get-value/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/getpass/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob-base/node_modules/glob-parent/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob-base/node_modules/is-extglob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob-base/node_modules/is-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob-base/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob-parent/node_modules/is-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob-parent/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob-watcher/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/global-dirs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/global-modules/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/global-prefix/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/globby/node_modules/pify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/globby/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/globule/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/glogg/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/got/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/graceful-fs-extra/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/graceful-fs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/graceful-ncp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/graceful-readlink/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulp-concat/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulp-sourcemaps/node_modules/clone-stats/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulp-sourcemaps/node_modules/clone/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulp-sourcemaps/node_modules/replace-ext/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulp-sourcemaps/node_modules/vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulp-sourcemaps/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulp/node_modules/gulp-cli/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/gulplog/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/handlebars/node_modules/async/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/handlebars/node_modules/source-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/handlebars/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/har-schema/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/har-validator/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-ansi/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-binary2/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-binary2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-color/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-cors/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-flag/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-symbol-support-x/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-symbols/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-to-string-tag-x/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-unicode/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-value/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-values/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/has-values/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/homedir-polyfill/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/hosted-git-info/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/http-errors/node_modules/statuses/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/http-errors/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/http-signature/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ieee754/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/import-lazy/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/imurmurhash/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/indexof/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/inflection/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/inflight/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/inherits/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ini/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/interpret/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/invert-kv/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-absolute/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-accessor-descriptor/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-accessor-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-arrayish/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-binary-path/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-buffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-builtin-module/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-bzip2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-ci/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-data-descriptor/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-data-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-descriptor/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-dotfile/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-equal-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-extendable/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-extglob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-fullwidth-code-point/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-gzip/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-installed-globally/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-module/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-natural-number/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-negated-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-npm/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-number/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-number/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-obj/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-object/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-path-cwd/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-path-in-cwd/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-path-inside/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-plain-object/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-posix-bracket/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-primitive/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-redirect/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-relative/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-retry-allowed/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-tar/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-typedarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-unc-path/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-utf8/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-valid-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-windows/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/is-zip/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/isexe/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/isobject/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/isstream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/isurl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jquery-ui-npm/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jquery/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/js2xmlparser/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jsbn/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jsdoc/node_modules/bluebird/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jsdoc/node_modules/klaw/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jsdoc/node_modules/underscore/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jsdoc/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/json-schema-traverse/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/json-schema/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/json-stable-stringify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/json-stringify-safe/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jsonfile/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jsonify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/jsprim/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/junk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/just-debounce/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/klaw/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/last-run/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/latest-version/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lazy-cache/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lazy-req/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lazystream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lcid/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lead/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/liftoff/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/load-json-file/node_modules/pify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/load-json-file/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lodash.debounce/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lodash.difference/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lodash.flatten/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lodash.isequal/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lodash.union/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lodash/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/longest/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lowercase-keys/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/lru-cache/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/magic-string/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/make-dir/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/make-iterator/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/map-cache/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/map-visit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/marked/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/matchdep/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/math-random/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/merge-descriptors/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/merge-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/merge/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/micromatch/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mime-db/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mime-types/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mime/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/minimatch/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/minimist/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/minipass/node_modules/yallist/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/minipass/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/minizlib/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mixin-deep/node_modules/is-extendable/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mixin-deep/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mkdirp/node_modules/minimist/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mkdirp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mkpath/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/module-not-found-error/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mout/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ms/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/multimeter/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/mute-stdout/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nanomatch/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ncp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/negotiator/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/next-tick/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nomnom/node_modules/ansi-styles/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nomnom/node_modules/chalk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nomnom/node_modules/strip-ansi/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nomnom/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nopt/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/normalize-package-data/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/normalize-path/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/now-and-later/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/npm-conf/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/npm-run-path/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/npmlog/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/number-is-nan/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw-builder/node_modules/ansi-styles/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw-builder/node_modules/chalk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw-builder/node_modules/supports-color/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw-builder/node_modules/temp/node_modules/rimraf/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw-builder/node_modules/temp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw-builder/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw/node_modules/camelcase/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw/node_modules/yargs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/nw/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/oauth-sign/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object-assign/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object-component/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object-copy/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object-copy/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object-copy/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object-keys/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object-visit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object.assign/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object.defaults/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object.map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object.omit/node_modules/for-own/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object.omit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object.pick/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/object.reduce/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/on-finished/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/once/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/openlayers/node_modules/async/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/openlayers/node_modules/fs-extra/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/openlayers/node_modules/jsonfile/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/openlayers/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/openlayers/package/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/optimist/node_modules/minimist/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/optimist/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ordered-read-streams/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/os-locale/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/os-tmpdir/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/p-finally/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/p-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/package-json/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/parse-filepath/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/parse-glob/node_modules/is-extglob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/parse-glob/node_modules/is-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/parse-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/parse-json/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/parse-passwd/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/parseqs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/parseuri/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pascalcase/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-dirname/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-exists/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-is-absolute/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-is-inside/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-key/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-parse/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-root-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-root/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-type/node_modules/pify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/path-type/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pbf/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pend/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/performance-now/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pinkie-promise/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pinkie/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pixelworks/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/plist/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/posix-character-classes/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/prepend-http/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/preserve/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pretty-hrtime/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/process-nextick-args/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/progress/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proto-list/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/protocol-buffers-schema/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proxyquire/node_modules/resolve/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proxyquire/node_modules/resolve/test/module_dir/zmodules/bbb/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proxyquire/node_modules/resolve/test/pathfilter/deep_ref/node_modules/deep/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proxyquire/node_modules/resolve/test/resolver/baz/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proxyquire/node_modules/resolve/test/resolver/biz/node_modules/garply/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proxyquire/node_modules/resolve/test/resolver/incorrect_main/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proxyquire/node_modules/resolve/test/subdirs/node_modules/a/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/proxyquire/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pseudomap/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pump/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/pumpify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/punycode/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/q/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/qs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/quickselect/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/randomatic/node_modules/is-number/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/randomatic/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/range-parser/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rbush/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rc/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rcedit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/read-all-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/read-pkg-up/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/read-pkg/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/readable-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/readdirp/examples/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/readdirp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rechoir/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/recursive-readdir-sync/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/regex-cache/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/regex-not/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/registry-auth-token/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/registry-url/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/remove-bom-buffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/remove-bom-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/remove-trailing-separator/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/repeat-element/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/repeat-string/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/replace-ext/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/replace-homedir/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/request-progress/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/request/node_modules/uuid/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/request/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/require-directory/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/require-main-filename/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/requizzle/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve-dir/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve-options/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve-protobuf-schema/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve-url/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve/test/module_dir/zmodules/bbb/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve/test/resolver/baz/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve/test/resolver/browser_field/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve/test/resolver/dot_main/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve/test/resolver/dot_slash_main/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/resolve/test/resolver/incorrect_main/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ret/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/retry/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/right-align/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rimraf/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rollup-plugin-cleanup/node_modules/acorn/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rollup-plugin-cleanup/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rollup-plugin-commonjs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rollup-plugin-node-resolve/node_modules/builtin-modules/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rollup-plugin-node-resolve/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rollup-pluginutils/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/rollup/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/safe-buffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/safe-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/safer-buffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/seek-bzip/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/semver-diff/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/semver-greatest-satisfied-range/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/semver/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/send/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/set-blocking/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/set-immediate-shim/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/set-value/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/set-value/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/setprototypeof/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/shebang-command/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/shebang-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/signal-exit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/simple-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon-node/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon-node/node_modules/is-accessor-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon-node/node_modules/is-data-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon-node/node_modules/is-descriptor/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon-node/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon-util/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon-util/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/snapdragon/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/socket.io-adapter/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/socket.io-client/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/socket.io-parser/node_modules/debug/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/socket.io-parser/node_modules/isarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/socket.io-parser/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/socket.io/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/source-map-resolve/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/source-map-url/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/source-map/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/sparkles/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/spdx-correct/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/spdx-exceptions/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/spdx-expression-parse/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/spdx-license-ids/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/split-string/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/sshpk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/stack-trace/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/stat-mode/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/static-extend/node_modules/define-property/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/static-extend/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/statuses/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/stream-combiner2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/stream-exhaust/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/stream-shift/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/string-width/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/string_decoder/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/stringstream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-ansi/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-bom-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-bom/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-dirs/node_modules/is-absolute/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-dirs/node_modules/is-relative/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-dirs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-eof/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-json-comments/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/strip-outer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/sum-up/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/supports-color/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/sver-compat/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/taffydb/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tar-fs/node_modules/pump/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tar-fs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tar-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tar/node_modules/yallist/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tar/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/temp/node_modules/rimraf/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/temp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/term-size/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/thenify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/three/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/throttleit/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/through/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/through2-filter/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/through2/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/time-stamp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/timed-out/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tmp/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/to-absolute-glob/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/to-array/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/to-buffer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/to-object-path/node_modules/kind-of/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/to-object-path/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/to-regex-range/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/to-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/to-through/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/touch/node_modules/nopt/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/touch/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tough-cookie/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/traverse/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/trim-repeated/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tunnel-agent/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/tweetnacl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/typedarray/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uglify-js/node_modules/camelcase/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uglify-js/node_modules/cliui/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uglify-js/node_modules/window-size/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uglify-js/node_modules/wordwrap/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uglify-js/node_modules/yargs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uglify-js/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uglify-to-browserify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ultron/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unbzip2-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unc-path-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/underscore-contrib/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/underscore/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/undertaker-registry/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/undertaker/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/union-value/node_modules/extend-shallow/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/union-value/node_modules/set-value/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/union-value/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unique-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unique-string/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/universalify/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unset-value/node_modules/has-value/node_modules/isobject/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unset-value/node_modules/has-value/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unset-value/node_modules/has-values/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unset-value/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/unzip-response/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/upath/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/update-notifier/node_modules/ansi-styles/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/update-notifier/node_modules/chalk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/update-notifier/node_modules/supports-color/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/update-notifier/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/urix/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/url-parse-lax/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/url-to-options/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/use/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/util-deprecate/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uuid/benchmark/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uuid/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/uws/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/v8flags/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/vali-date/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/validate-npm-package-license/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/value-or-function/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/verror/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/vinyl-assign/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/vinyl-fs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/vinyl-sourcemap/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/vinyl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/vlq/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/walk/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/which-module/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/which/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/wide-align/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/widest-line/node_modules/ansi-regex/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/widest-line/node_modules/is-fullwidth-code-point/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/widest-line/node_modules/string-width/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/widest-line/node_modules/strip-ansi/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/widest-line/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/window-size/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/winresourcer/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/wordwrap/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/wrap-ansi/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/wrappy/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/write-file-atomic/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/ws/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/xdg-basedir/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/xmlbuilder/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/xmlcreate/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/xmldom/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/xmlhttprequest-ssl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/xtend/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/y18n/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/yallist/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/yargs-parser/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/yargs/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/yauzl/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/yeast/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/node_modules/zip-stream/package.json" />
+      <path value="$PROJECT_DIR$/inav/configurator/inav-configurator/package.json" />
+      <path value="$PROJECT_DIR$/test/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="10" />
+    <option name="y" value="20" />
+    <option name="width" value="1346" />
+    <option name="height" value="688" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="git" type="b2602c69:ProjectViewProjectNode" />
+              <item name="git" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="git" type="b2602c69:ProjectViewProjectNode" />
+              <item name="git" type="462c0819:PsiDirectoryNode" />
+              <item name="arduino" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="git" type="b2602c69:ProjectViewProjectNode" />
+              <item name="git" type="462c0819:PsiDirectoryNode" />
+              <item name="arduino" type="462c0819:PsiDirectoryNode" />
+              <item name="msgBetweenPorts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="git" type="b2602c69:ProjectViewProjectNode" />
+              <item name="git" type="462c0819:PsiDirectoryNode" />
+              <item name="arduino" type="462c0819:PsiDirectoryNode" />
+              <item name="msgToPoxyz" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="git" type="b2602c69:ProjectViewProjectNode" />
+              <item name="git" type="462c0819:PsiDirectoryNode" />
+              <item name="arduino" type="462c0819:PsiDirectoryNode" />
+              <item name="pozyx" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9dd99d60-d923-4c6b-a3fc-4281b2254e2a" name="Default Changelist" comment="" />
+      <created>1551969043042</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1551969043042</updated>
+      <workItem from="1551969044659" duration="997000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="997000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24281392" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/arduino/pozyx/pozyx.ino">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-493" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/test/test.ino">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="97" column="3" lean-forward="true" selection-start-line="97" selection-start-column="3" selection-end-line="97" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
