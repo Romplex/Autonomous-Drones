@@ -316,8 +316,8 @@ TABS.mission_control.initialize = function (callback) {
         };
         
         // uniks
-        var lat = convertFloatMask(GPS_DATA.lat);
-        var lon = convertFloatMask(GPS_DATA.lon);
+        var lat = GPS_DATA.lat;
+        var lon = GPS_DATA.lon;
 
         map = new ol.Map({
             controls: ol.control.defaults({

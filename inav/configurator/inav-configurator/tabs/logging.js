@@ -197,8 +197,8 @@ TABS.logging.initialize = function (callback) {
                 case 'MSP_RAW_GPS':
                     sample += ',' + GPS_DATA.fix;
                     sample += ',' + GPS_DATA.numSat;
-                    sample += ',' + (convertFloatMask(GPS_DATA.lat));
-                    sample += ',' + (convertFloatMask(GPS_DATA.lon));
+                    sample += ',' + GPS_DATA.lat;
+                    sample += ',' + GPS_DATA.lon;
                     sample += ',' + GPS_DATA.alt;
                     sample += ',' + GPS_DATA.speed;
                     sample += ',' + GPS_DATA.ground_course;
