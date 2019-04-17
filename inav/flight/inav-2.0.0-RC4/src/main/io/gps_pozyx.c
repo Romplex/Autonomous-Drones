@@ -119,32 +119,19 @@ static bool gpsNewFramePOZYX(char c)
                 //************* POZYX LOCATION FRAME parsing *************
                 case FRAME_LOCATION:
                     switch (param) {
-                        case 1:             // Time information
-                            break;
-                        case 2:
-//                            gps_Msg.x = grab_fields(string,8);
+                        case 1:
                             gps_Msg.latitude = grab_fields(string,8);
                             break;
-                        case 3:
+                        case 2:
                             if (string[0] == '-')
                                 gps_Msg.latitude *= -1;
-
                             break;
-                        case 4:
-//                            gps_Msg.y = grab_fields(string,8);
+                        case 3:
                             gps_Msg.longitude = grab_fields(string,8);
                             break;
-                        case 5:
+                        case 4:
                             if (string[0] == '-')
                                 gps_Msg.longitude *= -1;
-                            break;
-                        case 6:
-//                            gps_Msg.z = grab_fields(string,8);
-                            gps_Msg.altitude = grab_fields(string,8);
-                            break;
-                        case 7:
-                            if(string[0] == '-')
-                                gps_Msg.altitude *= -1;
                             break;
                     }
                     break;
@@ -173,7 +160,6 @@ static bool gpsNewFramePOZYX(char c)
                             break;
                     }
                     break;
-                // TODO[uniks]: add all remaining frames
             }
 
             param++;
@@ -199,7 +185,6 @@ static bool gpsNewFramePOZYX(char c)
 
                             gpsSol.llh.lat = gps_Msg.latitude;
                             gpsSol.llh.lon = gps_Msg.longitude;
-                            gpsSol.llh.alt = gps_Msg.altitude;
 
                             // EPH/EPV are unreliable for NMEA as they are not real accuracy
                             gpsSol.hdop = gpsConstrainHDOP(HDOP_SCALE);
