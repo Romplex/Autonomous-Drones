@@ -474,7 +474,6 @@ TABS.mission_control.initialize = function (callback) {
         $('#rthEndMission').on('change', function () {
             if ($(this).is(':checked')) {
                 $('#rthSettings').fadeIn(300);
-                $('#rthSettings').fadeIn(300);
             } else {
                 $('#rthSettings').fadeOut(300);
             }
