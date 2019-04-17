@@ -134,32 +134,66 @@ TABS.pozyx.initialize = function (callback) {
 
             let oldCcenter = map.getView().getCenter();
             let newCenter = ol.proj.fromLonLat([lon, lat]);
-            
-            if(oldCcenter[0] !== newCenter[0] && oldCcenter[1] !== newCenter[1]) {
-                GUI.log("[uniks] update center position")
 
-                let iconFeature = new ol.Feature({
-                    geometry: new ol.geom.Point(newCenter),
-                });
-        
-                iconFeature.setStyle(getPointIcon(false, 1));
-        
-                let vectorSource = new ol.source.Vector({
-                    features: [iconFeature]
-                });
-        
-                let vectorLayer = new ol.layer.Vector({
-                    source: vectorSource
-                });
+            var mapFollowDrone = $('#followdrone').is(':checked');
+            if(mapFollowDrone == true){
+                if(oldCcenter[0] !== newCenter[0] && oldCcenter[1] !== newCenter[1]) {
+                    GUI.log("[uniks] update center position")
 
-                // TODO[uniks] make position layer not clickable
-                map.removeLayer(positionLayer);
-                positionLayer = vectorLayer;
-                map.addLayer(positionLayer);
+                    let iconFeature = new ol.Feature({
+                        geometry: new ol.geom.Point(newCenter),
+                    });
 
-                map.getView().setCenter(newCenter);
+                    iconFeature.setStyle(getPointIcon(false, 1));
+
+                    let vectorSource = new ol.source.Vector({
+                        features: [iconFeature]
+                    });
+
+                    let vectorLayer = new ol.layer.Vector({
+                        source: vectorSource
+                    });
+
+                    // TODO[uniks] make position layer not clickable
+                    map.removeLayer(positionLayer);
+                    positionLayer = vectorLayer;
+                    map.addLayer(positionLayer);
+
+                    map.getView().setCenter(newCenter);
+                }
             }
+            else {
+                if(oldCcenter[0] !== newCenter[0] && oldCcenter[1] !== newCenter[1]) {
+                    //GUI.log("[uniks] update center position")
+
+                    let iconFeature = new ol.Feature({
+                        geometry: new ol.geom.Point(newCenter),
+                    });
+
+                    iconFeature.setStyle(getPointIcon(false, 1));
+
+                    let vectorSource = new ol.source.Vector({
+                        features: [iconFeature]
+                    });
+
+                    let vectorLayer = new ol.layer.Vector({
+                        source: vectorSource
+                    });
+
+                    // TODO[uniks] make position layer not clickable
+                    map.removeLayer(positionLayer);
+                    positionLayer = vectorLayer;
+                    map.addLayer(positionLayer);
+
+                    //map.getView().setCenter(newCenter);
+                }
+            }
+
         }
+
+        $('#followdrone').on('change', function () {
+            update_ui();
+        });
 
         /*
          * enable data pulling
