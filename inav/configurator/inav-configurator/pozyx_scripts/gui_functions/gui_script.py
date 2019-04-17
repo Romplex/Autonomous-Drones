@@ -35,6 +35,10 @@ def get_pozyx_serial_port():
             return port.device
 
 
+def send_error_msg(msg):
+    return {'error': msg}
+
+
 if PYPOZYX_INSTALLED:
     remote_id = 0x6760
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
@@ -61,16 +65,15 @@ def check_connection(func):
     @wraps(func)
     def check():
         if not PYPOZYX_INSTALLED:
-            return {'error': 'PyPozyx not installed!. Run - pip install pypozyx.'}
+            return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx.')
         if not POZYX_CONNECTED_TO_BASE:
-            return {'error': 'No pozyx device connected! Check usb connection.'}
+            return send_error_msg('No pozyx device connected! Check USB connection.')
         return func()
 
     return check
 
 
 def send_message(msg):
-    return msg
     try:
         pozyx.sendData(remote_id, msg.encode())
         return {'success': msg}
@@ -95,7 +98,9 @@ def get_position():
                 'y': position.y,
                 'z': position.z
             }
-    return {'error': 'At least one anchor inactive! Check connection to power supply.'}
+    if serial_port not in get_serial_ports():
+        return send_error_msg('Connection to pozyx device lost! Check USB connection.')
+    return send_error_msg('At least one anchor inactive! Assure connection to power supply.')
 
 
 @check_connection
