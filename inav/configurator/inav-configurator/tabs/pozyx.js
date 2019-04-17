@@ -2,16 +2,18 @@
 
 var fs = require('fs');
 var pozyx = {
-    pozyxpy: undefined,
+    pozyxpy:        undefined,
     pozyxMode:      false,
     pozyxWorker: {
-        positioning:    undefined
+        positioning:      undefined,
+        errDialogueOpen:  false
     }
 };
 
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function (callback) {
+    GUI.log('XD')
     if (GUI.active_tab != 'pozyx') {
         GUI.active_tab = 'pozyx';
         googleAnalytics.sendAppView('Pozyx');
@@ -24,15 +26,22 @@ TABS.pozyx.initialize = function (callback) {
                 .getPosition()
                 .then(data => {
                     if (data.error) {
-                        clearInterval(pozyx.pozyxWorker.positioning);
-                        confirm(data.error);
+                        clear();
+                        if (!pozyx.pozyxWorker.errDialogueOpen) {
+                            confirm(data.error);
+                        }
+                        pozyx.pozyxWorker.errDialogueOpen = true;
                     } else {
                         GPS_DATA.lat = parseFloat(POZYX.anchors[0].lat) + data.y/1.113195e8;
                         GPS_DATA.lon = parseFloat(POZYX.anchors[0].lon) + data.x/1.113195e8;
                     }
                 })
                 .catch((err) => GUI.log(err));
-        }, 40);
+        }, 20);
+    }
+
+    function clear(callback) {
+        clearInterval(pozyx.pozyxWorker.positioning);
     }
 
     var loadChainer = new MSPChainerClass();

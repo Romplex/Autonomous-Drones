@@ -48,6 +48,9 @@ $(document).ready(function () {
             $('#tabs .tab_pozyx a').click();
         } else {
             pozyx.pozyxMode = false;
+            // reset pozyx worker
+            pozyx.pozyxWorker.positioning = undefined;
+            pozyx.pozyxWorker.errDialogueOpen = false;
             tabPozyx.addClass('is-hidden');
             // trigger only landing page if pozyx tab is selected
             if (tabPozyx.hasClass('active')){

@@ -36,7 +36,7 @@ def get_pozyx_serial_port():
 
 
 def send_error_msg(msg):
-    return {'error': msg}
+    return {'error': msg + ' then refresh the Pozyx tab.'}
 
 
 if PYPOZYX_INSTALLED:
@@ -65,9 +65,9 @@ def check_connection(func):
     @wraps(func)
     def check():
         if not PYPOZYX_INSTALLED:
-            return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx.')
+            return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
         if not POZYX_CONNECTED_TO_BASE:
-            return send_error_msg('No pozyx device connected! Check USB connection.')
+            return send_error_msg('No pozyx device connected! Check USB connection')
         return func()
 
     return check
@@ -99,8 +99,8 @@ def get_position():
                 'z': position.z
             }
     if serial_port not in get_serial_ports():
-        return send_error_msg('Connection to pozyx device lost! Check USB connection.')
-    return send_error_msg('At least one anchor inactive! Assure connection to power supply.')
+        return send_error_msg('Connection to pozyx device lost! Check USB connection')
+    return send_error_msg('At least one anchor inactive! Assure connection to power supply')
 
 
 @check_connection
