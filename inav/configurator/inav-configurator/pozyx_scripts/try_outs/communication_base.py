@@ -59,7 +59,7 @@ def get_rx_data():
 
 
 def send_tx_data(msg):
-    pozyx.sendData(remote_id, msg.encode('utf-8'))
+    pozyx.sendData(remote_id, msg.encode())
     print('sent: ' + msg)
 
 

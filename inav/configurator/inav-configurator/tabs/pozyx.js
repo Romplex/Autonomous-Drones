@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var pozyx = {
+    pozyxpy: undefined,
     pozyxMode:      false,
     pozyxWorker: {
         positioning:    undefined
@@ -16,8 +17,23 @@ TABS.pozyx.initialize = function (callback) {
         googleAnalytics.sendAppView('Pozyx');
     }
 
-    const pozyxpy = new PozyxPy();
-    //$('div.connect_controls a.connect').click();
+    pozyx.pozyxpy = new PozyxPy();
+    if(!pozyx.pozyxWorker.positioning) {
+        pozyx.pozyxWorker.positioning = setInterval(function () {
+            pozyx.pozyxpy
+                .getPosition()
+                .then(data => {
+                    if (data.error) {
+                        clearInterval(pozyx.pozyxWorker.positioning);
+                        confirm(data.error);
+                    } else {
+                        GPS_DATA.lat = parseFloat(POZYX.anchors[0].lat) + data.y/1.113195e8;
+                        GPS_DATA.lon = parseFloat(POZYX.anchors[0].lon) + data.x/1.113195e8;
+                    }
+                })
+                .catch((err) => GUI.log(err));
+        }, 40);
+    }
 
     var loadChainer = new MSPChainerClass();
     loadChainer.setChain([
@@ -662,17 +678,6 @@ TABS.pozyx.initialize = function (callback) {
         $('#runPyScriptButton').on('click', function () {
             // TODO uni.ks.
             GUI.log("button clicked");
-            pozyxpy
-                .getPosition()
-                .then(data => {
-                    if (data['error']) {
-                        confirm(data['error']);
-                    }
-                    else {
-                        GUI.log("x: " + data['x'] + " y: " + data['y'] + " z: " + data['z']);
-                    }
-                })
-                .catch((err) => GUI.log(err));
         });
 
 

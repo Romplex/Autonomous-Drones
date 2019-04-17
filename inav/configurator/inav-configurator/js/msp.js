@@ -376,7 +376,20 @@ var MSP = {
 
     // send data via pozyx tag if present
     if (pozyx.pozyxMode) {
-      // TODO uniks use python bridge to send msp data as payload with pozyx message
+      // TODO uniks send waypoint via pozyx
+      console.log(message);
+      pozyx.pozyxpy.sendMission(message)
+          .then(data => {
+            GUI.log(JSON.stringify(data.messageBody));
+            if (data['error']) {
+              GUI.log(data['error']);
+            } else {
+              GUI.log(data['success']);
+            }
+          })
+          .catch(err => {
+            GUI.log(err.toString());
+          });
       console.log('remove me - send msp data via pozyx: ', message);
       callback_msp();
     } else {
