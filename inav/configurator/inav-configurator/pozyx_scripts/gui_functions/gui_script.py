@@ -35,12 +35,16 @@ def get_pozyx_serial_port():
             return port.device
 
 
+def get_serial_port_names():
+    return [port.device for port in get_serial_ports()]
+
+
 def send_error_msg(msg):
     return {'error': msg + ' then refresh the Pozyx tab.'}
 
 
 if PYPOZYX_INSTALLED:
-    remote_id = 0x6760
+    remote_id = None
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
@@ -57,17 +61,34 @@ if PYPOZYX_INSTALLED:
         POZYX_CONNECTED_TO_BASE = False
     else:
         pozyx = PozyxSerial(serial_port)
+        # set anchors
+        status = pozyx.clearDevices()
+        for anchor in anchors:
+            status &= pozyx.addDevice(anchor, remote_id=remote_id)
 
     MAX_TRIES = 20
 
 
 def check_connection(func):
+
     @wraps(func)
     def check():
         if not PYPOZYX_INSTALLED:
             return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
         if not POZYX_CONNECTED_TO_BASE:
             return send_error_msg('No pozyx device connected! Check USB connection')
+        if serial_port not in get_serial_port_names():
+            return send_error_msg('Connection to pozyx device lost! Check USB connection')
+        inactive_anchors = 0
+        for a in anchors:
+            network_id = SingleRegister()
+            pozyx.getWhoAmI(network_id, remote_id=a.network_id)
+            if network_id.data == [0]:
+                inactive_anchors += 1
+        if inactive_anchors > 1:
+            return send_error_msg(
+                'Can\'t connect to at least {} anchors. Check the anchor\'s power connection and the pozyx USB '
+                'connection'.format(inactive_anchors))
         return func()
 
     return check
@@ -83,28 +104,12 @@ def send_message(msg):
 
 @check_connection
 def get_position():
-    # set anchors
-    status = pozyx.clearDevices()
-    for anchor in anchors:
-        status &= pozyx.addDevice(anchor, remote_id=remote_id)
-
     # start positioning
     for _ in range(MAX_TRIES):
         position = Coordinates()
-        status = pozyx.doPositioning(position, dimension, height, algorithm, remote_id=remote_id)
-        if status == POZYX_SUCCESS:
+        if POZYX_SUCCESS == pozyx.doPositioning(position, dimension, height, algorithm, remote_id=remote_id):
             return {
                 'x': position.x,
                 'y': position.y,
                 'z': position.z
             }
-    if serial_port not in get_serial_ports():
-        return send_error_msg('Connection to pozyx device lost! Check USB connection')
-    return send_error_msg('At least one anchor inactive! Assure connection to power supply')
-
-
-@check_connection
-def who_am_i():
-    whoami = SingleRegister()
-    pozyx.getWhoAmI(whoami)
-    return {'i_am': 'XD'}

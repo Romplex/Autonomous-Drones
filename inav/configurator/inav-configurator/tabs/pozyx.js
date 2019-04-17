@@ -13,7 +13,7 @@ var pozyx = {
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function (callback) {
-    GUI.log('XD')
+    GUI.log('XD');
     if (GUI.active_tab != 'pozyx') {
         GUI.active_tab = 'pozyx';
         googleAnalytics.sendAppView('Pozyx');
@@ -40,7 +40,7 @@ TABS.pozyx.initialize = function (callback) {
         }, 20);
     }
 
-    function clear(callback) {
+    function clear() {
         clearInterval(pozyx.pozyxWorker.positioning);
     }
 

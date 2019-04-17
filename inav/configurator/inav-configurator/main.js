@@ -49,6 +49,7 @@ $(document).ready(function () {
         } else {
             pozyx.pozyxMode = false;
             // reset pozyx worker
+            pozyx.pozyxpy.py.kill('SIGKILL');
             pozyx.pozyxWorker.positioning = undefined;
             pozyx.pozyxWorker.errDialogueOpen = false;
             tabPozyx.addClass('is-hidden');
