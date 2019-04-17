@@ -54,7 +54,6 @@ void setup() {
   msp.begin(9600);      // 9600 softserial baudrate for msp
   while(!Serial);
   while(!msp);
-  delay(1500); // wait for pozyx to power up
 
   // setup time variables for gps and mag messages
   t_gps = 0;
@@ -229,7 +228,7 @@ String genMagMsg(float groundSpeed, unsigned long t) {
         + date+","
         + magnetic[0]+","
         + magnetic[1]+","
-        + magnetic[2]
+        + magnetic[2]+","
         + "*";
   byte len = str.length()+1;
   char buff[len];
@@ -265,13 +264,12 @@ String genGpsMsg(int x, int y, int z, unsigned long t) {
 
   String str = "$"
         + ID_LOCATION+","
-        + tt+","
         + x+","
         + x_sign+","
         + y+","
         + y_sign+","
         + z+","
-        + z_sign
+        + z_sign+","
         + "*";
   byte len = str.length()+1;
   char buff[len];
@@ -282,8 +280,8 @@ String genGpsMsg(int x, int y, int z, unsigned long t) {
   return msg;
 }
 
-String genGpsMsg(double x, double y, double altitude) {
-  return genGpsMsg(x, y, altitude, millis());
+String genGpsMsg(double x, double y, double z) {
+  return genGpsMsg(x, y, z, millis());
 }
 
 // format time: hhmmss.sss
