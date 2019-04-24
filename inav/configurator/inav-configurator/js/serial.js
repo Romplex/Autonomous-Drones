@@ -230,7 +230,6 @@ var serial = {
     send: function (data, callback) {
         var self = this;
         this.outputBuffer.push({'data': data, 'callback': callback});
-
         function send() {
             // store inside separate variables in case array gets destroyed
             var data = self.outputBuffer[0].data,

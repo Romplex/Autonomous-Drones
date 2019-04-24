@@ -377,10 +377,8 @@ var MSP = {
     // send data via pozyx tag if present
     if (pozyx.pozyxMode) {
       // TODO uniks send waypoint via pozyx
-      console.log(message);
-      pozyx.pozyxpy.sendMission(message)
+      pozyx.pozyxpy.sendMission(message.messageBody)
           .then(data => {
-            GUI.log(JSON.stringify(data.messageBody));
             if (data['error']) {
               GUI.log(data['error']);
             } else {
@@ -390,7 +388,6 @@ var MSP = {
           .catch(err => {
             GUI.log(err.toString());
           });
-      console.log('remove me - send msp data via pozyx: ', message);
       callback_msp();
     } else {
       helper.mspQueue.put(message);

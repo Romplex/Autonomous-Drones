@@ -4,7 +4,7 @@ PYPOZYX_INSTALLED = True
 
 try:
     from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, Coordinates, POZYX_SUCCESS, PozyxConstants, \
-        SingleRegister
+    SingleRegister, Data
 except ModuleNotFoundError:
     PYPOZYX_INSTALLED = False
 
@@ -95,11 +95,11 @@ def check_connection(func):
 
 
 def send_message(msg):
-    try:
-        pozyx.sendData(remote_id, msg.encode())
-        return {'success': msg}
-    except Exception as e:
-        return {'error': str(e)}
+    for entry in msg:
+        pozyx.sendData(destination=0, data='XD')
+    # with open('log.txt', 'w') as log_file:
+    #     log_file.write('XD' if msg is None else str(msg))
+    # data = Data(msg)
 
 
 @check_connection

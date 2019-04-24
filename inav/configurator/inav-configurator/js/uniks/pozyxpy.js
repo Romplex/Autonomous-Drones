@@ -18,6 +18,7 @@ PozyxPy.prototype.getPosition = function() {
 };
 
 PozyxPy.prototype.sendMission = function(msg) {
+  console.log('message to send:' +  msg);
   return this.py`send_message(${msg})`
 };
 
