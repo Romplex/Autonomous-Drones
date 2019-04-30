@@ -377,16 +377,19 @@ var MSP = {
     // send data via pozyx tag if present
     if (pozyx.pozyxMode) {
       // TODO uniks send waypoint via pozyx
-      pozyx.pozyxpy.sendMission(message.messageBody)
+      const arr = new Uint8Array(message.messageBody);
+      console.log("XDDDDDDDDDDDDDDDDDDD");
+      console.log(arr);
+      pozyx.pozyxpy.sendWayPoint(arr)
           .then(data => {
-            if (data['error']) {
-              GUI.log(data['error']);
+            if (data.error) {
+              console.log(data.error);
             } else {
-              GUI.log(data['success']);
+              console.log(data.success);
             }
           })
           .catch(err => {
-            GUI.log(err.toString());
+            console.log(err.toString());
           });
       callback_msp();
     } else {

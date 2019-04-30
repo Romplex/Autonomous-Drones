@@ -1,10 +1,11 @@
 from functools import wraps
+from time import sleep
 
 PYPOZYX_INSTALLED = True
 
 try:
-    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, Coordinates, POZYX_SUCCESS, PozyxConstants, \
-    SingleRegister, Data
+    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister
+    from pypozyx import Coordinates, POZYX_SUCCESS, PozyxConstants, Data
 except ModuleNotFoundError:
     PYPOZYX_INSTALLED = False
 
@@ -94,12 +95,10 @@ def check_connection(func):
     return check
 
 
-def send_message(msg):
-    for entry in msg:
-        pozyx.sendData(destination=0, data='XD')
-    # with open('log.txt', 'w') as log_file:
-    #     log_file.write('XD' if msg is None else str(msg))
-    # data = Data(msg)
+def send_message(way_point):
+    for number in way_point:
+        pozyx.sendData(destination=0, data=str(number).encode())
+        sleep(0.1)
 
 
 @check_connection

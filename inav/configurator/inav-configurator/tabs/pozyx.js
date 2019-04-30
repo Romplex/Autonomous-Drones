@@ -13,7 +13,6 @@ var pozyx = {
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function (callback) {
-    GUI.log('XD');
     if (GUI.active_tab != 'pozyx') {
         GUI.active_tab = 'pozyx';
         googleAnalytics.sendAppView('Pozyx');
