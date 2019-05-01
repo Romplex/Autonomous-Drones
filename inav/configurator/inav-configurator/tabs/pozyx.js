@@ -10,6 +10,9 @@ var pozyx = {
     }
 };
 
+// workaround
+const disablePositioning = true;
+
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function (callback) {
@@ -24,7 +27,7 @@ TABS.pozyx.initialize = function (callback) {
             pozyx.pozyxpy
                 .getPosition()
                 .then(data => {
-                    if (data.error) {
+                    if (data.error || disablePositioning) {
                         clear();
                         if (!pozyx.pozyxWorker.errDialogueOpen) {
                             confirm(data.error);

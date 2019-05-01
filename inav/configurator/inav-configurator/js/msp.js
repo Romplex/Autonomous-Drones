@@ -378,7 +378,8 @@ var MSP = {
     if (pozyx.pozyxMode) {
       // TODO uniks send waypoint via pozyx
       const arr = new Uint8Array(message.messageBody);
-      console.log("XDDDDDDDDDDDDDDDDDDD");
+      console.log(message.messageBody);
+      console.log("----------------------------------");
       console.log(arr);
       pozyx.pozyxpy.sendWayPoint(arr)
           .then(data => {

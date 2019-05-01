@@ -96,9 +96,12 @@ def check_connection(func):
 
 
 def send_message(way_point):
-    for number in way_point:
+    pozyx.sendData(destination=0, data='s'.encode())
+    sleep(0.1)
+    for number in way_point.values():
         pozyx.sendData(destination=0, data=str(number).encode())
         sleep(0.1)
+    # return {'success': way_point}
 
 
 @check_connection
