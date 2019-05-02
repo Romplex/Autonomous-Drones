@@ -1,5 +1,5 @@
-from functools import wraps
 from time import sleep
+from contextlib import suppress
 
 PYPOZYX_INSTALLED = True
 
@@ -11,22 +11,16 @@ except ModuleNotFoundError:
 
 
 def inspect_port(port):
-    try:
-        if "Pozyx Labs" in port.manufacturer:
+    with suppress(TypeError):
+        if 'Pozyx Labs' in port.manufacturer:
             return True
-    except TypeError:
-        pass
-    try:
-        if "Pozyx" in port.product:
+    with suppress(TypeError):
+        if 'Pozyx' in port.product:
             return True
-    except TypeError:
-        pass
-    try:
+    with suppress(TypeError):
         # assure it is NOT the flight controller
-        if "0483:" in port.hwid and not port.serial_number.lower().startswith('0x'):
+        if '0483:' in port.hwid and not port.serial_number.lower().startswith('0x'):
             return True
-    except TypeError:
-        pass
     return False
 
 
@@ -68,43 +62,61 @@ if PYPOZYX_INSTALLED:
             status &= pozyx.addDevice(anchor, remote_id=remote_id)
 
     MAX_TRIES = 20
+    MISSION_DONE = [36, 77, 60, 0, 20, 20]
+    WP_INDEX = 6
 
 
-def check_connection(func):
+def check_connection(positioning=True):
+    """Check for errors before executing a pozyx function"""
+    def inner(func):
+        def check(*args):
+            if not PYPOZYX_INSTALLED:
+                return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
+            if not POZYX_CONNECTED_TO_BASE:
+                return send_error_msg('No pozyx device connected! Check USB connection')
+            if positioning:
+                if serial_port not in get_serial_port_names():
+                    return send_error_msg('Connection to pozyx device lost! Check USB connection')
+                inactive_anchors = 0
+                for a in anchors:
+                    network_id = SingleRegister()
+                    pozyx.getWhoAmI(network_id, remote_id=a.network_id)
+                    if network_id.data == [0]:
+                        inactive_anchors += 1
+                if inactive_anchors > 1:
+                    return send_error_msg(
+                        'Can\'t connect to at least {} anchors. Check the anchor\'s power connection '
+                        'and the pozyx\'s USB connection'.format(inactive_anchors))
+            return func(*args)
+        return check
+    return inner
 
-    @wraps(func)
-    def check():
-        if not PYPOZYX_INSTALLED:
-            return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
-        if not POZYX_CONNECTED_TO_BASE:
-            return send_error_msg('No pozyx device connected! Check USB connection')
-        if serial_port not in get_serial_port_names():
-            return send_error_msg('Connection to pozyx device lost! Check USB connection')
-        inactive_anchors = 0
-        for a in anchors:
-            network_id = SingleRegister()
-            pozyx.getWhoAmI(network_id, remote_id=a.network_id)
-            if network_id.data == [0]:
-                inactive_anchors += 1
-        if inactive_anchors > 1:
-            return send_error_msg(
-                'Can\'t connect to at least {} anchors. Check the anchor\'s power connection and the pozyx USB '
-                'connection'.format(inactive_anchors))
-        return func()
 
-    return check
-
-
-def send_message(way_point):
-    pozyx.sendData(destination=0, data='s'.encode())
+@check_connection(positioning=False)
+def send_mission(way_point_data):
+    way_point = list(way_point_data.values())
+    stop = False
+    if way_point == MISSION_DONE:
+        # all way points have been sent
+        status_data = 't'
+        stop = True
+    elif way_point[WP_INDEX] == 1:
+        # first way point
+        status_data = 's'
+    else:
+        # 2nd+ way point
+        status_data = 'c'
+    pozyx.sendData(destination=0, data=status_data.encode())
+    if stop:
+        return {'success': 'All points sent'}
     sleep(0.1)
-    for number in way_point.values():
+    for number in way_point:
         pozyx.sendData(destination=0, data=str(number).encode())
         sleep(0.1)
-    # return {'success': way_point}
+    return {'success': 'WP sent'}
 
 
-@check_connection
+@check_connection()
 def get_position():
     # start positioning
     for _ in range(MAX_TRIES):

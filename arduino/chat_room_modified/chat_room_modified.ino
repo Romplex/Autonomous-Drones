@@ -13,10 +13,11 @@
 #include <Pozyx_definitions.h>
 #include <Wire.h>
 
+#define WAYPOINT_LENGTH 27
+#define DEBUG
+
 uint16_t source_id;                 // the network id of this device
 uint16_t destination_id = 0;        // the destination network id. 0 means the message is broadcasted to every device in range
-uint8_t waypointLength = 27;
-uint8_t waypoint[27];
 
 
 void setup() {
@@ -37,32 +38,64 @@ void setup() {
 }
 
 void loop() {
-  uint8_t i = 0;
+  if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 50)) {
+    uint8_t length = 0;
+    delay(1);
+    Pozyx.getLastDataLength(&length);
+    char data[length];
+    Pozyx.readRXBufferData((uint8_t *) data, length);
+    if (data[0] == 's') {
+      sendWayPoint();
+    }
+  }
+}
+
+void sendWayPoint() {
   Serial.println("Start construction");
-  while (i < waypointLength) {
+  while (true) {
+    Serial.println("Rceived waypoint!");
+    uint8_t waypoint[WAYPOINT_LENGTH];
+    uint8_t i = 0;
+    while (i < WAYPOINT_LENGTH) {
+      if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 50)) {
+        uint8_t length = 0;
+        delay(1);
+        Pozyx.getLastDataLength(&length);
+        char data[length];
+        Pozyx.readRXBufferData((uint8_t *) data, length);
+        uint8_t d = charToUInt8(data, length);
+        Serial.println(d);
+        waypoint[i] = d;
+        i++;
+      }
+    }
+    
+#ifdef DEBUG
+    Serial.print("WAYPOINT: ");
+    Serial.print("[");
+    for (uint8_t i = 0; i < WAYPOINT_LENGTH; ++i) {
+      Serial.print(waypoint[i]);
+      if (i < WAYPOINT_LENGTH - 1) {
+        Serial.print(", ");
+      }
+    }
+    Serial.println("]");
+#endif
+
     if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 50)) {
-      Serial.println("RECEIVED!");
       uint8_t length = 0;
       delay(1);
       Pozyx.getLastDataLength(&length);
       char data[length];
       Pozyx.readRXBufferData((uint8_t *) data, length);
-      uint8_t d = charToUInt8(data, length);
-      Serial.println(d);
-      waypoint[i] = d;
-      i++;
+      if (data[0] == 't') {
+        break;
+      }
+      if (data[0] == 'c') {
+        continue;
+      }
     }
   }
-
-  Serial.print("WAYPOINT: ");
-  Serial.print("[");
-  for (uint8_t i = 0; i < waypointLength; ++i) {
-    Serial.print(waypoint[i]);
-    if (i < waypointLength - 1) {
-      Serial.print(", ");
-    }
-  }
-  Serial.println("]");
 }
 
 uint8_t charToUInt8(char* data, uint8_t length) {
