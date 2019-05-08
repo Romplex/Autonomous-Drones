@@ -56,7 +56,7 @@ void sendWayPoint() {
     Serial.println("Rceived waypoint!");
     uint8_t waypoint[WAYPOINT_LENGTH];
     uint8_t i = 0;
-    while (i < WAYPOINT_LENGTH) {
+    while (i <= WAYPOINT_LENGTH) {
       if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 50)) {
         uint8_t length = 0;
         delay(1);

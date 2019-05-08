@@ -68,6 +68,7 @@ if PYPOZYX_INSTALLED:
 
 def check_connection(positioning=True):
     """Check for errors before executing a pozyx function"""
+
     def inner(func):
         def check(*args):
             if not PYPOZYX_INSTALLED:
@@ -88,31 +89,20 @@ def check_connection(positioning=True):
                         'Can\'t connect to at least {} anchors. Check the anchor\'s power connection '
                         'and the pozyx\'s USB connection'.format(inactive_anchors))
             return func(*args)
+
         return check
+
     return inner
 
 
 @check_connection(positioning=False)
-def send_mission(way_point_data):
-    way_point = list(way_point_data.values())
-    stop = False
-    if way_point == MISSION_DONE:
-        # all way points have been sent
-        status_data = 't'
-        stop = True
-    elif way_point[WP_INDEX] == 1:
-        # first way point
-        status_data = 's'
-    else:
-        # 2nd+ way point
-        status_data = 'c'
-    pozyx.sendData(destination=0, data=status_data.encode())
-    if stop:
-        return {'success': 'All points sent'}
-    sleep(0.1)
-    for number in way_point:
-        pozyx.sendData(destination=0, data=str(number).encode())
-        sleep(0.1)
+def send_msp_message(msg):
+    message = list(msg.values())
+    size = len(message)
+    if size > 27:
+        return {'error': 'message too long!'}
+    d = Data(data=message, data_format=size * 'B')
+    pozyx.sendData(destination=0, data=d)
     return {'success': 'WP sent'}
 
 
@@ -127,3 +117,8 @@ def get_position():
                 'y': position.y,
                 'z': position.z
             }
+
+
+# if __name__ == '__main__':
+#     l = [36, 77, 60, 21, 209, 1, 1, 103, 135, 149, 30, 167, 144, 165, 5, 136, 19, 0, 0, 0, 0, 0, 0, 0, 0, 165, 6]
+#     send_mission(bytearray(l))
