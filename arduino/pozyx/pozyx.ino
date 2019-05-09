@@ -3,13 +3,36 @@
 #include <Wire.h>
 #include <SoftwareSerial.h>
 
-//#define DEBUG
+#define FILTER_TYPE_NONE            0x0
+#define FILTER_TYPE_FIR             0x1
+#define FILTER_TYPE_MOVING_AVERAGE  0x3
+#define FILTER_TYPE_MOVING_MEDIAN   0x4
+
+#define ID_NAV 1          // message ID for location data
+#define ID_MAG 2          // message ID for course data
+
+/******************
+     Pozyx data
+*******************/
+// TODO check if all data has correct units for fc navigation
+typedef struct __attribute__((packed))_pozyx_data {
+  magnetic_t magnetic;
+  angular_vel_t angular_vel;  // d/s
+  coordinates_t coordinates;  // mm
+  uint16_t source_id;         // the network id of the connected device, will be set automatically
+} pozyx_data_t;
+
+volatile pozyx_data_t pozyx_data;
+
+#define DEBUG
 #define USE_POZYX
 
 #ifndef USE_POZYX
-  #define X 0     // cm
-  #define Y 0     // cm
-  #define Z 500   // cm
+pozyx_data.coordinates.x = pozyx_data.coordinates.y = 0;  // mm
+pozyx_data.coordinates.z = 0 = 500;                       // mm
+
+pozyx_data.angular_vel.x = pozyx_data.angular_vel.y = pozyx_data.angular_vel.z = 0; // degrees per second
+pozyx_data.magnetic.x = pozyx_data.magnetic.y = pozyx_data.magnetic.z = 0;  // µT
 #endif
 
 SoftwareSerial msp(A1, A2); // rx/tx
@@ -20,29 +43,39 @@ unsigned long t_mag;
 String inputString = "";            // a string to hold incoming data
 boolean stringComplete = false;     // whether the string is complete
 
-const unsigned int GPS_INTERVAL       = 250;      // every 250ms
-const unsigned int MAG_INTERVAL       = 30;       // every  30ms
-
-// TODO: use numbers instead of strings!
-static const String ID_LOCATION       = "GPS";          // message ID for location data
-static const String ID_COURSE         = "MAG";          // message ID for course data
-
-uint16_t source_id;                                     // the network id of the connected device
-sensor_raw_t sensor_raw;
+// FILTER_TYPE_NONE | FILTER_TYPE_MOVING_AVERAGE | FILTER_TYPE_MOVING_MEDIAN |
+// FILTER_TYPE_:
+//  NONE (Default value). No additional filtering is applied.
+//  FIR. A low-pass filter is applied which filters out high-frequency jitters.
+//  MOVING_AVERAGE. A moving average filter is applied, which smoothens the trajectory.
+//  MOVING_MEDIAN. A moving median filter is applied, which filters out outliers
 
 //        #############################################
 //        ######### APPLY TAG PARAMETERS HERE #########
 //        #############################################
 
-const uint8_t num_anchors = 4;                          // the number of anchors
-uint16_t anchors[num_anchors] = {0x6951, 0x6E59, 0x695D, 0x690B};  // the network ids of the anchors: change these to the network ids of your anchors
-int32_t anchors_x[num_anchors] = {0,5340,6812,-541};    // anchor x-coorindates in mm
-int32_t anchors_y[num_anchors] = {0,0,-8923,-10979};    // anchor y-coordinates in mm
-int32_t heights[num_anchors] = {1500, 2000, 2500, 3000};// anchor z-coordinates in mm
+// TODO compass should be updated at 10hz ?
+// TODO gps should be updated at 18hz?
+const unsigned int GPS_INTERVAL = 55;      // every 250ms
+const unsigned int MAG_INTERVAL = 100;     // every  30ms
 
-uint8_t algorithm = POZYX_POS_ALG_UWB_ONLY;             // positioning algorithm to use. try POZYX_POS_ALG_TRACKING for fast moving objects.
+const uint8_t filter = FILTER_TYPE_MOVING_MEDIAN;
+const uint8_t filter_strength = 8;  // 0-15
+
+const uint8_t num_anchors = 5;                                      // the number of anchors
+uint16_t anchors[num_anchors] = {0x6951, 0x6E59, 0x695D, 0x690B, 0x6748};   // network ids of the anchors
+int32_t anchors_x[num_anchors] = {0, 5340, 6812, -541, 6812};            // anchor x-coorindates in mm
+int32_t anchors_y[num_anchors] = {0, 0, -8923, -10979, -4581};            // anchor y-coordinates in mm
+int32_t heights[num_anchors] = {1500, 2000, 2500, 3000, 200};           // anchor z-coordinates in mm
+
+
+// UWB settings:
+//    FAST(100ms bootup required): 110kbps, preamble length 1024 -> 51Hz
+//    PRECISION:                   110kbps, preamble length 1024 -> 18Hz
+
+uint8_t algorithm = POZYX_POS_ALG_TRACKING;             // try POZYX_POS_ALG_TRACKING for fast moving objects. (POZYX_POS_ALG_TRACKING|POZYX_POS_ALG_UWB_ONLY)
 uint8_t dimension = POZYX_3D;                           // positioning dimension
-int32_t height = 1000;                                  // height of device, required in 2.5D positioning
+int32_t height = 1000;
 
 //        #############################################
 //        ######### APPLY TAG PARAMETERS HERE #########
@@ -52,49 +85,63 @@ int32_t height = 1000;                                  // height of device, req
 void setup() {
   Serial.begin(115200); // 115200 mag and gps baudrate
   msp.begin(9600);      // 9600 softserial baudrate for msp
-  while(!Serial);
-  while(!msp);
+  while (!Serial);
+  while (!msp);
 
   // setup time variables for gps and mag messages
   t_gps = 0;
   t_mag = 0;
 
 #ifdef USE_POZYX
-  #ifdef DEBUG
-    Serial.println("-   INIT POZYX   -");
-  #endif
-  while(Pozyx.begin(false, MODE_INTERRUPT) == POZYX_FAILURE){
+
+#ifdef DEBUG
+  Serial.println("-   INIT POZYX   -");
+#endif
+
+  // possible interrupts (do bit-wise combinations):
+  //    POZYX_INT_MASK_ERR, POZYX_INT_MASK_POS, POZYX_INT_MASK_IMU, POZYX_INT_MASK_RX_DATA, POZYX_INT_MASK_FUNC.
+  //    POZYX_INT_MASK_ALL to trigger on all events.
+  while (Pozyx.begin(false, MODE_INTERRUPT, POZYX_INT_MASK_ALL, 0) == POZYX_FAILURE) {
+
 #ifdef DEBUG
     Serial.println("ERROR: Unable to connect to POZYX shield");
     Serial.flush();
 #endif
     delay(1000);
   }
+
 #endif
 
 #ifdef USE_POZYX
   // read the network id of this device
-  Pozyx.regRead(POZYX_NETWORK_ID, (uint8_t*)&source_id, 2);
+  Pozyx.regRead(POZYX_NETWORK_ID, (uint8_t*)&pozyx_data.source_id, 2);
 
 #ifdef DEBUG
-  Serial.print("Source ID: ");Serial.println(source_id, HEX);
-#endif
-  
-  // clear all previous devices in the device list
-  Pozyx.clearDevices(source_id);
-  // sets the anchor manually
-  setAnchorsManual();
-  // sets the positioning algorithm
-  Pozyx.setPositionAlgorithm(algorithm, dimension, NULL);
+  Serial.print("Source ID: "); Serial.println(pozyx_data.source_id, HEX);
 #endif
 
-  Serial.flush();
-#ifdef USE_POZYX
-  delay(2000);
+  // clear all previous devices in the device list
+  Pozyx.clearDevices(pozyx_data.source_id);
+  // sets the anchor manually
+  setAnchorsManual();
+
+  // sets the positioning algorithm
+  Pozyx.setPositionAlgorithm(algorithm, dimension, pozyx_data.source_id);
+
+  // apply positioning filter and strength
+  Pozyx.setPositionFilter(filter, filter_strength);
+
+  // set update intervall for continuous mode
+  // TODO is doPositioning still needed?
+  Pozyx.setUpdateInterval(100); //100ms-60000ms
 #endif
 
 #ifdef DEBUG
   Serial.println(F("Starting positioning: "));
+#endif
+  Serial.flush();
+#ifdef USE_POZYX
+  delay(1500);
 #endif
 
 }
@@ -102,56 +149,67 @@ void setup() {
 void loop() {
 
   unsigned long currentTime = millis();
+  int status = 0;
 
-  if(currentTime - t_gps >= GPS_INTERVAL) {
+
+#ifdef USE_POZYX
+  // possible status flags:
+  //    POZYX_INT_STATUS_ERR, POZYX_INT_STATUS_POS, POZYX_INT_STATUS_IMU,
+  //    POZYX_INT_STATUS_RX_DATA, POZYX_INT_STATUS_FUNC
+
+  if (Pozyx.waitForFlag(POZYX_INT_STATUS_IMU, 1)) {
+    // update new magnetic and velned data
+    Pozyx.getMagnetic_uT(&pozyx_data.magnetic);
+    Pozyx.getAngularVelocity_dps(&pozyx_data.angular_vel);
+  }
+
+  if (Pozyx.waitForFlag(POZYX_INT_STATUS_POS, 1)) {
+    Pozyx.getCoordinates(&pozyx_data.coordinates);
+  }
+
+  if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 1))
+    // we have received a message via pozyx
+    forwardMsgToFC();
+#endif
+
+
+  if (currentTime - t_gps >= GPS_INTERVAL) {
     // time to send position
-    forwardPosition(currentTime);
-    return;
+    forwardNavigation(currentTime);
+  }
+
+  if (currentTime - t_mag >= MAG_INTERVAL) {
+    forwardOrientation(currentTime);
   }
 
   currentTime = millis();
 
-  if(currentTime - t_mag >= MAG_INTERVAL) {
-    // time to send orientation
-    forwardOrientation(currentTime);
-    return;
-  }
 
-#ifdef USE_POZYX
-  // TODO wait only 1ms or even 0?
-  // we wait up to 2ms to see if we have received an incoming message (if so we receive an RX_DATA interrupt)
-  if(Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA,2))
-    // we have received a message!
-    forwardMsgToFC();
-    return;
-#endif
-
-  while(msp.available()) {
+  while (msp.available()) {
     // get msp msg from fc
     char inChar = (char)msp.read();
 
     // TODO check when msp message ends (probably not '\n')
     if (inChar == '\n') {
       stringComplete = true;
-    }else{
+    } else {
       inputString += inChar;
     }
 
 #ifdef DEBUG
-    Serial.print("incoming msp msg: ");Serial.println(inputString);
+    Serial.print("incoming msp msg: "); Serial.println(inputString);
 #endif
   }
 
-  if(stringComplete){
+  if (stringComplete) {
     forwardMsgToPOZYX();
-    return;
   }
 }
 
 // error printing function for debugging
-void printErrorCode(String operation){
+void printErrorCode(String operation) {
   uint8_t error_code;
-  if (source_id == NULL){
+  if (pozyx_data.source_id == NULL) {
     Pozyx.getErrorCode(&error_code);
     Serial.print("ERROR ");
     Serial.print(operation);
@@ -159,15 +217,15 @@ void printErrorCode(String operation){
     Serial.println(error_code, HEX);
     return;
   }
-  int status = Pozyx.getErrorCode(&error_code, source_id);
-  if(status == POZYX_SUCCESS){
+  int status = Pozyx.getErrorCode(&error_code, pozyx_data.source_id);
+  if (status == POZYX_SUCCESS) {
     Serial.print("ERROR ");
     Serial.print(operation);
     Serial.print(" on ID 0x");
-    Serial.print(source_id, HEX);
+    Serial.print(pozyx_data.source_id, HEX);
     Serial.print(", error code: 0x");
     Serial.println(error_code, HEX);
-  }else{
+  } else {
     Pozyx.getErrorCode(&error_code);
     Serial.print("ERROR ");
     Serial.print(operation);
@@ -177,111 +235,19 @@ void printErrorCode(String operation){
 }
 
 // function to manually set the anchor coordinates
-void setAnchorsManual(){
-  for(int i = 0; i < num_anchors; i++){
+void setAnchorsManual() {
+  for (int i = 0; i < num_anchors; i++) {
     device_coordinates_t anchor;
     anchor.network_id = anchors[i];
     anchor.flag = 0x1;
     anchor.pos.x = anchors_x[i];
     anchor.pos.y = anchors_y[i];
     anchor.pos.z = heights[i];
-    Pozyx.addDevice(anchor, source_id);
+    Pozyx.addDevice(anchor, pozyx_data.source_id);
   }
-  if (num_anchors > 4){
-    Pozyx.setSelectionOfAnchors(POZYX_ANCHOR_SEL_AUTO, num_anchors, source_id);
+  if (num_anchors > 4) {
+    Pozyx.setSelectionOfAnchors(POZYX_ANCHOR_SEL_AUTO, num_anchors, pozyx_data.source_id);
   }
-}
-
-String genMagMsg(float groundSpeed, unsigned long t) {
-  //example msg: $GPRMC , 161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598, ,*10
-
-#ifdef USE_POZYX
-  Pozyx.getRawSensorData(&sensor_raw);
-  float heading = atan2(sensor_raw.magnetic[1], sensor_raw.magnetic[0]);
-  float declinationAngle = 0.047; // declination angle 2°46' for Kassel
-  heading += declinationAngle;
-  
-  // Correct for when signs are reversed.
-  if(heading < 0)
-    heading += 2*PI;
-    
-  // Check for wrap due to addition of declination.
-  if(heading > 2*PI)
-    heading -= 2*PI;
-   
-  // Convert radians to degrees for readability.
-  float groundCourse = heading * 180/M_PI;
-
-  float32_t magnetic[3] = {sensor_raw.magnetic[0], sensor_raw.magnetic[1], sensor_raw.magnetic[2]};
-#else
-  float groundCourse = 45.0;
-  float32_t magnetic[3] = {1.0,2.0,3.0};
-#endif
-  
-  String tt = formatTime(t);
-  String date = "011219";
-  String str = "$"
-        + ID_COURSE+","
-        + tt+","
-        + groundSpeed+","
-        + groundCourse+","
-        + date+","
-        + magnetic[0]+","
-        + magnetic[1]+","
-        + magnetic[2]+","
-        + "*";
-  byte len = str.length()+1;
-  char buff[len];
-
-  // TODO: fix String->Char, Char->String conversions!
-  str.toCharArray(buff, len);
-  String msg = str + calcCRC(buff, sizeof(buff));
-  return msg;
-}
-
-// prepares char array for Serial communication
-String genGpsMsg(int x, int y, int z, unsigned long t) {
-  String tt = formatTime(t);
-
-  char x_sign = '+';
-  char y_sign = '+';
-  char z_sign = '+';
-
-  if(x < 0) {
-    x = -x;
-    x_sign = '-';
-  }
-
-  if(y < 0) {
-    y = -y;
-    y_sign = '-';
-  }
-
-  if(z < 0) {
-    z = -z;
-    z_sign = '-';
-  }
-
-  String str = "$"
-        + ID_LOCATION+","
-        + x+","
-        + x_sign+","
-        + y+","
-        + y_sign+","
-        + z+","
-        + z_sign+","
-        + "*";
-  byte len = str.length()+1;
-  char buff[len];
-
-  // TODO: fix String->Char, Char->String conversions!
-  str.toCharArray(buff, len);
-  String msg = str + calcCRC(buff, sizeof(buff));
-  return msg;
-}
-
-String genGpsMsg(double x, double y, double z) {
-  return genGpsMsg(x, y, z, millis());
 }
 
 // format time: hhmmss.sss
@@ -293,8 +259,8 @@ String formatTime(unsigned long t) {
 
   String h = (hh > 9 ? String(hh) : "0" + String(hh));
   String m = (mm > 9 ? String(mm) : "0" + String(mm));
-  String s = (ss > 9 ? String(ss,3) : "0" + String(ss,3));
-  return h+m+s;
+  String s = (ss > 9 ? String(ss, 3) : "0" + String(ss, 3));
+  return h + m + s;
 }
 
 // NMEA CRC: XOR each byte with previous for all chars between '$' and '*'
@@ -307,12 +273,12 @@ String calcCRC(char* buff, byte buff_len) {
 
   for (i = 0; i < buff_len; i++) {
     c = buff[i];
-    if(c == '$') start_with = i;
-    else if(c == '*') end_with = i;
+    if (c == '$') start_with = i;
+    else if (c == '*') end_with = i;
 
   }
-  if (end_with > start_with){
-    for (i = start_with+1; i < end_with; i++){
+  if (end_with > start_with) {
+    for (i = start_with + 1; i < end_with; i++) {
       crc = crc ^ buff[i];  // XOR every character between '$' and '*'
     }
   } else {
@@ -325,10 +291,13 @@ String calcCRC(char* buff, byte buff_len) {
 }
 
 void forwardMsgToPOZYX() {
+
+#ifdef DEBUG
   Serial.print("Ox");
-  Serial.print(source_id, HEX);
+  Serial.print(pozyx_data.source_id, HEX);
   Serial.print(": ");
   Serial.println(inputString);
+#endif
 
   int length = inputString.length();
   uint8_t buffer[length];
@@ -347,7 +316,7 @@ void forwardMsgToFC() {
   uint8_t msg_length = 0;
   uint16_t messenger = 0x00;
   delay(1);
-  
+
   // Let's read out some information about the message (i.e., how many bytes did we receive and who sent the message)
   Pozyx.getLastDataLength(&msg_length);
   Pozyx.getLastNetworkId(&messenger);
@@ -368,30 +337,50 @@ void forwardMsgToFC() {
   msp.write(data, msg_length);
 }
 
-void forwardPosition(unsigned long currentTime) {
-  coordinates_t position;
-  
-#ifdef USE_POZYX
-  int status = Pozyx.doPositioning(&position, dimension, height, algorithm);
-  int coordinates[3] = {position.x, position.y, position.z};
-#ifdef DEBUG
-  if (status != POZYX_SUCCESS){
-    // prints out the error code
-    printErrorCode("positioning");
-  }
-#endif
-#else
-  int coordinates[3] = {X,Y,Z};
-#endif
+void forwardNavigation(unsigned long currentTime) {
 
   t_gps = millis();
-  String gps_msg = genGpsMsg(coordinates[0], coordinates[1], coordinates[2], currentTime);
+
+  String t = formatTime(currentTime);
+  String date = "011219";
+
+  String str = "$"
+               + String(ID_NAV) + ","
+               + t + ","
+               + date + ","
+               + pozyx_data.coordinates.x + ","
+               + pozyx_data.coordinates.y + ","
+               + pozyx_data.coordinates.z + ","
+               + pozyx_data.angular_vel.x + ","
+               + pozyx_data.angular_vel.y + ","
+               + pozyx_data.angular_vel.z + ","
+               + "*";
+  byte len = str.length() + 1;
+  char buff[len];
+
+  // TODO: fix String->Char, Char->String conversions!
+  str.toCharArray(buff, len);
+  String gps_msg = str + calcCRC(buff, sizeof(buff));
+
   Serial.println(gps_msg);
 }
 
 void forwardOrientation(unsigned long currentTime) {
   t_mag = millis();
-  float groundSpeed = 0.0;
-  String mag_msg = genMagMsg(groundSpeed, currentTime);
+
+  //example msg: $GPRMC , 161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598, ,*10
+
+  String str = "$"
+               + String(ID_MAG) + ","
+               + pozyx_data.magnetic.x + ","
+               + pozyx_data.magnetic.y + ","
+               + pozyx_data.magnetic.z + ","
+               + "*";
+  byte len = str.length() + 1;
+  char buff[len];
+
+  // TODO: fix String->Char, Char->String conversions!
+  str.toCharArray(buff, len);
+  String mag_msg = str + calcCRC(buff, sizeof(buff));
   Serial.println(mag_msg);
 }

@@ -54,15 +54,14 @@
 */
 
 #define NO_FRAME        0
-#define FRAME_LOCATION  1
-#define FRAME_COURSE    2
-/*
-#define FRAME_ANCHOR    2
-#define FRAME_M_START   3
-#define FRAME_M_STOP    4
-#define FRAME_WP_ADD    5
-#define FRAME_WP_DEL    6
-*/
+#define FRAME_NAV       1
+#define FRAME_MAG       2
+
+// do we have new position information?
+static bool _new_position;
+
+// do we have new speed information?
+static bool _new_speed;
 
 static uint32_t grab_fields(char *src, uint8_t mult)
 {                               // convert string to uint32
@@ -85,13 +84,12 @@ static uint32_t grab_fields(char *src, uint8_t mult)
     return tmp;
 }
 
-#define POZYX_BUFFER_SIZE        16
+#define POZYX_BUFFER_SIZE        16 // TODO uniks: check actual buffer size
 
 static bool gpsNewFramePOZYX(char c)
 {
     static gpsDataPozyx_t gps_Msg;
 
-    uint8_t frameOK = 0;
     static uint8_t param = 0, offset = 0, parity = 0;
     static char string[POZYX_BUFFER_SIZE];
     static uint8_t checksum_param, gps_frame = NO_FRAME;
@@ -106,57 +104,59 @@ static bool gpsNewFramePOZYX(char c)
         case '*':
             string[offset] = 0;
             if (param == 0) {       //frame identification
+                uint8_t frame = grab_fields(string, 0);
                 gps_frame = NO_FRAME;
-                if (strcmp(string, "GPS") == 0) {
-                    gps_frame = FRAME_LOCATION;
-                } else if (strcmp(string, "MAG") == 0) {
-                    gps_frame = FRAME_COURSE;
+                //if (strcmp(string, "GPS") == 0) {
+                if(frame == FRAME_NAV) {
+                    gps_frame = FRAME_NAV;
+                //} else if (strcmp(string, "MAG") == 0) {
+                } else if(frame == FRAME_MAG) {
+                    gps_frame = FRAME_MAG;
                 }
-                // TODO[uniks] add anchor init frame wich sets anchor position X,Y,Z
+                // TODO uniks add anchor init frame wich sets anchor position X,Y,Z
             }
 
             switch (gps_frame) {
                 //************* POZYX LOCATION FRAME parsing *************
-                case FRAME_LOCATION:
-                    switch (param) {
-                        case 1:
-                            gps_Msg.latitude = grab_fields(string,8);
-                            break;
-                        case 2:
-                            if (string[0] == '-')
-                                gps_Msg.latitude *= -1;
-                            break;
-                        case 3:
-                            gps_Msg.longitude = grab_fields(string,8);
-                            break;
-                        case 4:
-                            if (string[0] == '-')
-                                gps_Msg.longitude *= -1;
-                            break;
-                    }
-                    break;
-                case FRAME_COURSE:
+                // TODO uniks look at FAKE_GPS (gps.c:282)
+                case FRAME_NAV:
                     switch (param) {
                         case 1:
                             gps_Msg.time = grab_fields(string, 2);
                             break;
                         case 2:
-                            gps_Msg.speed = ((grab_fields(string, 1) * 5144L) / 1000L);    // speed in cm/s added by Mis TODO uniks use m/s???
-                            break;
-                        case 3:
-                            gps_Msg.ground_course = (grab_fields(string, 1));      // ground course deg * 10
-                            break;
-                        case 4:
                             gps_Msg.date = grab_fields(string, 0);
                             break;
+                        case 3:
+                            gps_Msg.latitude = grab_fields(string,8);   // TODO uniks : mm ?
+                            break;
+                        case 4:
+                            gps_Msg.longitude = grab_fields(string,8);  // TODO uniks : mm ?
+                            break;
                         case 5:
-                            gps_Msg.mag_x = grab_fields(string, 2);
+                            gps_Msg.altitude = grab_fields(string, 8) / 10;  // TODO uniks : cm ?
                             break;
                         case 6:
-                            gps_Msg.mag_y = grab_fields(string, 2);
+                            gps_Msg.vel_n = grab_fields(string, 0);  // TODO uniks : d/s ?
                             break;
                         case 7:
-                            gps_Msg.mag_z = grab_fields(string, 2);
+                            gps_Msg.vel_e = grab_fields(string, 0);  // TODO uniks : d/s ?
+                            break;
+                        case 8:
+                            gps_Msg.vel_d = grab_fields(string, 0);  // TODO uniks : d/s ?
+                            break;
+                    }
+                    break;
+                case FRAME_MAG:
+                    switch (param) {
+                        case 1:
+                            gps_Msg.mag_x = grab_fields(string, 2); // TODO uniks : µT ?
+                            break;
+                        case 2:
+                            gps_Msg.mag_y = grab_fields(string, 2); // TODO uniks : µT ?
+                            break;
+                        case 3:
+                            gps_Msg.mag_z = grab_fields(string, 2); // TODO uniks : µT ?
                             break;
                     }
                     break;
@@ -177,34 +177,20 @@ static bool gpsNewFramePOZYX(char c)
                 if (checksum == parity) {
                     gpsStats.packetCount++;
                     switch (gps_frame) {
-                        case FRAME_LOCATION:
-                            frameOK = 1;
-
-                            gpsSol.numSat = 12;
-                            gpsSol.fixType = GPS_FIX_3D;
+                        case FRAME_NAV:
+                            // gps lat,lon,alt
+                            // time sec,min,hour,day,month,year
+                            // fixtype
+                            // vel north,east,down
+                            // hdop,eph,epv,numsat,groundspeed,groundcourse
+                            // flags validVelNE,validVelD,validEPE,validTime
 
                             gpsSol.llh.lat = gps_Msg.latitude;
                             gpsSol.llh.lon = gps_Msg.longitude;
-
-                            // EPH/EPV are unreliable for NMEA as they are not real accuracy
-                            gpsSol.hdop = gpsConstrainHDOP(HDOP_SCALE);
-                            gpsSol.eph = gpsConstrainEPE(HDOP_SCALE * GPS_HDOP_TO_EPH_MULTIPLIER);
-                            gpsSol.epv = gpsConstrainEPE(HDOP_SCALE * GPS_HDOP_TO_EPH_MULTIPLIER);
-                            gpsSol.flags.validEPE = 0;
-
-                            gpsSol.flags.validVelNE = 0;
-                            gpsSol.flags.validVelD = 0;
-                            break;
-                        case FRAME_COURSE:
-                            gpsSol.magData[0] = gps_Msg.mag_x;
-                            gpsSol.magData[1] = gps_Msg.mag_y;
-                            gpsSol.magData[2] = gps_Msg.mag_z;
-                            gpsSol.flags.validMag = 1;
-
-                            gpsSol.groundSpeed = gps_Msg.speed;
-                            gpsSol.groundCourse = gps_Msg.ground_course;
+                            gpsSol.llh.alt = gps_Msg.altitude;
 
                             // This check will miss 00:00:00.00, but we shouldn't care - next report will be valid
+                            // TODO uniks: maybe dont set time since it is less acurate than actual gps time
                             if (gps_Msg.date != 0 && gps_Msg.time != 0) {
                                 gpsSol.time.year = (gps_Msg.date % 100) + 2000;
                                 gpsSol.time.month = (gps_Msg.date / 100) % 100;
@@ -218,6 +204,40 @@ static bool gpsNewFramePOZYX(char c)
                             else {
                                 gpsSol.flags.validTime = 0;
                             }
+
+                            gpsSol.fixType = GPS_FIX_3D;
+
+                            gpsSol.velNED[0] = gps_Msg.vel_n;  // cm/s
+                            gpsSol.velNED[1] = gps_Msg.vel_e;  // cm/s
+                            gpsSol.velNED[2] = gps_Msg.vel_d;  // cm/s
+
+                            // TODO uniks: maybe its possible to get horizontal and vertical accuracy from pozyx
+                            gpsSol.hdop = 1;  // PDOP
+                            gpsSol.eph = 1;   // hAcc in cm
+                            gpsSol.epv = 1;   // vAcc in cm
+                            gpsSol.numSat = 12;
+                            gpsSol.groundSpeed = sqrtf(powf(gpsSol.velNED[0], 2)+powf(gpsSol.velNED[1], 2)); //cm/s
+
+                            // calculate gps heading from VELNE
+                            gpsSol.groundCourse = (uint16_t) (fmodf(RADIANS_TO_DECIDEGREES(atan2_approx(gpsSol.velNED[1], gpsSol.velNED[0]))+3600.0f,3600.0f));
+
+
+                            gpsSol.flags.validVelNE = 1;
+                            gpsSol.flags.validVelD = 1;
+                            gpsSol.flags.validEPE = 1;
+
+                            _new_speed = true;
+                            _new_position = true;
+                            break;
+                        case FRAME_MAG:
+                            // mag xyz
+
+                            gpsSol.magData[0] = gps_Msg.mag_x;
+                            gpsSol.magData[1] = gps_Msg.mag_y;
+                            gpsSol.magData[2] = gps_Msg.mag_z;
+
+                            gpsSol.flags.validMag = 1;
+
                             break;
                     } // end switch
                 } else {
@@ -236,7 +256,7 @@ static bool gpsNewFramePOZYX(char c)
             }
     }
 
-    return frameOK;
+    return (_new_position && _new_speed);
 }
 
 static bool gpsReceiveData(void)
@@ -248,8 +268,7 @@ static bool gpsReceiveData(void)
             uint8_t newChar = serialRead(gpsState.gpsPort);
             if (gpsNewFramePOZYX(newChar)) {
                 gpsSol.flags.gpsHeartbeat = !gpsSol.flags.gpsHeartbeat;
-                gpsSol.flags.validVelNE = 0;
-                gpsSol.flags.validVelD = 0;
+                _new_speed = _new_position = false;
                 hasNewData = true;
             }
         }

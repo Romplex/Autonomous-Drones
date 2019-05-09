@@ -39,21 +39,20 @@ typedef union {
 
 
 typedef struct gpsDataPozyx_s {
-	bool fix;
     int32_t latitude;
     int32_t longitude;
-	uint8_t numSat;
 
-    float altitude;
-	//uint16_t altitude TODO uniks use uint16_t instead of float?
+	uint16_t altitude;
 
     uint16_t mag_x;
     uint16_t mag_y;
     uint16_t mag_z;
 
-	uint16_t speed;
-	uint16_t ground_course;
-	uint16_t hdop;
+    // TODO uniks: velNED needed or claculated by internal gyro?
+    int32_t vel_n;
+    int32_t vel_e;
+    int32_t vel_d;
+
 	uint32_t time;
 	uint32_t date;
 } gpsDataPozyx_t;
