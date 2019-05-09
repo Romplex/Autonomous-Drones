@@ -111,6 +111,7 @@ PG_REGISTER_PROFILE_WITH_RESET_TEMPLATE(pidProfile_t, pidProfile, PG_PID_PROFILE
 
 PG_RESET_TEMPLATE(pidProfile_t, pidProfile,
         .bank_mc = {
+        // TODO uniks: pitch/yaw/roll
             .pid = {
                 [PID_ROLL] =    { 40, 30, 23 },
                 [PID_PITCH] =   { 40, 30, 23 },

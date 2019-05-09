@@ -553,6 +553,7 @@ var mspHelper = (function (gui) {
             case MSPCodes.MSP_WP:
                 MISSION_PLANER.bufferPoint.number = data.getUint8(0);
                 MISSION_PLANER.bufferPoint.action = data.getUint8(1);
+                // TODO uniks increase divisor by factor of 10? Therefore increasing gps precision
                 MISSION_PLANER.bufferPoint.lat = data.getInt32(2, true) / 10000000;
                 MISSION_PLANER.bufferPoint.lon = data.getInt32(6, true) / 10000000;
                 MISSION_PLANER.bufferPoint.alt = data.getInt32(10, true);

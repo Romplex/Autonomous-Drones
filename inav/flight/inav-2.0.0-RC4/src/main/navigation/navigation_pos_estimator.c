@@ -240,6 +240,7 @@ void onNewGPSData(void)
                 //float gpsScaleLonDown = constrainf(cos_approx((ABS(gpsSol.llh.lat)) * 0.0174532925f), 0.01f, 1.0f);
                 float gpsScaleLonDown = 1.0f;
                 if (positionEstimationConfig()->use_gps_velned && gpsSol.flags.validVelNE) {
+                    // TODO uniks: make arduino calculate velned from pozyx data?
                     posEstimator.gps.vel.x = gpsSol.velNED[0];
                     posEstimator.gps.vel.y = gpsSol.velNED[1];
                 }

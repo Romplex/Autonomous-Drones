@@ -821,6 +821,7 @@ TABS.pozyx.initialize = function (callback) {
         var geometry = markers[pointForSend].getSource().getFeatures()[0].getGeometry();
         var coordinate = ol.proj.toLonLat(geometry.getCoordinates());
 
+        // TODO uniks increase factor by factor of 10? Therefore increasing gps precision
         MISSION_PLANER.bufferPoint.number = pointForSend + 1;
         MISSION_PLANER.bufferPoint.action = markers[pointForSend].action;
         MISSION_PLANER.bufferPoint.lon = parseInt(coordinate[0] * 10000000);
