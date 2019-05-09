@@ -32,6 +32,7 @@
 #define BMP280_TEMPERATURE_LSB_REG           (0xFB)  /* Temperature LSB Reg */
 #define BMP280_TEMPERATURE_XLSB_REG          (0xFC)  /* Temperature XLSB Reg */
 #define BMP280_FORCED_MODE                   (0x01)
+#define BMP280_NORMAL_MODE                   (0x11)
 
 #define BMP280_TEMPERATURE_CALIB_DIG_T1_LSB_REG             (0x88)
 #define BMP280_PRESSURE_TEMPERATURE_CALIB_DATA_LENGTH       (24)
@@ -52,12 +53,14 @@
 
 
 // configure pressure and temperature oversampling, forced sampling mode
-#define BMP280_PRESSURE_OSR              (BMP280_OVERSAMP_8X)
-#define BMP280_TEMPERATURE_OSR           (BMP280_OVERSAMP_1X)
-#define BMP280_MODE                      (BMP280_PRESSURE_OSR << 2 | BMP280_TEMPERATURE_OSR << 5 | BMP280_FORCED_MODE)
+//#define BMP280_PRESSURE_OSR              (BMP280_OVERSAMP_8X)
+//#define BMP280_TEMPERATURE_OSR           (BMP280_OVERSAMP_1X)
+#define BMP280_PRESSURE_OSR              (BMP280_OVERSAMP_16X)
+#define BMP280_TEMPERATURE_OSR           (BMP280_OVERSAMP_2X)
+#define BMP280_MODE                      (BMP280_PRESSURE_OSR << 2 | BMP280_TEMPERATURE_OSR << 5 | BMP280_NORMAL_MODE)
 
 //configure IIR pressure filter
-#define BMP280_FILTER                    (BMP280_FILTER_COEFF_8 << 2)
+#define BMP280_FILTER                    (BMP280_FILTER_COEFF_16 << 2)
 
 #define T_INIT_MAX                       (20)
 // 20/16 = 1.25 ms
