@@ -242,15 +242,16 @@ var mspHelper = (function (gui) {
                 }
                 break;
             case MSPCodes.MSP_RAW_GPS:
-                GPS_DATA.fix = data.getUint8(0);
-                GPS_DATA.numSat = data.getUint8(1);
-                GPS_DATA.lat = data.getInt32(2, true);
-                GPS_DATA.lon = data.getInt32(6, true);
-                GPS_DATA.alt = data.getInt16(10, true);
-                GPS_DATA.speed = data.getUint16(12, true);
-                GPS_DATA.ground_course = data.getUint16(14, true);
-                GPS_DATA.hdop = data.getUint16(16, true);
-                break;
+            // TODO uniks quickfix to be able to show position inside gui with pozyx. REMOVE ME
+                // GPS_DATA.fix = data.getUint8(0);
+                // GPS_DATA.numSat = data.getUint8(1);
+                // GPS_DATA.lat = data.getInt32(2, true);
+                // GPS_DATA.lon = data.getInt32(6, true);
+                // GPS_DATA.alt = data.getInt16(10, true);
+                // GPS_DATA.speed = data.getUint16(12, true);
+                // GPS_DATA.ground_course = data.getUint16(14, true);
+                // GPS_DATA.hdop = data.getUint16(16, true);
+                // break;
             case MSPCodes.MSP_RAW_GPS_POZYX:
                 GPS_DATA.fix = data.getUint8(0);
                 GPS_DATA.numSat = data.getUint8(1);
