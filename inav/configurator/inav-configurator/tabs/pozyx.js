@@ -10,6 +10,9 @@ var pozyx = {
     }
 };
 
+// workaround
+const disablePositioning = true;
+
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function (callback) {
@@ -24,7 +27,7 @@ TABS.pozyx.initialize = function (callback) {
             pozyx.pozyxpy
                 .getPosition()
                 .then(data => {
-                    if (data.error) {
+                    if (data.error || disablePositioning) {
                         clear();
                         if (!pozyx.pozyxWorker.errDialogueOpen) {
                             confirm(data.error);
@@ -135,7 +138,7 @@ TABS.pozyx.initialize = function (callback) {
             let newCenter = ol.proj.fromLonLat([lon, lat]);
 
             var mapFollowDrone = $('#followdrone').is(':checked');
-            if(mapFollowDrone == true){
+            if(mapFollowDrone){
                 if(oldCcenter[0] !== newCenter[0] && oldCcenter[1] !== newCenter[1]) {
                     GUI.log("[uniks] update center position")
 
