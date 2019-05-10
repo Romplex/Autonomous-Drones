@@ -472,7 +472,7 @@ cfTask_t cfTasks[TASK_COUNT] = {
     [TASK_GPS] = {
         .taskName = "GPS",
         .taskFunc = taskProcessGPS,
-        .desiredPeriod = TASK_PERIOD_HZ(25),      // GPS usually don't go raster than 10Hz
+        .desiredPeriod = TASK_PERIOD_HZ(25),      // GPS usually don't go faster than 10Hz // TODO uniks update gps frequency if necessary
         .staticPriority = TASK_PRIORITY_MEDIUM,
     },
 #endif
@@ -481,7 +481,7 @@ cfTask_t cfTasks[TASK_COUNT] = {
     [TASK_COMPASS] = {
         .taskName = "COMPASS",
         .taskFunc = taskUpdateCompass,
-        .desiredPeriod = TASK_PERIOD_HZ(10),      // Compass is updated at 10 Hz
+        .desiredPeriod = TASK_PERIOD_HZ(10),      // Compass is updated at 10 Hz // TODO uniks update mag frequency if necessary
         .staticPriority = TASK_PRIORITY_MEDIUM,
     },
 #endif
