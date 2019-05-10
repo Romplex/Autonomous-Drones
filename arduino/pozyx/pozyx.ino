@@ -20,6 +20,7 @@ typedef struct __attribute__((packed))_pozyx_data {
   angular_vel_t angular_vel;  // d/s
   coordinates_t coordinates;  // mm
   uint16_t source_id;         // the network id of the connected device, will be set automatically
+  pos_error_t pos_error;      // x|y|z variance and xy|xz|yz covariance
 } pozyx_data_t;
 
 volatile pozyx_data_t pozyx_data;
@@ -165,6 +166,8 @@ void loop() {
 
   if (Pozyx.waitForFlag(POZYX_INT_STATUS_POS, 1)) {
     Pozyx.getCoordinates(&pozyx_data.coordinates);
+    Pozyx.getPositionError(&pozyx_data.pos_error);
+    // TODO caluclate dilution of precision from pos error
   }
 
   if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 1))
@@ -179,6 +182,7 @@ void loop() {
   }
 
   if (currentTime - t_mag >= MAG_INTERVAL) {
+    // time to send orientation
     forwardOrientation(currentTime);
   }
 

@@ -145,6 +145,7 @@ static bool gpsNewFramePOZYX(char c)
                         case 8:
                             gps_Msg.vel_d = grab_fields(string, 0);  // TODO uniks : d/s ?
                             break;
+                         // TODO uniks add pozyx error and calculate dop values
                     }
                     break;
                 case FRAME_MAG:
