@@ -199,7 +199,7 @@ static bool gpsNewFramePOZYX(char c)
                                 gpsSol.time.hours = (gps_Msg.time / 1000000) % 100;
                                 gpsSol.time.minutes = (gps_Msg.time / 10000) % 100;
                                 gpsSol.time.seconds = (gps_Msg.time / 100) % 100;
-                                gpsSol.time.millis = (gps_Msg.time & 100) * 10;
+                                //gpsSol.time.millis = (gps_Msg.time & 100) * 10;   // TODO uniks remove me
                                 gpsSol.flags.validTime = 1;
                             }
                             else {
@@ -208,37 +208,37 @@ static bool gpsNewFramePOZYX(char c)
 
                             gpsSol.fixType = GPS_FIX_3D;
 
-                            gpsSol.velNED[0] = gps_Msg.vel_n;  // cm/s
-                            gpsSol.velNED[1] = gps_Msg.vel_e;  // cm/s
-                            gpsSol.velNED[2] = gps_Msg.vel_d;  // cm/s
+                            gpsSol.velNED[0] = gps_Msg.vel_n;  // vel north cm/s
+                            gpsSol.velNED[1] = gps_Msg.vel_e;  // vel  east cm/s
+                            gpsSol.velNED[2] = gps_Msg.vel_d;  // vel  down cm/s
 
-                            // TODO uniks: maybe its possible to get horizontal and vertical accuracy from pozyx
-                            gpsSol.hdop = 1;  // PDOP
+                            /*  TODO uniks: maybe its possible to get horizontal and vertical accuracy from pozyx
+                                calculate dop values */
+                            /*gpsSol.hdop = 1;  // PDOP
                             gpsSol.eph = 1;   // hAcc in cm
-                            gpsSol.epv = 1;   // vAcc in cm
-                            gpsSol.numSat = 12;
+                            gpsSol.epv = 1;   // vAcc in cm*/
+                            gpsSol.flags.validEPE = 0;
+
+                            gpsSol.numSat = 5;  // nr of pozyx anchors
+
                             gpsSol.groundSpeed = sqrtf(powf(gpsSol.velNED[0], 2)+powf(gpsSol.velNED[1], 2)); //cm/s
 
                             // calculate gps heading from VELNE
                             gpsSol.groundCourse = (uint16_t) (fmodf(RADIANS_TO_DECIDEGREES(atan2_approx(gpsSol.velNED[1], gpsSol.velNED[0]))+3600.0f,3600.0f));
 
-
                             gpsSol.flags.validVelNE = 1;
                             gpsSol.flags.validVelD = 1;
-                            gpsSol.flags.validEPE = 1;
 
                             _new_speed = true;
                             _new_position = true;
                             break;
                         case FRAME_MAG:
                             // mag xyz
-
                             gpsSol.magData[0] = gps_Msg.mag_x;
                             gpsSol.magData[1] = gps_Msg.mag_y;
                             gpsSol.magData[2] = gps_Msg.mag_z;
 
                             gpsSol.flags.validMag = 1;
-
                             break;
                     } // end switch
                 } else {
@@ -257,7 +257,13 @@ static bool gpsNewFramePOZYX(char c)
             }
     }
 
-    return (_new_position && _new_speed);
+    // we only return true when we get new position and speed data
+    // this ensures we don't use stale data
+    if (_new_position && _new_speed) {
+        _new_speed = _new_position = false;
+        return true;
+    }
+    return false;
 }
 
 static bool gpsReceiveData(void)
@@ -265,29 +271,16 @@ static bool gpsReceiveData(void)
     bool hasNewData = false;
 
     if (gpsState.gpsPort) {
-        while (serialRxBytesWaiting(gpsState.gpsPort)) {
+        while (serialRxBytesWaiting(gpsState.gpsPort) && !hasNewData) {
             uint8_t newChar = serialRead(gpsState.gpsPort);
             if (gpsNewFramePOZYX(newChar)) {
                 gpsSol.flags.gpsHeartbeat = !gpsSol.flags.gpsHeartbeat;
-                _new_speed = _new_position = false;
                 hasNewData = true;
             }
         }
     }
 
     return hasNewData;
-}
-
-static bool gpsInitialize(void)
-{
-    gpsSetState(GPS_CHANGE_BAUD);
-    return false;
-}
-
-static bool gpsChangeBaud(void)
-{
-    gpsFinalizeChangeBaud();
-    return false;
 }
 
 bool gpsHandlePOZYX(void)
@@ -299,19 +292,11 @@ bool gpsHandlePOZYX(void)
     switch (gpsState.state) {
     default:
         return false;
-
-    case GPS_INITIALIZING:
-        return gpsInitialize();
-
     case GPS_CHANGE_BAUD:
-        return gpsChangeBaud();
-
     case GPS_CHECK_VERSION:
     case GPS_CONFIGURE:
-        // No autoconfig, switch straight to receiving data
+        // No autoconfig for pozyx, skip straight to receiving data
         gpsSetState(GPS_RECEIVING_DATA);
-        return false;
-
     case GPS_RECEIVING_DATA:
         return hasNewData;
     }
