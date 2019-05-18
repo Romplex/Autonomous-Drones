@@ -1,3 +1,4 @@
+import os
 from contextlib import suppress
 
 PYPOZYX_INSTALLED = True
@@ -42,6 +43,11 @@ if PYPOZYX_INSTALLED:
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
+
+    # ROOT_DIR = os.path.dirname(os.path.abspath(__file__)).replace('\\pozyx_scripts\\gui_functions', '')
+    # with open(os.path.join(ROOT_DIR, 'resources/settins.json'), 'r') as settings:
+    #
+
     anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
                DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
                DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
