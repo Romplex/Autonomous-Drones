@@ -6,8 +6,8 @@ from functools import wraps
 PYPOZYX_INSTALLED = True
 
 try:
-    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister
-    from pypozyx import Coordinates, POZYX_SUCCESS, PozyxConstants, Data, DeviceList
+    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister, DeviceList
+    from pypozyx import Coordinates, POZYX_SUCCESS, PozyxConstants, Data
 except ModuleNotFoundError:
     PYPOZYX_INSTALLED = False
 
@@ -46,6 +46,7 @@ if PYPOZYX_INSTALLED:
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
+    IDs = {0x6951, 0x6e59, 0x695d, 0x690b, 0x6748}
     anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
                DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
                DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
@@ -145,11 +146,4 @@ def get_drone_ids():
     pozyx.getDeviceListSize(list_size)
     device_list = DeviceList(list_size=list_size[0])
     pozyx.getDeviceIds(device_list)
-    tag_list = DeviceList(list_size=list_size[0] - 5)
-    for i in range(0, list_size[0] - 5):
-        tag_list[i] = device_list[i + 5]
-    return tag_list
-
-
-def xd():
-    return {'error': 'XD'}
+    return list({d for d in device_list} - IDs)

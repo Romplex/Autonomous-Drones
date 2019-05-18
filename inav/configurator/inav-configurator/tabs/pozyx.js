@@ -58,26 +58,31 @@ TABS.pozyx.initialize = function(callback) {
     }
   };
 
+  updateTagIds = function() {
+    pozyx.pozyxpy
+      .getTagIds()
+      .then(tagIds => {
+        const tagList = $('#tag_select');
+        tagList.empty();
+        tagList.append('<option value="None">None</option>');
+        tagIds.forEach(tId => {
+          tagList.append(
+            `<option value="${tId}">0x${tId.toString(16)}</option>`
+          );
+        });
+      })
+      .catch(err => GUI.log(err));
+  };
+
   pozyx.pozyxWorker.startPositioning = startPositioning;
   pozyx.pozyxWorker.stopPositioning = stopPositioning;
   pozyx.pozyxpy = new PozyxPy();
 
-  pozyx.pozyxpy
-    .getTagIds()
-    .then(tagIds => {
-      const tagList = $('#tag_select');
-      GUI.log(tagList);
-      tagIds.forEach(tId => {
-        GUI.log(tId);
-        tagList.append(`<option value="${tId}">${tId}</option>`);
-      });
-      console.log(tagList);
-    })
-    .catch(err => GUI.log(err));
-
   if (!pozyx.pozyxWorker.positioning) {
     startPositioning();
   }
+
+  updateTagIds();
 
   var loadChainer = new MSPChainerClass();
   loadChainer.setChain([mspHelper.getMissionInfo]);
@@ -742,6 +747,11 @@ TABS.pozyx.initialize = function(callback) {
         clearEditForm();
         repaint();
       }
+    });
+
+    const tags = $('#tag_select');
+    tags.on('change', () => {
+      console.log(tags.val());
     });
 
     $('#loadPOZYXMissionButton').on('click', function() {
