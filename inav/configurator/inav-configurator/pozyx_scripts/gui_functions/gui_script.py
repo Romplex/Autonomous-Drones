@@ -41,7 +41,8 @@ def send_error_msg(msg):
 
 
 if PYPOZYX_INSTALLED:
-    remote_id = 0x6760
+    remote_id = None
+    # remote_id = 0x6758 # drone ID
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
@@ -62,7 +63,8 @@ if PYPOZYX_INSTALLED:
         # set anchors
         status = pozyx.clearDevices()
         for anchor in anchors:
-            status &= pozyx.addDevice(anchor, remote_id=remote_id)
+            #status &= pozyx.addDevice(anchor, remote_id=remote_id)
+            status &= pozyx.addDevice(anchor)
 
     MAX_TRIES = 20
 
