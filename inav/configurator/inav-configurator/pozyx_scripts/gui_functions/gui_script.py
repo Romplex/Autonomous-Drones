@@ -1,5 +1,7 @@
+import json
 import os
 from contextlib import suppress
+from functools import wraps
 
 PYPOZYX_INSTALLED = True
 
@@ -39,15 +41,10 @@ def send_error_msg(msg):
 
 
 if PYPOZYX_INSTALLED:
-    remote_id = None
+    remote_id = 0x6760
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
-
-    # ROOT_DIR = os.path.dirname(os.path.abspath(__file__)).replace('\\pozyx_scripts\\gui_functions', '')
-    # with open(os.path.join(ROOT_DIR, 'resources/settins.json'), 'r') as settings:
-    #
-
     anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
                DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
                DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
@@ -72,7 +69,8 @@ if PYPOZYX_INSTALLED:
 
 def check_connection(func):
     """Check for errors before executing a pozyx function"""
-    def inner():
+    @wraps(func)
+    def check():
         if not PYPOZYX_INSTALLED:
             return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
         if not POZYX_CONNECTED_TO_BASE:
@@ -83,9 +81,10 @@ def check_connection(func):
             network_id = SingleRegister()
             pozyx.getWhoAmI(network_id, remote_id=remote_id)
             if not network_id.data:
-                return {'error': 'Could not establish connection to device with ID {}'.format(remote_id.decode('utf-8'))}
-        return func
-    return inner()
+                return {
+                    'error': 'Could not establish connection to device with ID {}'.format(remote_id.decode('utf-8'))}
+        return func()
+    return check
 
 
 @check_connection
@@ -124,7 +123,5 @@ def get_position():
             'and the pozyx\'s USB connection'.format(inactive_anchors))
 
 
-if __name__ == '__main__':
-    while True:
-        with suppress(KeyError):
-            print(get_position())
+def xd():
+    return {'error': 'XD'}
