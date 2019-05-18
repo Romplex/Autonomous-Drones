@@ -1,5 +1,3 @@
-import json
-import os
 from contextlib import suppress
 from functools import wraps
 
@@ -40,21 +38,22 @@ def send_error_msg(msg):
     return {'error': msg + ' then refresh the Pozyx tab.'}
 
 
+algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
+dimension = PozyxConstants.DIMENSION_3D
+height = 1000
+IDs = {0x6951, 0x6e59, 0x695d, 0x690b, 0x6748}
+anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
+           DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
+           DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
+           DeviceCoordinates(0x690b, 4, Coordinates(-541, -10979, 3000)),
+           DeviceCoordinates(0x6748, 5, Coordinates(6812, -4581, 20))]
+MAX_TRIES = 20
+remote_id = None
+
 if PYPOZYX_INSTALLED:
-    remote_id = None
     # remote_id = 0x6758 # drone ID
-    algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
-    dimension = PozyxConstants.DIMENSION_3D
-    height = 1000
-    IDs = {0x6951, 0x6e59, 0x695d, 0x690b, 0x6748}
-    anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
-               DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
-               DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
-               DeviceCoordinates(0x690b, 4, Coordinates(-541, -10979, 3000)),
-               DeviceCoordinates(0x6748, 5, Coordinates(6812, -4581, 20))]
 
     POZYX_CONNECTED_TO_BASE = True
-
     serial_port = get_pozyx_serial_port()
 
     if serial_port is None:
@@ -64,14 +63,12 @@ if PYPOZYX_INSTALLED:
         # set anchors
         status = pozyx.clearDevices()
         for anchor in anchors:
-            #status &= pozyx.addDevice(anchor, remote_id=remote_id)
             status &= pozyx.addDevice(anchor)
-
-    MAX_TRIES = 20
 
 
 def check_connection(func):
     """Check for errors before executing a pozyx function"""
+
     @wraps(func)
     def check():
         if not PYPOZYX_INSTALLED:
@@ -87,6 +84,7 @@ def check_connection(func):
                 return {
                     'error': 'Could not establish connection to device with ID {}'.format(remote_id.decode('utf-8'))}
         return func()
+
     return check
 
 
@@ -100,6 +98,7 @@ def send_msp_message(msg):
     pozyx.sendData(destination=0, data=d)
     return {'success': 'WP sent'}
 
+
 @check_connection
 def send_msp_private_message(msg):
     message = list(msg.values())
@@ -107,8 +106,9 @@ def send_msp_private_message(msg):
     if size > 27:
         return {'error': 'message too long!'}
     d = Data(data=message, data_format=size * 'B')
-    pozyx.sendData(destination=0, data=d)  #TODO: change to real tag ids from UI
+    pozyx.sendData(destination=remote_id, data=d)
     return {'success': 'WP sent'}
+
 
 @check_connection
 def get_position():
@@ -144,5 +144,9 @@ def get_tag_ids():
     return {d for d in device_list} - IDs
 
 
-if __name__ == '__main__':
-    print(get_tag_ids())
+def set_remote_id(r_id):
+    global remote_id
+    remote_id = r_id
+
+# if __name__ == '__main__':
+#     print(get_tag_ids())
