@@ -10,9 +10,6 @@ var pozyx = {
   }
 };
 
-// workaround
-const disablePositioning = true;
-
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
 TABS.pozyx.initialize = function(callback) {
@@ -26,15 +23,17 @@ TABS.pozyx.initialize = function(callback) {
       pozyx.pozyxpy
         .getPosition()
         .then(data => {
-          if (data.error || disablePositioning) {
-            clear();
+          if (data.error) {
+            stopPositioning();
             if (!pozyx.pozyxWorker.errDialogueOpen) {
               confirm(data.error);
             }
             pozyx.pozyxWorker.errDialogueOpen = true;
           } else {
-            GPS_DATA.lat = parseFloat(POZYX.anchors[0].lat) + data.y / 1.113195e8;
-            GPS_DATA.lon = parseFloat(POZYX.anchors[0].lon) + data.x / 1.113195e8;
+            GPS_DATA.lat =
+              parseFloat(POZYX.anchors[0].lat) + data.y / 1.113195e8;
+            GPS_DATA.lon =
+              parseFloat(POZYX.anchors[0].lon) + data.x / 1.113195e8;
           }
         })
         .catch(err => GUI.log(err));
@@ -64,7 +63,9 @@ TABS.pozyx.initialize = function(callback) {
   loadChainer.execute();
 
   function updateTotalInfo() {
-    $('#availablePoints').text(MISSION_PLANER.countBusyPoints + '/' + MISSION_PLANER.maxWaypoints);
+    $('#availablePoints').text(
+      MISSION_PLANER.countBusyPoints + '/' + MISSION_PLANER.maxWaypoints
+    );
     $('#missionValid').html(
       MISSION_PLANER.isValidMission
         ? chrome.i18n.getMessage('armingCheckPass')
@@ -83,7 +84,9 @@ TABS.pozyx.initialize = function(callback) {
           $('#MPdefaultPointAlt').val(result.missionPlanerSettings.alt);
           $('#MPdefaultPointSpeed').val(result.missionPlanerSettings.speed);
         } else {
-          chrome.storage.local.set({ missionPlanerSettings: { speed: 0, alt: 5000 } });
+          chrome.storage.local.set({
+            missionPlanerSettings: { speed: 0, alt: 5000 }
+          });
           $('#MPdefaultPointAlt').val(5000);
           $('#MPdefaultPointSpeed').val(0);
         }
@@ -97,11 +100,21 @@ TABS.pozyx.initialize = function(callback) {
     localize();
 
     function get_raw_gps_pozyx_data() {
-      MSP.send_message(MSPCodes.MSP_RAW_GPS_POZYX, false, false, get_comp_gps_data);
+      MSP.send_message(
+        MSPCodes.MSP_RAW_GPS_POZYX,
+        false,
+        false,
+        get_comp_gps_data
+      );
     }
 
     function get_comp_gps_data() {
-      MSP.send_message(MSPCodes.MSP_COMP_GPS, false, false, get_gpsstatistics_data);
+      MSP.send_message(
+        MSPCodes.MSP_COMP_GPS,
+        false,
+        false,
+        get_gpsstatistics_data
+      );
     }
 
     function get_gpsstatistics_data() {
@@ -119,7 +132,8 @@ TABS.pozyx.initialize = function(callback) {
 
       var gpsFixType = chrome.i18n.getMessage('gpsFixNone');
       if (GPS_DATA.fix >= 2) gpsFixType = chrome.i18n.getMessage('gpsFix3D');
-      else if (GPS_DATA.fix >= 1) gpsFixType = chrome.i18n.getMessage('gpsFix2D');
+      else if (GPS_DATA.fix >= 1)
+        gpsFixType = chrome.i18n.getMessage('gpsFix2D');
 
       var lat = GPS_DATA.lat;
       var lon = GPS_DATA.lon;
@@ -290,7 +304,8 @@ TABS.pozyx.initialize = function(callback) {
 
     lines.push(vectorLayer);
 
-    var length = ol.Sphere.getLength(line) + parseFloat($('#missionDistance').text());
+    var length =
+      ol.Sphere.getLength(line) + parseFloat($('#missionDistance').text());
     $('#missionDistance').text(length.toFixed(3));
 
     map.addLayer(vectorLayer);
@@ -309,7 +324,8 @@ TABS.pozyx.initialize = function(callback) {
         anchor: [0.5, 1],
         opacity: 1,
         scale: 0.5,
-        src: '../images/icons/cf_icon_position' + (isEdit ? '_edit' : '') + '.png'
+        src:
+          '../images/icons/cf_icon_position' + (isEdit ? '_edit' : '') + '.png'
       }),
       text: new ol.style.Text({
         text: id,
@@ -433,13 +449,17 @@ TABS.pozyx.initialize = function(callback) {
         }
 
         let newPozyxSettings = JSON.stringify(POZYX);
-        fs.writeFile('./resources/pozyx-settings.json', newPozyxSettings, err => {
-          if (err) {
-            console.log(err);
-            throw err;
+        fs.writeFile(
+          './resources/pozyx-settings.json',
+          newPozyxSettings,
+          err => {
+            if (err) {
+              console.log(err);
+              throw err;
+            }
+            console.log('Data written to file');
           }
-          console.log('Data written to file');
-        });
+        );
       });
 
       // add change listener on pozyx settings
@@ -470,7 +490,10 @@ TABS.pozyx.initialize = function(callback) {
     app.Drag.prototype.handleDownEvent = function(evt) {
       var map = evt.map;
 
-      var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+      var feature = map.forEachFeatureAtPixel(evt.pixel, function(
+        feature,
+        layer
+      ) {
         return feature;
       });
 
@@ -488,7 +511,10 @@ TABS.pozyx.initialize = function(callback) {
     app.Drag.prototype.handleDragEvent = function(evt) {
       var map = evt.map;
 
-      var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+      var feature = map.forEachFeatureAtPixel(evt.pixel, function(
+        feature,
+        layer
+      ) {
         return feature;
       });
 
@@ -509,7 +535,10 @@ TABS.pozyx.initialize = function(callback) {
     app.Drag.prototype.handleMoveEvent = function(evt) {
       if (this.cursor_) {
         var map = evt.map;
-        var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+        var feature = map.forEachFeatureAtPixel(evt.pixel, function(
+          feature,
+          layer
+        ) {
           return feature;
         });
         var element = evt.map.getTargetElement();
@@ -587,10 +616,16 @@ TABS.pozyx.initialize = function(callback) {
         }
       }
 
-      var selectedFeature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+      var selectedFeature = map.forEachFeatureAtPixel(evt.pixel, function(
+        feature,
+        layer
+      ) {
         return feature;
       });
-      selectedMarker = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+      selectedMarker = map.forEachFeatureAtPixel(evt.pixel, function(
+        feature,
+        layer
+      ) {
         return layer;
       });
       if (selectedFeature) {
@@ -606,7 +641,14 @@ TABS.pozyx.initialize = function(callback) {
         $('#pointSpeed').val(selectedMarker.speedValue);
         $('#MPeditPoint').fadeIn(300);
       } else {
-        map.addLayer(addMarker(evt.coordinate, $('#MPdefaultPointAlt').val(), 1, $('#MPdefaultPointSpeed').val()));
+        map.addLayer(
+          addMarker(
+            evt.coordinate,
+            $('#MPdefaultPointAlt').val(),
+            1,
+            $('#MPdefaultPointSpeed').val()
+          )
+        );
         repaint();
       }
     });
@@ -634,7 +676,10 @@ TABS.pozyx.initialize = function(callback) {
       if (selectedMarker) {
         var tmp = [];
         for (var i in markers) {
-          if (markers[i] !== selectedMarker && typeof markers[i].action !== 'undefined') {
+          if (
+            markers[i] !== selectedMarker &&
+            typeof markers[i].action !== 'undefined'
+          ) {
             tmp.push(markers[i]);
           }
         }
@@ -656,7 +701,10 @@ TABS.pozyx.initialize = function(callback) {
               .getFeatures()[0]
               .getGeometry();
             geometry.setCoordinates(
-              ol.proj.fromLonLat([parseFloat($('#pointLon').val()), parseFloat($('#pointLat').val())])
+              ol.proj.fromLonLat([
+                parseFloat($('#pointLon').val()),
+                parseFloat($('#pointLat').val())
+              ])
             );
             t.alt = $('#pointAlt').val();
             t.action = $('#pointType').val();
@@ -727,9 +775,15 @@ TABS.pozyx.initialize = function(callback) {
       } else {
         // show pozyx anchor data
         $('.GPS_info td.pozyxAnchorId').text(POZYX.anchors[0].id);
-        $('.GPS_info td.pozyxAnchorAlt').text(parseInt(POZYX.anchors[0].alt) + ' m');
-        $('.GPS_info td.pozyxAnchorLat').text(parseFloat(POZYX.anchors[0].lat).toFixed(7) + ' deg');
-        $('.GPS_info td.pozyxAnchorLon').text(parseFloat(POZYX.anchors[0].lon).toFixed(7) + ' deg');
+        $('.GPS_info td.pozyxAnchorAlt').text(
+          parseInt(POZYX.anchors[0].alt) + ' m'
+        );
+        $('.GPS_info td.pozyxAnchorLat').text(
+          parseFloat(POZYX.anchors[0].lat).toFixed(7) + ' deg'
+        );
+        $('.GPS_info td.pozyxAnchorLon').text(
+          parseFloat(POZYX.anchors[0].lon).toFixed(7) + ' deg'
+        );
 
         $('#pozyxAnchorSettingTable').removeClass('is-hidden');
         visible = true;
@@ -753,7 +807,10 @@ TABS.pozyx.initialize = function(callback) {
 
     $('#saveSettings').on('click', function() {
       chrome.storage.local.set({
-        missionPlanerSettings: { speed: $('#MPdefaultPointSpeed').val(), alt: $('#MPdefaultPointAlt').val() }
+        missionPlanerSettings: {
+          speed: $('#MPdefaultPointSpeed').val(),
+          alt: $('#MPdefaultPointAlt').val()
+        }
       });
       $('#missionPlanerSettings').hide();
       $('#missionPlanerTotalInfo').fadeIn(300);
@@ -800,7 +857,10 @@ TABS.pozyx.initialize = function(callback) {
           $('#rthLanding').attr('checked', true);
         }
       } else {
-        var coord = ol.proj.fromLonLat([MISSION_PLANER.bufferPoint.lon, MISSION_PLANER.bufferPoint.lat]);
+        var coord = ol.proj.fromLonLat([
+          MISSION_PLANER.bufferPoint.lon,
+          MISSION_PLANER.bufferPoint.lat
+        ]);
         map.addLayer(
           addMarker(
             coord,
@@ -824,7 +884,12 @@ TABS.pozyx.initialize = function(callback) {
 
     pointForSend++;
 
-    MSP.send_message(MSPCodes.MSP_WP, mspHelper.crunch(MSPCodes.MSP_WP), false, getNextPoint);
+    MSP.send_message(
+      MSPCodes.MSP_WP,
+      mspHelper.crunch(MSPCodes.MSP_WP),
+      false,
+      getNextPoint
+    );
   }
 
   function sendNextPoint() {
@@ -839,7 +904,12 @@ TABS.pozyx.initialize = function(callback) {
         MISSION_PLANER.bufferPoint.alt = 0;
         MISSION_PLANER.bufferPoint.endMission = 0xa5;
         MISSION_PLANER.bufferPoint.p1 = $('#rthLanding').is(':checked') ? 1 : 0;
-        MSP.send_message(MSPCodes.MSP_SET_WP, mspHelper.crunch(MSPCodes.MSP_SET_WP), false, endSendPoint);
+        MSP.send_message(
+          MSPCodes.MSP_SET_WP,
+          mspHelper.crunch(MSPCodes.MSP_SET_WP),
+          false,
+          endSendPoint
+        );
       } else {
         endSendPoint();
       }
@@ -867,7 +937,12 @@ TABS.pozyx.initialize = function(callback) {
       MISSION_PLANER.bufferPoint.endMission = 0;
     }
 
-    MSP.send_message(MSPCodes.MSP_SET_WP, mspHelper.crunch(MSPCodes.MSP_SET_WP), false, sendNextPoint);
+    MSP.send_message(
+      MSPCodes.MSP_SET_WP,
+      mspHelper.crunch(MSPCodes.MSP_SET_WP),
+      false,
+      sendNextPoint
+    );
   }
 
   function endSendPoint() {
