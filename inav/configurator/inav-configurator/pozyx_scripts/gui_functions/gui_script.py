@@ -97,6 +97,15 @@ def send_msp_message(msg):
     pozyx.sendData(destination=0, data=d)
     return {'success': 'WP sent'}
 
+@check_connection
+def send_msp_private_message(msg):
+    message = list(msg.values())
+    size = len(message)
+    if size > 27:
+        return {'error': 'message too long!'}
+    d = Data(data=message, data_format=size * 'B')
+    pozyx.sendData(destination=0, data=d)  #TODO: change to real tag ids from UI
+    return {'success': 'WP sent'}
 
 @check_connection
 def get_position():
@@ -122,6 +131,17 @@ def get_position():
             'Can\'t connect to at least {} anchors. Check the anchor\'s power connection '
             'and the pozyx\'s USB connection'.format(inactive_anchors))
 
+
+def get_drone_ids(): #TODO: adjust number of anchors and show ids in UI
+    #returns array with all tags stored as pozyx devicelist
+    pozyx.doDiscovery(discovery_type=PozyxConstants.DISCOVERY_ALL_DEVICES)
+    list_size = SingleRegister()
+    pozyx.getDeviceListSize(list_size)
+    device_list = get_device_list_ground()
+    tag_list = DeviceList(list_size=list_size[0] - 5)
+    for i in range(0, list_size[0] - 5):
+        tag_list[i] = device_list[i + 5]
+    return tag_list
 
 def xd():
     return {'error': 'XD'}

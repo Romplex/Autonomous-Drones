@@ -82,8 +82,8 @@ def get_device_list_ground():
     pozyx.getDeviceIds(device_list)
     return device_list
 
-def get_tags_list_ground():
-    """returns array with all tags stored as pozyx devicelist"""
+def get_tags_list_ground(): #TODO: adjust number of anchors
+    #returns array with all tags stored as pozyx devicelist
     pozyx.doDiscovery(discovery_type=PozyxConstants.DISCOVERY_ALL_DEVICES)
     list_size = SingleRegister()
     pozyx.getDeviceListSize(list_size)
