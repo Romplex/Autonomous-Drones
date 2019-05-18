@@ -84,7 +84,7 @@ static uint32_t grab_fields(char *src, uint8_t mult)
     return tmp;
 }
 
-#define POZYX_BUFFER_SIZE        16 // TODO uniks: check actual buffer size
+#define POZYX_BUFFER_SIZE        64 // TODO uniks: check actual buffer size
 
 static bool gpsNewFramePOZYX(char c)
 {
@@ -104,13 +104,10 @@ static bool gpsNewFramePOZYX(char c)
         case '*':
             string[offset] = 0;
             if (param == 0) {       //frame identification
-                uint8_t frame = grab_fields(string, 0);
                 gps_frame = NO_FRAME;
-                //if (strcmp(string, "GPS") == 0) {
-                if(frame == FRAME_NAV) {
+                if (strcmp(string, "POS") == 0) {
                     gps_frame = FRAME_NAV;
-                //} else if (strcmp(string, "MAG") == 0) {
-                } else if(frame == FRAME_MAG) {
+                } else if (strcmp(string, "DIR") == 0) {
                     gps_frame = FRAME_MAG;
                 }
                 // TODO uniks add anchor init frame wich sets anchor position X,Y,Z
@@ -136,28 +133,28 @@ static bool gpsNewFramePOZYX(char c)
                         case 5:
                             gps_Msg.altitude = grab_fields(string, 8) / 10;  // TODO uniks : cm ?
                             break;
-                        case 6:
-                            gps_Msg.vel_n = grab_fields(string, 0);  // TODO uniks : d/s ?
-                            break;
-                        case 7:
-                            gps_Msg.vel_e = grab_fields(string, 0);  // TODO uniks : d/s ?
-                            break;
-                        case 8:
-                            gps_Msg.vel_d = grab_fields(string, 0);  // TODO uniks : d/s ?
-                            break;
                          // TODO uniks add pozyx error and calculate dop values
                     }
                     break;
                 case FRAME_MAG:
                     switch (param) {
                         case 1:
-                            gps_Msg.mag_x = grab_fields(string, 2); // TODO uniks : µT ?
+                            gps_Msg.mag_x = grab_fields(string, 2); // TODO uniks : µT ? POZYX sends µT
                             break;
                         case 2:
-                            gps_Msg.mag_y = grab_fields(string, 2); // TODO uniks : µT ?
+                            gps_Msg.mag_y = grab_fields(string, 2); // TODO uniks : µT ? POZYX sends µT
                             break;
                         case 3:
-                            gps_Msg.mag_z = grab_fields(string, 2); // TODO uniks : µT ?
+                            gps_Msg.mag_z = grab_fields(string, 2); // TODO uniks : µT ? POZYX sends µT
+                            break;
+                        case 4:
+                            gps_Msg.vel_x = grab_fields(string, 0);  // TODO uniks : d/s ? POZYX sends d/s
+                            break;
+                        case 5:
+                            gps_Msg.vel_y = grab_fields(string, 0);  // TODO uniks : d/s ? POZYX sends d/s
+                            break;
+                        case 6:
+                            gps_Msg.vel_z = grab_fields(string, 0);  // TODO uniks : d/s ? POZYX sends d/s
                             break;
                     }
                     break;
@@ -208,18 +205,27 @@ static bool gpsNewFramePOZYX(char c)
 
                             gpsSol.fixType = GPS_FIX_3D;
 
-                            gpsSol.velNED[0] = gps_Msg.vel_n;  // vel north cm/s
-                            gpsSol.velNED[1] = gps_Msg.vel_e;  // vel  east cm/s
-                            gpsSol.velNED[2] = gps_Msg.vel_d;  // vel  down cm/s
-
                             /*  TODO uniks: maybe its possible to get horizontal and vertical accuracy from pozyx
                                 calculate dop values */
-                            /*gpsSol.hdop = 1;  // PDOP
+                            gpsSol.hdop = 1;  // PDOP
                             gpsSol.eph = 1;   // hAcc in cm
-                            gpsSol.epv = 1;   // vAcc in cm*/
-                            gpsSol.flags.validEPE = 0;
+                            gpsSol.epv = 1;   // vAcc in cm
+                            gpsSol.flags.validEPE = 1;
 
                             gpsSol.numSat = 5;  // nr of pozyx anchors
+
+                            _new_position = true;
+                            break;
+                        case FRAME_MAG:
+                            // mag xyz
+                            gpsSol.magData[0] = gps_Msg.mag_x;
+                            gpsSol.magData[1] = gps_Msg.mag_y;
+                            gpsSol.magData[2] = gps_Msg.mag_z;
+
+                            // vel xyz
+                            gpsSol.velNED[0] = -gps_Msg.vel_z;  // vel north cm/s
+                            gpsSol.velNED[1] = gps_Msg.vel_x;  // vel  east cm/s
+                            gpsSol.velNED[2] = -gps_Msg.vel_y;  // vel  down cm/s
 
                             gpsSol.groundSpeed = sqrtf(powf(gpsSol.velNED[0], 2)+powf(gpsSol.velNED[1], 2)); //cm/s
 
@@ -230,14 +236,6 @@ static bool gpsNewFramePOZYX(char c)
                             gpsSol.flags.validVelD = 1;
 
                             _new_speed = true;
-                            _new_position = true;
-                            break;
-                        case FRAME_MAG:
-                            // mag xyz
-                            gpsSol.magData[0] = gps_Msg.mag_x;
-                            gpsSol.magData[1] = gps_Msg.mag_y;
-                            gpsSol.magData[2] = gps_Msg.mag_z;
-
                             gpsSol.flags.validMag = 1;
                             break;
                     } // end switch
@@ -259,8 +257,11 @@ static bool gpsNewFramePOZYX(char c)
 
     // we only return true when we get new position and speed data
     // this ensures we don't use stale data
-    if (_new_position && _new_speed) {
-        _new_speed = _new_position = false;
+    if(_new_position) {
+        _new_position = false;
+        return true;
+    } else if(_new_speed) {
+        _new_speed = false;
         return true;
     }
     return false;
@@ -283,6 +284,18 @@ static bool gpsReceiveData(void)
     return hasNewData;
 }
 
+static bool gpsInitialize(void)
+{
+    gpsSetState(GPS_CHANGE_BAUD);
+    return false;
+}
+
+static bool gpsChangeBaud(void)
+{
+    gpsFinalizeChangeBaud();
+    return false;
+}
+
 bool gpsHandlePOZYX(void)
 {
     // Receive data
@@ -292,11 +305,19 @@ bool gpsHandlePOZYX(void)
     switch (gpsState.state) {
     default:
         return false;
+
+    case GPS_INITIALIZING:
+        return gpsInitialize();
+
     case GPS_CHANGE_BAUD:
+        return gpsChangeBaud();
+
     case GPS_CHECK_VERSION:
     case GPS_CONFIGURE:
-        // No autoconfig for pozyx, skip straight to receiving data
+        // No autoconfig, switch straight to receiving data
         gpsSetState(GPS_RECEIVING_DATA);
+        return false;
+
     case GPS_RECEIVING_DATA:
         return hasNewData;
     }

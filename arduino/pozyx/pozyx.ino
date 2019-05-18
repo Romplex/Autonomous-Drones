@@ -8,8 +8,8 @@
 #define FILTER_TYPE_MOVING_AVERAGE  0x3
 #define FILTER_TYPE_MOVING_MEDIAN   0x4
 
-#define ID_NAV 1          // message ID for location data
-#define ID_MAG 2          // message ID for course data
+#define ID_NAV "POS"          // message ID for location data
+#define ID_MAG "DIR"          // message ID for course data
 
 /******************
      Pozyx data
@@ -17,7 +17,9 @@
 // TODO check if all data has correct units for fc navigation
 typedef struct __attribute__((packed))_pozyx_data {
   magnetic_t magnetic;
-  angular_vel_t angular_vel;  // d/s
+  //angular_vel_t angular_vel;  // d/s
+  coordinates_t linear_velocity;        // cm/s
+  unsigned long last_time;    //ms
   coordinates_t coordinates;  // mm
   uint16_t source_id;         // the network id of the connected device, will be set automatically
   pos_error_t pos_error;      // x|y|z variance and xy|xz|yz covariance
@@ -25,14 +27,14 @@ typedef struct __attribute__((packed))_pozyx_data {
 
 volatile pozyx_data_t pozyx_data;
 
-#define DEBUG
+//#define DEBUG
 #define USE_POZYX
 
 #ifndef USE_POZYX
 pozyx_data.coordinates.x = pozyx_data.coordinates.y = 0;  // mm
 pozyx_data.coordinates.z = 0 = 500;                       // mm
 
-pozyx_data.angular_vel.x = pozyx_data.angular_vel.y = pozyx_data.angular_vel.z = 0; // degrees per second
+//pozyx_data.angular_vel.x = pozyx_data.angular_vel.y = pozyx_data.angular_vel.z = 0; // degrees per second
 pozyx_data.magnetic.x = pozyx_data.magnetic.y = pozyx_data.magnetic.z = 0;  // µT
 #endif
 
@@ -57,8 +59,8 @@ boolean stringComplete = false;     // whether the string is complete
 
 // TODO compass should be updated at 10hz ?
 // TODO gps should be updated at 18hz?
-const unsigned int GPS_INTERVAL = 55;      // every 250ms
-const unsigned int MAG_INTERVAL = 100;     // every  30ms
+const unsigned int GPS_INTERVAL = 1;      // every 250ms
+const unsigned int MAG_INTERVAL = 1;     // every  30ms
 
 const uint8_t filter = FILTER_TYPE_MOVING_MEDIAN;
 const uint8_t filter_strength = 8;  // 0-15
@@ -92,6 +94,8 @@ void setup() {
   // setup time variables for gps and mag messages
   t_gps = 0;
   t_mag = 0;
+
+  pozyx_data.last_time = 0;
 
 #ifdef USE_POZYX
 
@@ -134,7 +138,7 @@ void setup() {
 
   // set update intervall for continuous mode
   // TODO is doPositioning still needed?
-  Pozyx.setUpdateInterval(100); //100ms-60000ms
+  Pozyx.setUpdateInterval(101); //100ms-60000ms
 #endif
 
 #ifdef DEBUG
@@ -158,10 +162,26 @@ void loop() {
   //    POZYX_INT_STATUS_ERR, POZYX_INT_STATUS_POS, POZYX_INT_STATUS_IMU,
   //    POZYX_INT_STATUS_RX_DATA, POZYX_INT_STATUS_FUNC
 
+  /*if(Pozyx.waitForFlag(POZYX_INT_STATUS_ERR, 1)) {
+    printErrorCode("");
+  }*/
+
   if (Pozyx.waitForFlag(POZYX_INT_STATUS_IMU, 1)) {
-    // update new magnetic and velned data
+    // update new magnetic and vel data
     Pozyx.getMagnetic_uT(&pozyx_data.magnetic);
-    Pozyx.getAngularVelocity_dps(&pozyx_data.angular_vel);
+    linear_acceleration_t accel;
+    Pozyx.getLinearAcceleration_mg(&accel);
+    
+    if(pozyx_data.last_time != 0) {
+      // calculate linear velocity
+      unsigned long delta_t = currentTime - pozyx_data.last_time;
+      
+      pozyx_data.linear_velocity.x = accel.x * delta_t / 10; // cm/s
+      pozyx_data.linear_velocity.y = accel.y * delta_t / 10; // cm/s
+      pozyx_data.linear_velocity.z = accel.z * delta_t / 10; // cm/s
+    }
+    pozyx_data.last_time = currentTime;
+
   }
 
   if (Pozyx.waitForFlag(POZYX_INT_STATUS_POS, 1)) {
@@ -175,19 +195,15 @@ void loop() {
     forwardMsgToFC();
 #endif
 
-
   if (currentTime - t_gps >= GPS_INTERVAL) {
     // time to send position
-    forwardNavigation(currentTime);
+    forwardNavigation(millis());
   }
 
   if (currentTime - t_mag >= MAG_INTERVAL) {
     // time to send orientation
-    forwardOrientation(currentTime);
+    forwardOrientation(millis());
   }
-
-  currentTime = millis();
-
 
   while (msp.available()) {
     // get msp msg from fc
@@ -355,9 +371,6 @@ void forwardNavigation(unsigned long currentTime) {
                + pozyx_data.coordinates.x + ","
                + pozyx_data.coordinates.y + ","
                + pozyx_data.coordinates.z + ","
-               + pozyx_data.angular_vel.x + ","
-               + pozyx_data.angular_vel.y + ","
-               + pozyx_data.angular_vel.z + ","
                + "*";
   byte len = str.length() + 1;
   char buff[len];
@@ -379,6 +392,9 @@ void forwardOrientation(unsigned long currentTime) {
                + pozyx_data.magnetic.x + ","
                + pozyx_data.magnetic.y + ","
                + pozyx_data.magnetic.z + ","
+               + pozyx_data.linear_velocity.x + ","
+               + pozyx_data.linear_velocity.y + ","
+               + pozyx_data.linear_velocity.z + ","
                + "*";
   byte len = str.length() + 1;
   char buff[len];

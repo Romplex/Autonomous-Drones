@@ -49,9 +49,9 @@ typedef struct gpsDataPozyx_s {
     uint16_t mag_z;
 
     // TODO uniks: velNED needed or claculated by internal gyro?
-    int32_t vel_n;
-    int32_t vel_e;
-    int32_t vel_d;
+    int32_t vel_x;
+    int32_t vel_y;
+    int32_t vel_z;
 
 	uint32_t time;
 	uint32_t date;
