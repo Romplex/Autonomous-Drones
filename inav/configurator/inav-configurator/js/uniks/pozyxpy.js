@@ -34,3 +34,7 @@ PozyxPy.prototype.getWhoAmI = function() {
 PozyxPy.prototype.getTagIds = function() {
   return this.py`get_drone_ids()`;
 };
+
+PozyxPy.prototype.setRemoteId = function(id) {
+  this.py`set_remote_id(${id})`;
+};

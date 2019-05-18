@@ -751,7 +751,12 @@ TABS.pozyx.initialize = function(callback) {
 
     const tags = $('#tag_select');
     tags.on('change', () => {
-      console.log(tags.val());
+      stopPositioning(() => {
+        pozyx.pozyxpy.setRemoteId(tags.val());
+        setTimeout(() => {
+          startPositioning();
+        }, 1000);
+      });
     });
 
     $('#loadPOZYXMissionButton').on('click', function() {

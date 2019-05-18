@@ -63,9 +63,6 @@ if PYPOZYX_INSTALLED:
         # set anchors
         status = pozyx.clearDevices()
         for anchor in anchors:
-==== BASE ====
-            #status &= pozyx.addDevice(anchor, remote_id=remote_id)
-==== BASE ====
             status &= pozyx.addDevice(anchor)
 
 
