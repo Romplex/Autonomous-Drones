@@ -41,14 +41,16 @@ TABS.pozyx.initialize = function(callback) {
   }
 
   function stopPositioning(callback) {
-    clearInterval(pozyx.pozyxWorker.positioning);
-    GUI.log('[uniks] Waiting for positioning to stop...');
-    // wait 2 seconds so that all running positionings can stop
-    setTimeout(() => {
-      GUI.log('[uniks] Ready to communicate with FC.');
-      delete pozyx.pozyxWorker.positioning;
-      callback();
-    }, 2000);
+    if (pozyx.pozyxWorker.positioning) {
+      clearInterval(pozyx.pozyxWorker.positioning);
+      GUI.log('[uniks] Waiting for positioning to stop...');
+      // wait 2 seconds so that all running positionings can stop
+      setTimeout(() => {
+        GUI.log('[uniks] Ready to communicate with FC.');
+        delete pozyx.pozyxWorker.positioning;
+        callback();
+      }, 2000);
+    }
   }
 
   pozyx.pozyxpy = new PozyxPy();
@@ -722,28 +724,6 @@ TABS.pozyx.initialize = function(callback) {
       }
     });
 
-    $('#loadMissionButton').on('click', function() {
-      if (markers.length) {
-        if (!confirm(chrome.i18n.getMessage('confirm_delete_all_points'))) {
-          return;
-        }
-        removeAllPoints();
-      }
-      $(this).addClass('disabled');
-      GUI.log('Start get point');
-
-      pointForSend = 0;
-      getNextPoint();
-    });
-
-    $('#saveMissionButton').on('click', function() {
-      $(this).addClass('disabled');
-      GUI.log('Start send point');
-
-      pointForSend = 0;
-      sendNextPoint();
-    });
-
     $('#loadPOZYXMissionButton').on('click', function() {
       if (markers.length) {
         if (!confirm(chrome.i18n.getMessage('confirm_delete_all_points'))) {
@@ -753,7 +733,7 @@ TABS.pozyx.initialize = function(callback) {
       }
       GUI.log(chrome.i18n.getMessage('eeprom_load_ok'));
 
-      MSP.send_message(MSPCodes.MSP_WP_MISSION_LOAD, [0], getPointsFromEprom);
+      loadPoints();
     });
 
     $('#savePOZYXMissionButton').on('click', function() {
@@ -831,14 +811,19 @@ TABS.pozyx.initialize = function(callback) {
     repaint();
   }
 
-  function getPointsFromEprom() {
-    pointForSend = 0;
-    MSP.send_message(MSPCodes.MSP_WP_GETINFO, false, false, getNextPoint);
+  function loadPoints() {
+    stopPositioning(() => {
+      pointForSend = 0;
+      MSP.send_message(MSPCodes.MSP_WP_MISSION_LOAD, [0], () => {
+        MSP.send_message(MSPCodes.MSP_WP_GETINFO, false, false, getNextPoint);
+      });
+    });
   }
 
   function endGetPoint() {
     GUI.log('End get point');
     $('#loadMissionButton').removeClass('disabled');
+    startPositioning();
     repaint();
     updateTotalInfo();
   }
@@ -893,62 +878,70 @@ TABS.pozyx.initialize = function(callback) {
   }
 
   function sendNextPoint() {
-    var isRTH = $('#rthEndMission').is(':checked');
+    stopPositioning(() => {
+      GUI.log('[uniks] Sending WP to FC.');
+      var isRTH = $('#rthEndMission').is(':checked');
 
-    if (pointForSend >= markers.length) {
-      if (isRTH) {
-        MISSION_PLANER.bufferPoint.number = pointForSend + 1;
-        MISSION_PLANER.bufferPoint.action = 4;
-        MISSION_PLANER.bufferPoint.lon = 0;
-        MISSION_PLANER.bufferPoint.lat = 0;
-        MISSION_PLANER.bufferPoint.alt = 0;
-        MISSION_PLANER.bufferPoint.endMission = 0xa5;
-        MISSION_PLANER.bufferPoint.p1 = $('#rthLanding').is(':checked') ? 1 : 0;
-        MSP.send_message(
-          MSPCodes.MSP_SET_WP,
-          mspHelper.crunch(MSPCodes.MSP_SET_WP),
-          false,
-          endSendPoint
-        );
-      } else {
-        endSendPoint();
+      if (pointForSend >= markers.length) {
+        if (isRTH) {
+          MISSION_PLANER.bufferPoint.number = pointForSend + 1;
+          MISSION_PLANER.bufferPoint.action = 4;
+          MISSION_PLANER.bufferPoint.lon = 0;
+          MISSION_PLANER.bufferPoint.lat = 0;
+          MISSION_PLANER.bufferPoint.alt = 0;
+          MISSION_PLANER.bufferPoint.endMission = 0xa5;
+          MISSION_PLANER.bufferPoint.p1 = $('#rthLanding').is(':checked')
+            ? 1
+            : 0;
+          MSP.send_message(
+            MSPCodes.MSP_SET_WP,
+            mspHelper.crunch(MSPCodes.MSP_SET_WP),
+            false,
+            endSendPoint
+          );
+        } else {
+          endSendPoint();
+        }
+
+        return;
       }
 
-      return;
-    }
+      var geometry = markers[pointForSend]
+        .getSource()
+        .getFeatures()[0]
+        .getGeometry();
+      var coordinate = ol.proj.toLonLat(geometry.getCoordinates());
 
-    var geometry = markers[pointForSend]
-      .getSource()
-      .getFeatures()[0]
-      .getGeometry();
-    var coordinate = ol.proj.toLonLat(geometry.getCoordinates());
+      // TODO uniks increase factor by factor of 10? Therefore increasing gps precision
+      MISSION_PLANER.bufferPoint.number = pointForSend + 1;
+      MISSION_PLANER.bufferPoint.action = markers[pointForSend].action;
+      MISSION_PLANER.bufferPoint.lon = parseInt(coordinate[0] * 10000000);
+      MISSION_PLANER.bufferPoint.lat = parseInt(coordinate[1] * 10000000);
+      MISSION_PLANER.bufferPoint.alt = markers[pointForSend].alt;
+      MISSION_PLANER.bufferPoint.p1 = markers[pointForSend].speedValue;
+      pointForSend++;
+      if (pointForSend >= markers.length && !isRTH) {
+        MISSION_PLANER.bufferPoint.endMission = 0xa5;
+      } else {
+        MISSION_PLANER.bufferPoint.endMission = 0;
+      }
 
-    // TODO uniks increase factor by factor of 10? Therefore increasing gps precision
-    MISSION_PLANER.bufferPoint.number = pointForSend + 1;
-    MISSION_PLANER.bufferPoint.action = markers[pointForSend].action;
-    MISSION_PLANER.bufferPoint.lon = parseInt(coordinate[0] * 10000000);
-    MISSION_PLANER.bufferPoint.lat = parseInt(coordinate[1] * 10000000);
-    MISSION_PLANER.bufferPoint.alt = markers[pointForSend].alt;
-    MISSION_PLANER.bufferPoint.p1 = markers[pointForSend].speedValue;
-    pointForSend++;
-    if (pointForSend >= markers.length && !isRTH) {
-      MISSION_PLANER.bufferPoint.endMission = 0xa5;
-    } else {
-      MISSION_PLANER.bufferPoint.endMission = 0;
-    }
-
-    MSP.send_message(
-      MSPCodes.MSP_SET_WP,
-      mspHelper.crunch(MSPCodes.MSP_SET_WP),
-      false,
-      sendNextPoint
-    );
+      MSP.send_message(
+        MSPCodes.MSP_SET_WP,
+        mspHelper.crunch(MSPCodes.MSP_SET_WP),
+        false,
+        sendNextPoint
+      );
+    });
   }
 
   function endSendPoint() {
     GUI.log('End send point');
 
-    MSP.send_message(MSPCodes.MSP_WP_GETINFO, false, false, updateTotalInfo);
+    MSP.send_message(MSPCodes.MSP_WP_GETINFO, false, false, () => {
+      startPositioning();
+      updateTotalInfo();
+    });
 
     $('#savePOZYXMissionButton').removeClass('disabled');
   }
