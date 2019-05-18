@@ -1,4 +1,3 @@
-from time import sleep
 from contextlib import suppress
 
 PYPOZYX_INSTALLED = True
@@ -46,7 +45,8 @@ if PYPOZYX_INSTALLED:
     anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
                DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
                DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
-               DeviceCoordinates(0x690b, 4, Coordinates(-541, -10979, 3000))]
+               DeviceCoordinates(0x690b, 4, Coordinates(-541, -10979, 3000)),
+               DeviceCoordinates(0x6748, 5, Coordinates(6812, -4581, 20))]
 
     POZYX_CONNECTED_TO_BASE = True
 
@@ -62,8 +62,6 @@ if PYPOZYX_INSTALLED:
             status &= pozyx.addDevice(anchor, remote_id=remote_id)
 
     MAX_TRIES = 20
-    MISSION_DONE = [36, 77, 60, 0, 20, 20]
-    WP_INDEX = 6
 
 
 def check_connection(positioning=True):
@@ -75,19 +73,13 @@ def check_connection(positioning=True):
                 return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
             if not POZYX_CONNECTED_TO_BASE:
                 return send_error_msg('No pozyx device connected! Check USB connection')
-            if positioning:
-                if serial_port not in get_serial_port_names():
-                    return send_error_msg('Connection to pozyx device lost! Check USB connection')
-                inactive_anchors = 0
-                for a in anchors:
-                    network_id = SingleRegister()
-                    pozyx.getWhoAmI(network_id, remote_id=a.network_id)
-                    if network_id.data == [0]:
-                        inactive_anchors += 1
-                if inactive_anchors > 1:
-                    return send_error_msg(
-                        'Can\'t connect to at least {} anchors. Check the anchor\'s power connection '
-                        'and the pozyx\'s USB connection'.format(inactive_anchors))
+            if serial_port not in get_serial_port_names():
+                return send_error_msg('Connection to pozyx device lost! Check USB connection')
+            if remote_id:
+                network_id = SingleRegister()
+                pozyx.getWhoAmI(network_id, remote_id=remote_id)
+                if not network_id.data:
+                    return {'error': 'Could not establish connection to device with ID {}'.format(int(remote_id))}
             return func(*args)
 
         return check
@@ -118,7 +110,20 @@ def get_position():
                 'z': position.z
             }
 
+    # error handling
+    inactive_anchors = 0
+    for a in anchors:
+        network_id = SingleRegister()
+        pozyx.getWhoAmI(network_id, remote_id=a.network_id)
+        if network_id.data == [0]:
+            inactive_anchors += 1
+    if inactive_anchors > 1:
+        return send_error_msg(
+            'Can\'t connect to at least {} anchors. Check the anchor\'s power connection '
+            'and the pozyx\'s USB connection'.format(inactive_anchors))
 
-# if __name__ == '__main__':
-#     l = [36, 77, 60, 21, 209, 1, 1, 103, 135, 149, 30, 167, 144, 165, 5, 136, 19, 0, 0, 0, 0, 0, 0, 0, 0, 165, 6]
-#     send_mission(bytearray(l))
+
+if __name__ == '__main__':
+    while True:
+        with suppress(KeyError):
+            print(get_position())

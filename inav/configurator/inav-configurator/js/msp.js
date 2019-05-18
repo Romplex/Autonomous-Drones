@@ -381,7 +381,7 @@ var MSP = {
       console.log(message.messageBody);
       console.log("----------------------------------");
       console.log(arr);
-      pozyx.pozyxpy.sendWayPoint(arr)
+      pozyx.pozyxpy.sendMSPMessage(arr)
           .then(data => {
             if (data.error) {
               console.log(data.error);

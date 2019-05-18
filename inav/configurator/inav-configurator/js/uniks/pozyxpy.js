@@ -17,9 +17,9 @@ PozyxPy.prototype.getPosition = function() {
   return this.py`get_position()`;
 };
 
-PozyxPy.prototype.sendWayPoint = function(mission) {
+PozyxPy.prototype.sendMSPMessage = function(mission) {
   console.log('message to send:' +  mission);
-  return this.py`send_mission(${mission})`
+  return this.py`send_msp_message(${mission})`
 };
 
 PozyxPy.prototype.getWhoAmI = function() {
