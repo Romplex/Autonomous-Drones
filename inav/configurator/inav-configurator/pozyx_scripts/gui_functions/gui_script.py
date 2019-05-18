@@ -6,7 +6,7 @@ from functools import wraps
 PYPOZYX_INSTALLED = True
 
 try:
-    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister
+    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister, DeviceList
     from pypozyx import Coordinates, POZYX_SUCCESS, PozyxConstants, Data
 except ModuleNotFoundError:
     PYPOZYX_INSTALLED = False
