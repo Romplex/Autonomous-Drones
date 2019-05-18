@@ -64,30 +64,25 @@ if PYPOZYX_INSTALLED:
     MAX_TRIES = 20
 
 
-def check_connection(positioning=True):
+def check_connection(func):
     """Check for errors before executing a pozyx function"""
-
-    def inner(func):
-        def check(*args):
-            if not PYPOZYX_INSTALLED:
-                return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
-            if not POZYX_CONNECTED_TO_BASE:
-                return send_error_msg('No pozyx device connected! Check USB connection')
-            if serial_port not in get_serial_port_names():
-                return send_error_msg('Connection to pozyx device lost! Check USB connection')
-            if remote_id:
-                network_id = SingleRegister()
-                pozyx.getWhoAmI(network_id, remote_id=remote_id)
-                if not network_id.data:
-                    return {'error': 'Could not establish connection to device with ID {}'.format(int(remote_id))}
-            return func(*args)
-
-        return check
-
-    return inner
+    def inner():
+        if not PYPOZYX_INSTALLED:
+            return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
+        if not POZYX_CONNECTED_TO_BASE:
+            return send_error_msg('No pozyx device connected! Check USB connection')
+        if serial_port not in get_serial_port_names():
+            return send_error_msg('Connection to pozyx device lost! Check USB connection')
+        if remote_id:
+            network_id = SingleRegister()
+            pozyx.getWhoAmI(network_id, remote_id=remote_id)
+            if not network_id.data:
+                return {'error': 'Could not establish connection to device with ID {}'.format(remote_id.decode('utf-8'))}
+        return func
+    return inner()
 
 
-@check_connection(positioning=False)
+@check_connection
 def send_msp_message(msg):
     message = list(msg.values())
     size = len(message)
@@ -98,7 +93,7 @@ def send_msp_message(msg):
     return {'success': 'WP sent'}
 
 
-@check_connection()
+@check_connection
 def get_position():
     # start positioning
     for _ in range(MAX_TRIES):

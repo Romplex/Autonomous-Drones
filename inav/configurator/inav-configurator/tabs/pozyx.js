@@ -11,7 +11,7 @@ var pozyx = {
 };
 
 // workaround
-const disablePositioning = true;
+const disablePositioning = false;
 
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
