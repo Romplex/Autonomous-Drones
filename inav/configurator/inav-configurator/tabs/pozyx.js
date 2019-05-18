@@ -62,6 +62,19 @@ TABS.pozyx.initialize = function(callback) {
   pozyx.pozyxWorker.stopPositioning = stopPositioning;
   pozyx.pozyxpy = new PozyxPy();
 
+  pozyx.pozyxpy
+    .getTagIds()
+    .then(tagIds => {
+      const tagList = $('#tag_select');
+      GUI.log(tagList);
+      tagIds.forEach(tId => {
+        GUI.log(tId);
+        tagList.append(`<option value="${tId}">${tId}</option>`);
+      });
+      console.log(tagList);
+    })
+    .catch(err => GUI.log(err));
+
   if (!pozyx.pozyxWorker.positioning) {
     startPositioning();
   }

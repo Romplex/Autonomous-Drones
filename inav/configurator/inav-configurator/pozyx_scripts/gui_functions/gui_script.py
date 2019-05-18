@@ -7,7 +7,7 @@ PYPOZYX_INSTALLED = True
 
 try:
     from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister
-    from pypozyx import Coordinates, POZYX_SUCCESS, PozyxConstants, Data
+    from pypozyx import Coordinates, POZYX_SUCCESS, PozyxConstants, Data, DeviceList
 except ModuleNotFoundError:
     PYPOZYX_INSTALLED = False
 
@@ -63,7 +63,7 @@ if PYPOZYX_INSTALLED:
         # set anchors
         status = pozyx.clearDevices()
         for anchor in anchors:
-            #status &= pozyx.addDevice(anchor, remote_id=remote_id)
+            # status &= pozyx.addDevice(anchor, remote_id=remote_id)
             status &= pozyx.addDevice(anchor)
 
     MAX_TRIES = 20
@@ -99,6 +99,7 @@ def send_msp_message(msg):
     pozyx.sendData(destination=0, data=d)
     return {'success': 'WP sent'}
 
+
 @check_connection
 def send_msp_private_message(msg):
     message = list(msg.values())
@@ -106,8 +107,10 @@ def send_msp_private_message(msg):
     if size > 27:
         return {'error': 'message too long!'}
     d = Data(data=message, data_format=size * 'B')
-    pozyx.sendData(destination=0, data=d)  #TODO: change to real tag ids from UI
+    # TODO: change to real tag ids from UI
+    pozyx.sendData(destination=0, data=d)
     return {'success': 'WP sent'}
+
 
 @check_connection
 def get_position():
@@ -134,16 +137,19 @@ def get_position():
             'and the pozyx\'s USB connection'.format(inactive_anchors))
 
 
-def get_drone_ids(): #TODO: adjust number of anchors and show ids in UI
-    #returns array with all tags stored as pozyx devicelist
+def get_drone_ids():
+    # TODO: adjust number of anchors and show ids in UI
+    # returns array with all tags stored as pozyx devicelist
     pozyx.doDiscovery(discovery_type=PozyxConstants.DISCOVERY_ALL_DEVICES)
     list_size = SingleRegister()
     pozyx.getDeviceListSize(list_size)
     device_list = DeviceList(list_size=list_size[0])
+    pozyx.getDeviceIds(device_list)
     tag_list = DeviceList(list_size=list_size[0] - 5)
     for i in range(0, list_size[0] - 5):
         tag_list[i] = device_list[i + 5]
     return tag_list
+
 
 def xd():
     return {'error': 'XD'}
