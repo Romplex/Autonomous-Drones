@@ -139,7 +139,7 @@ def get_drone_ids(): #TODO: adjust number of anchors and show ids in UI
     pozyx.doDiscovery(discovery_type=PozyxConstants.DISCOVERY_ALL_DEVICES)
     list_size = SingleRegister()
     pozyx.getDeviceListSize(list_size)
-    device_list = get_device_list_ground()
+    device_list = DeviceList(list_size=list_size[0])
     tag_list = DeviceList(list_size=list_size[0] - 5)
     for i in range(0, list_size[0] - 5):
         tag_list[i] = device_list[i + 5]
