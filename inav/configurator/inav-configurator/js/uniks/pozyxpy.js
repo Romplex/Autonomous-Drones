@@ -9,17 +9,22 @@ const PozyxPy = function() {
   const coords = POZYX.anchors.map(a => a.Coordinates);
   this.py = pythonBridge();
 
-  this.py.exFile('./pozyx_scripts/gui_functions/gui_script.py').catch(printPozyxError);
+  this.py
+    .exFile('./pozyx_scripts/gui_functions/gui_script.py')
+    .catch(printPozyxError);
 };
 
+PozyxPy.prototype.exit = function() {
+  this.py.kill();
+};
 
 PozyxPy.prototype.getPosition = function() {
   return this.py`get_position()`;
 };
 
 PozyxPy.prototype.sendMSPMessage = function(mission) {
-  console.log('message to send:' +  mission);
-  return this.py`send_msp_message(${mission})`
+  console.log('message to send:' + mission);
+  return this.py`send_msp_message(${mission})`;
 };
 
 PozyxPy.prototype.getWhoAmI = function() {
