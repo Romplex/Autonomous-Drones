@@ -38,7 +38,7 @@ def send_error_msg(msg):
 
 
 if PYPOZYX_INSTALLED:
-    remote_id = None
+    remote_id = 0x6758
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
@@ -59,7 +59,8 @@ if PYPOZYX_INSTALLED:
         # set anchors
         status = pozyx.clearDevices()
         for anchor in anchors:
-            status &= pozyx.addDevice(anchor, remote_id=remote_id)
+            #status &= pozyx.addDevice(anchor, remote_id=remote_id)
+            status &= pozyx.addDevice(anchor)
 
     MAX_TRIES = 20
 
@@ -123,7 +124,7 @@ def get_position():
             'and the pozyx\'s USB connection'.format(inactive_anchors))
 
 
-if __name__ == '__main__':
-    while True:
-        with suppress(KeyError):
-            print(get_position())
+# if __name__ == '__main__':
+#    while True:
+#        with suppress(KeyError):
+#            print(get_position())

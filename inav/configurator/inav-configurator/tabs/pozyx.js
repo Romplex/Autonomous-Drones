@@ -6,6 +6,8 @@ var pozyx = {
   pozyxMode: false,
   pozyxWorker: {
     positioning: undefined,
+    startPositioning: undefined,
+    stopPositioning: undefined,
     errDialogueOpen: false
   }
 };
@@ -18,13 +20,13 @@ TABS.pozyx.initialize = function(callback) {
     googleAnalytics.sendAppView('Pozyx');
   }
 
-  function startPositioning() {
+  startPositioning = function() {
     pozyx.pozyxWorker.positioning = setInterval(function() {
       pozyx.pozyxpy
         .getPosition()
         .then(data => {
           if (data.error) {
-            stopPositioning();
+            stopPositioning(() => {});
             if (!pozyx.pozyxWorker.errDialogueOpen) {
               confirm(data.error);
             }
@@ -38,9 +40,9 @@ TABS.pozyx.initialize = function(callback) {
         })
         .catch(err => GUI.log(err));
     }, 20);
-  }
+  };
 
-  function stopPositioning(callback) {
+  stopPositioning = function(callback) {
     if (pozyx.pozyxWorker.positioning) {
       clearInterval(pozyx.pozyxWorker.positioning);
       GUI.log('[uniks] Waiting for positioning to stop...');
@@ -50,9 +52,14 @@ TABS.pozyx.initialize = function(callback) {
         delete pozyx.pozyxWorker.positioning;
         callback();
       }, 2000);
+    } else {
+      GUI.log('[uniks] Postioning already stopped.');
+      callback();
     }
-  }
+  };
 
+  pozyx.pozyxWorker.startPositioning = startPositioning;
+  pozyx.pozyxWorker.stopPositioning = stopPositioning;
   pozyx.pozyxpy = new PozyxPy();
 
   if (!pozyx.pozyxWorker.positioning) {
@@ -948,5 +955,10 @@ TABS.pozyx.initialize = function(callback) {
 };
 
 TABS.pozyx.cleanup = function(callback) {
-  if (callback) callback();
+  console.log(pozyx);
+
+  pozyx.pozyxWorker.stopPositioning(() => {
+    pozyx.pozyxpy.exit();
+    if (callback) callback();
+  });
 };
