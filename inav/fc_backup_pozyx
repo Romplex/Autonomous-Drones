@@ -1,6 +1,3 @@
-# version
-# INAV/OMNIBUSF4PRO 2.0.0 Nov  8 2018 / 13:11:09 (25e93af)
-
 # resources
 
 # mixer
@@ -15,14 +12,15 @@ mmix 3  1.000  1.000 -1.000 -1.000
 
 # feature
 feature GPS
-feature PWM_OUTPUT_ENABLE
+feature AIRMODE
 
 # beeper
 
 # map
 
 # serial
-serial 5 2 115200 57600 0 115200
+serial 0 2 115200 115200 0 115200
+serial 5 64 115200 38400 0 115200
 
 # led
 
@@ -31,7 +29,9 @@ serial 5 2 115200 57600 0 115200
 # mode_color
 
 # aux
-aux 0 0 5 1850 2000
+aux 0 0 4 1850 2025
+aux 1 1 5 1850 2025
+aux 2 9 6 1850 2000
 
 # adjrange
 
@@ -41,32 +41,60 @@ aux 0 0 5 1850 2000
 
 # master
 set acc_hardware = MPU6000
-set acczero_x = 89
-set acczero_y = 1
-set acczero_z = -343
-set accgain_x = 4097
-set accgain_y = 4077
-set accgain_z = 4010
-set mag_hardware = NONE
+set acczero_x = 27
+set acczero_y = 12
+set acczero_z = -234
+set accgain_x = 4084
+set accgain_z = 4040
+set mag_hardware = GPSMAG
+set magzero_x = 640
+set magzero_y = -1483
+set magzero_z = -4282
 set baro_hardware = BMP280
 set pitot_hardware = NONE
-set receiver_type = NONE
+set receiver_type = SERIAL
 set serialrx_provider = SBUS
-set blackbox_device = SERIAL
-set min_throttle = 1070
-set max_throttle = 1935
+set current_meter_scale = 400
 set model_preview_type = 3
-set gps_sbas_mode = AUTO
+set gps_provider = POZYX
+set inav_use_gps_velned = OFF
+set inav_w_z_baro_p =  0.000
+set inav_w_z_gps_p =  1.000
+set hott_alarm_sound_interval = 0
+set smartport_uart_unidir = VALUE 5 OUT OF RANGE FOR smartport_uart_unidir
+
+set smartport_fuel_unit = PERCENT
+set ibus_telemetry_type = 1
 
 # profile
 profile 1
 
-set roll_rate = 10
-set pitch_rate = 10
-set yaw_rate = 10
+
+# profile
+profile 2
+
+
+# profile
+profile 3
+
 
 # battery_profile
 battery_profile 1
 
+
+# battery_profile
+battery_profile 2
+
+
+# battery_profile
+battery_profile 3
+
+
+# restore original profile selection
+profile 1
+battery_profile 1
+
+# save configuration
+save
 
 # 
