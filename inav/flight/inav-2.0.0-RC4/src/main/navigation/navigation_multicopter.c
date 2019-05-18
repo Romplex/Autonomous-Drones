@@ -633,14 +633,22 @@ void applyMulticopterNavigationController(navigationFSMStateFlags_t navStateFlag
         applyMulticopterEmergencyLandingController(currentTimeUs);
     }
     else {
-        if (navStateFlags & NAV_CTL_ALT)
-            applyMulticopterAltitudeController(currentTimeUs);
+        // TODO uniks: multicopter controllers are updated here, check this for implementation of automatic flip/roll
+        // TODO uniks: for testing, first set NAV_FLIP/NAV_ROLL states when corresponding flip switch on remote is triggerred, then set these switches when pozyx flip msg is received
+        /*if(navStateFlags & NAV_FLIP) {
+            // TODO +.vel.x - flip forward | -.vel.x - flip backward
+        } else if(navStateFlags & NAV_ROLL) {
+            // TODO +.vel.y - roll right | -.vel.y - roll left
+        } else {*/
+            if (navStateFlags & NAV_CTL_ALT)
+                applyMulticopterAltitudeController(currentTimeUs);
 
-        if (navStateFlags & NAV_CTL_POS)
-            applyMulticopterPositionController(currentTimeUs);
+            if (navStateFlags & NAV_CTL_POS)
+                applyMulticopterPositionController(currentTimeUs);
 
-        if (navStateFlags & NAV_CTL_YAW)
-            applyMulticopterHeadingController();
+            if (navStateFlags & NAV_CTL_YAW)
+                applyMulticopterHeadingController();
+        //}
     }
 }
 #endif  // NAV

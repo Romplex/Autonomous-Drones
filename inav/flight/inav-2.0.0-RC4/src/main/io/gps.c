@@ -177,6 +177,7 @@ static bool gpsHandleProtocol(void)
     // Received new update for solution data
     if (newDataReceived) {
         // Set GPS fix flag only if we have 3D fix
+        // TODO uniks: maybe this causes gps to fail from time to time
         if (gpsSol.fixType == GPS_FIX_3D && gpsSol.numSat >= gpsConfig()->gpsMinSats) {
             ENABLE_STATE(GPS_FIX);
         }
@@ -373,6 +374,7 @@ uint16_t gpsConstrainHDOP(uint32_t hdop)
 bool gpsUpdate(void)
 {
     /* Extra delay for at least 2 seconds after booting to give GPS time to initialise */
+    // TODO uniks: maybe this causes gps to fail from time to time
     if (!isMPUSoftReset() && (millis() < GPS_BOOT_DELAY)) {
         sensorsClear(SENSOR_GPS);
         DISABLE_STATE(GPS_FIX);
@@ -415,6 +417,7 @@ bool gpsUpdate(void)
         case GPS_CONFIGURE:
         case GPS_RECEIVING_DATA:
             updated = gpsHandleProtocol();
+            // TODO uniks: maybe this causes gps to fail from time to time
             if ((millis() - gpsState.lastMessageMs) > GPS_TIMEOUT) {
                 // Check for GPS timeout
                 sensorsClear(SENSOR_GPS);

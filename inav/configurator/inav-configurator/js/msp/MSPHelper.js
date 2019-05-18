@@ -242,15 +242,16 @@ var mspHelper = (function (gui) {
                 }
                 break;
             case MSPCodes.MSP_RAW_GPS:
-                GPS_DATA.fix = data.getUint8(0);
-                GPS_DATA.numSat = data.getUint8(1);
-                GPS_DATA.lat = data.getInt32(2, true);
-                GPS_DATA.lon = data.getInt32(6, true);
-                GPS_DATA.alt = data.getInt16(10, true);
-                GPS_DATA.speed = data.getUint16(12, true);
-                GPS_DATA.ground_course = data.getUint16(14, true);
-                GPS_DATA.hdop = data.getUint16(16, true);
-                break;
+            // TODO uniks quickfix to be able to show position inside gui with pozyx. REMOVE ME
+                // GPS_DATA.fix = data.getUint8(0);
+                // GPS_DATA.numSat = data.getUint8(1);
+                // GPS_DATA.lat = data.getInt32(2, true);
+                // GPS_DATA.lon = data.getInt32(6, true);
+                // GPS_DATA.alt = data.getInt16(10, true);
+                // GPS_DATA.speed = data.getUint16(12, true);
+                // GPS_DATA.ground_course = data.getUint16(14, true);
+                // GPS_DATA.hdop = data.getUint16(16, true);
+                // break;
             case MSPCodes.MSP_RAW_GPS_POZYX:
                 GPS_DATA.fix = data.getUint8(0);
                 GPS_DATA.numSat = data.getUint8(1);
@@ -553,6 +554,7 @@ var mspHelper = (function (gui) {
             case MSPCodes.MSP_WP:
                 MISSION_PLANER.bufferPoint.number = data.getUint8(0);
                 MISSION_PLANER.bufferPoint.action = data.getUint8(1);
+                // TODO uniks increase divisor by factor of 10? Therefore increasing gps precision
                 MISSION_PLANER.bufferPoint.lat = data.getInt32(2, true) / 10000000;
                 MISSION_PLANER.bufferPoint.lon = data.getInt32(6, true) / 10000000;
                 MISSION_PLANER.bufferPoint.alt = data.getInt32(10, true);

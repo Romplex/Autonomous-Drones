@@ -134,6 +134,11 @@ helper.mspQueue = (function (serial, MSP) {
         }
 
         var request = privateScope.get();
+        // TODO uniks debug output, remove me
+        if(request && request.code && (request.code == 118 || request.code == 209 || request.code == 18 || request.code == 19 || request.code == 20) ){
+            console.log("CODE: ", request.code);
+            console.log("MESSAGE BODY: ", request.messageBody)
+        }
 
         if (request !== undefined) {
 
