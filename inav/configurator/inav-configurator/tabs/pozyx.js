@@ -38,7 +38,7 @@ TABS.pozyx.initialize = function(callback) {
               parseFloat(POZYX.anchors[0].lon) + data.x / 1.113195e8;
           }
         })
-        .catch(err => GUI.log(err));
+        .catch(err => GUI.log(err + ''));
     }, 20);
   };
 
@@ -71,7 +71,7 @@ TABS.pozyx.initialize = function(callback) {
           );
         });
       })
-      .catch(err => GUI.log(err));
+      .catch(err => GUI.log(err + ''));
   };
 
   pozyx.pozyxWorker.startPositioning = startPositioning;
@@ -639,7 +639,7 @@ TABS.pozyx.initialize = function(callback) {
           selectedMarker = null;
           clearEditForm();
         } catch (e) {
-          GUI.log(e);
+          GUI.log(e + '');
         }
       }
 

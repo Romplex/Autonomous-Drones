@@ -48,7 +48,7 @@ anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
            DeviceCoordinates(0x690b, 4, Coordinates(-541, -10979, 3000)),
            DeviceCoordinates(0x6748, 5, Coordinates(6812, -4581, 20))]
 MAX_TRIES = 20
-remote_id = None
+remote_id = 0x673d #TODO set to None after id selction works
 
 if PYPOZYX_INSTALLED:
     # remote_id = 0x6758 # drone ID
@@ -123,16 +123,16 @@ def get_position():
             }
 
     # error handling
-    inactive_anchors = 0
-    for a in anchors:
-        network_id = SingleRegister()
-        pozyx.getWhoAmI(network_id, remote_id=a.network_id)
-        if network_id.data == [0]:
-            inactive_anchors += 1
-    if inactive_anchors > 1:
-        return send_error_msg(
-            'Can\'t connect to at least {} anchors. Check the anchor\'s power connection '
-            'and the pozyx\'s USB connection'.format(inactive_anchors))
+    #inactive_anchors = 0
+    #for a in anchors:
+        #network_id = SingleRegister()
+        #pozyx.getWhoAmI(network_id, remote_id=a.network_id)
+        #if network_id.data == [0]:
+            #inactive_anchors += 1
+    #if inactive_anchors > 1:
+     #   return send_error_msg(
+      #      'Can\'t connect to at least {} anchors. Check the anchor\'s power connection '
+       #     'and the pozyx\'s USB connection'.format(inactive_anchors))
 
 
 def get_drone_ids():
