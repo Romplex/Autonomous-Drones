@@ -84,14 +84,14 @@ static uint32_t grab_fields(char *src, uint8_t mult)
     return tmp;
 }
 
-#define POZYX_BUFFER_SIZE        64 // TODO uniks: check actual buffer size
+#define POZYX_BUFFER_SIZE        16 // TODO uniks: check actual buffer size
 
 static bool gpsNewFramePOZYX(char c)
 {
     static gpsDataPozyx_t gps_Msg;
 
     static uint8_t param = 0, offset = 0, parity = 0;
-    static char string[POZYX_BUFFER_SIZE];
+    static char string[POZYX_BUFFER_SIZE] = "";
     static uint8_t checksum_param, gps_frame = NO_FRAME;
 
     switch (c) {
@@ -125,13 +125,13 @@ static bool gpsNewFramePOZYX(char c)
                             gps_Msg.date = grab_fields(string, 0);
                             break;
                         case 3:
-                            gps_Msg.latitude = grab_fields(string,8);   // TODO uniks : mm ?
+                            gps_Msg.pos_x = grab_fields(string,8);   // Pozyx sends  mm
                             break;
                         case 4:
-                            gps_Msg.longitude = grab_fields(string,8);  // TODO uniks : mm ?
+                            gps_Msg.pos_y = grab_fields(string,8);  // Pozyx sends mm
                             break;
                         case 5:
-                            gps_Msg.altitude = grab_fields(string, 8) / 10;  // TODO uniks : cm ?
+                            gps_Msg.pos_z = grab_fields(string, 8) / 10;  // Pozyx sends mm
                             break;
                          // TODO uniks add pozyx error and calculate dop values
                     }
@@ -139,22 +139,22 @@ static bool gpsNewFramePOZYX(char c)
                 case FRAME_MAG:
                     switch (param) {
                         case 1:
-                            gps_Msg.mag_x = grab_fields(string, 2); // TODO uniks : µT ? POZYX sends µT
+                            gps_Msg.mag_x = grab_fields(string, 2); // POZYX sends µT
                             break;
                         case 2:
-                            gps_Msg.mag_y = grab_fields(string, 2); // TODO uniks : µT ? POZYX sends µT
+                            gps_Msg.mag_y = grab_fields(string, 2); // POZYX sends µT
                             break;
                         case 3:
-                            gps_Msg.mag_z = grab_fields(string, 2); // TODO uniks : µT ? POZYX sends µT
+                            gps_Msg.mag_z = grab_fields(string, 2); // POZYX sends µT
                             break;
                         case 4:
-                            gps_Msg.vel_x = grab_fields(string, 0);  // TODO uniks : d/s ? POZYX sends d/s
+                            gps_Msg.vel_x = grab_fields(string, 0);  // POZYX sends cm/s
                             break;
                         case 5:
-                            gps_Msg.vel_y = grab_fields(string, 0);  // TODO uniks : d/s ? POZYX sends d/s
+                            gps_Msg.vel_y = grab_fields(string, 0);  // POZYX sends cm/s
                             break;
                         case 6:
-                            gps_Msg.vel_z = grab_fields(string, 0);  // TODO uniks : d/s ? POZYX sends d/s
+                            gps_Msg.vel_z = grab_fields(string, 0);  // POZYX sends cm/s
                             break;
                     }
                     break;
@@ -183,12 +183,11 @@ static bool gpsNewFramePOZYX(char c)
                             // hdop,eph,epv,numsat,groundspeed,groundcourse
                             // flags validVelNE,validVelD,validEPE,validTime
 
-                            gpsSol.llh.lat = gps_Msg.latitude;
-                            gpsSol.llh.lon = gps_Msg.longitude;
-                            gpsSol.llh.alt = gps_Msg.altitude;
+                            gpsSol.llh.lat = gps_Msg.pos_x;
+                            gpsSol.llh.lon = -gps_Msg.pos_y;
+                            gpsSol.llh.alt = gps_Msg.pos_z/10;
 
                             // This check will miss 00:00:00.00, but we shouldn't care - next report will be valid
-                            // TODO uniks: maybe dont set time since it is less acurate than actual gps time
                             if (gps_Msg.date != 0 && gps_Msg.time != 0) {
                                 gpsSol.time.year = (gps_Msg.date % 100) + 2000;
                                 gpsSol.time.month = (gps_Msg.date / 100) % 100;
@@ -196,7 +195,6 @@ static bool gpsNewFramePOZYX(char c)
                                 gpsSol.time.hours = (gps_Msg.time / 1000000) % 100;
                                 gpsSol.time.minutes = (gps_Msg.time / 10000) % 100;
                                 gpsSol.time.seconds = (gps_Msg.time / 100) % 100;
-                                //gpsSol.time.millis = (gps_Msg.time & 100) * 10;   // TODO uniks remove me
                                 gpsSol.flags.validTime = 1;
                             }
                             else {
@@ -212,7 +210,7 @@ static bool gpsNewFramePOZYX(char c)
                             gpsSol.epv = 1;   // vAcc in cm
                             gpsSol.flags.validEPE = 1;
 
-                            gpsSol.numSat = 5;  // nr of pozyx anchors
+                            gpsSol.numSat = 12;  // nr of pozyx anchors
 
                             _new_position = true;
                             break;
@@ -240,7 +238,7 @@ static bool gpsNewFramePOZYX(char c)
                             break;
                     } // end switch
                 } else {
-                    gpsStats.errors++;
+                    gpsStats.errors++;  // TODO uniks check why gps error is increasing
                 }
             }
             checksum_param = 0;

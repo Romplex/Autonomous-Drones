@@ -17,12 +17,11 @@
 // TODO check if all data has correct units for fc navigation
 typedef struct __attribute__((packed))_pozyx_data {
   magnetic_t magnetic;
-  //angular_vel_t angular_vel;  // d/s
   coordinates_t linear_velocity;        // cm/s
-  unsigned long last_time;    //ms
-  coordinates_t coordinates;  // mm
-  uint16_t source_id;         // the network id of the connected device, will be set automatically
-  pos_error_t pos_error;      // x|y|z variance and xy|xz|yz covariance
+  unsigned long last_time;              // ms
+  coordinates_t coordinates;            // mm
+  uint16_t source_id;                   // the network id of the connected device, will be set automatically
+  //pos_error_t pos_error;                // x|y|z variance and xy|xz|yz covariance
 } pozyx_data_t;
 
 volatile pozyx_data_t pozyx_data;
@@ -32,7 +31,7 @@ volatile pozyx_data_t pozyx_data;
 
 #ifndef USE_POZYX
 pozyx_data.coordinates.x = pozyx_data.coordinates.y = 0;  // mm
-pozyx_data.coordinates.z = 0 = 500;                       // mm
+pozyx_data.coordinates.z = 0;                             // mm
 
 //pozyx_data.angular_vel.x = pozyx_data.angular_vel.y = pozyx_data.angular_vel.z = 0; // degrees per second
 pozyx_data.magnetic.x = pozyx_data.magnetic.y = pozyx_data.magnetic.z = 0;  // µT
@@ -186,7 +185,7 @@ void loop() {
 
   if (Pozyx.waitForFlag(POZYX_INT_STATUS_POS, 1)) {
     Pozyx.getCoordinates(&pozyx_data.coordinates);
-    Pozyx.getPositionError(&pozyx_data.pos_error);
+    //Pozyx.getPositionError(&pozyx_data.pos_error);
     // TODO caluclate dilution of precision from pos error
   }
 

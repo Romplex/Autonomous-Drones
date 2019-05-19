@@ -39,10 +39,9 @@ typedef union {
 
 
 typedef struct gpsDataPozyx_s {
-    int32_t latitude;
-    int32_t longitude;
-
-	uint16_t altitude;
+    int32_t pos_x;
+    int32_t pos_y;
+	int32_t pos_z;
 
     uint16_t mag_x;
     uint16_t mag_y;
