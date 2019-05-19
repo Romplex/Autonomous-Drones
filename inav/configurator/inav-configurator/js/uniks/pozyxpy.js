@@ -30,3 +30,11 @@ PozyxPy.prototype.sendMSPMessage = function(mission) {
 PozyxPy.prototype.getWhoAmI = function() {
   return this.py`who_am_i()`;
 };
+
+PozyxPy.prototype.getTagIds = function() {
+  return this.py`get_drone_ids()`;
+};
+
+PozyxPy.prototype.setRemoteId = function(id) {
+  this.py`set_remote_id(${id})`;
+};
