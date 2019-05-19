@@ -118,7 +118,7 @@ TABS.setup.initialize = function (callback) {
                 // uniks TODO
                 // if pozyx mode enabled get MSP_RAW_GPS_POZYX data, else get MSP_RAW_GPS data
 
-                MSP.send_message(MSPCodes.MSP_RAW_GPS, false, false, function () {
+                MSP.send_message(MSPCodes.MSP_RAW_GPS_POZYX, false, false, function () {
                     var gpsFixType = chrome.i18n.getMessage('gpsFixNone');
                     if (GPS_DATA.fix >= 2)
                         gpsFixType = chrome.i18n.getMessage('gpsFix3D');
