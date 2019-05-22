@@ -742,17 +742,6 @@ static bool mspFcProcessOutCommand(uint16_t cmdMSP, sbuf_t *dst, mspPostProcessF
         break;
 
 #ifdef USE_GPS
-    case MSP_RAW_GPS_POZYX:
-        // TODO[uniks] populate correctly
-        sbufWriteU8(dst, gpsSol.fixType);
-        sbufWriteU8(dst, gpsSol.numSat);
-        sbufWriteU32(dst, gpsSol.llh.lat);
-        sbufWriteU32(dst, gpsSol.llh.lon);
-        sbufWriteU16(dst, gpsSol.llh.alt); // meters
-        sbufWriteU16(dst, gpsSol.groundSpeed);
-        sbufWriteU16(dst, gpsSol.groundCourse);
-        sbufWriteU16(dst, gpsSol.hdop);
-        break;
     case MSP_RAW_GPS:
         sbufWriteU8(dst, gpsSol.fixType);
         sbufWriteU8(dst, gpsSol.numSat);
@@ -2199,33 +2188,6 @@ static mspResult_e mspFcProcessInCommand(uint16_t cmdMSP, sbuf_t *src)
 #endif
 
 #ifdef USE_GPS
-    // TODO[uniks] populate correctly
-    case MSP_SET_RAW_GPS_POZYX:
-        if (dataSize >= 14) {
-            if (sbufReadU8(src)) {
-                ENABLE_STATE(GPS_FIX);
-            } else {
-                DISABLE_STATE(GPS_FIX);
-            }
-            gpsSol.flags.validVelNE = 0;
-            gpsSol.flags.validVelD = 0;
-            gpsSol.flags.validEPE = 0;
-            gpsSol.numSat = sbufReadU8(src);
-            gpsSol.llh.lat = sbufReadU32(src);
-            gpsSol.llh.lon = sbufReadU32(src);
-            gpsSol.llh.alt = sbufReadU16(src);
-            gpsSol.groundSpeed = sbufReadU16(src);
-            gpsSol.velNED[X] = 0;
-            gpsSol.velNED[Y] = 0;
-            gpsSol.velNED[Z] = 0;
-            gpsSol.eph = 100;
-            gpsSol.epv = 100;
-            // Feed data to navigation
-            sensorsSet(SENSOR_GPS);
-            onNewGPSData();
-        } else
-            return MSP_RESULT_ERROR;
-        break;
     case MSP_SET_RAW_GPS:
         if (dataSize >= 14) {
             if (sbufReadU8(src)) {

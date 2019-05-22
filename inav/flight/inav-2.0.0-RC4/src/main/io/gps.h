@@ -39,16 +39,15 @@ typedef union {
 
 
 typedef struct gpsDataPozyx_s {
-    int32_t pos_x;
+    int32_t pos_x;  // mm
     int32_t pos_y;
 	int32_t pos_z;
 
-    uint16_t mag_x;
+    uint16_t mag_x; // µT
     uint16_t mag_y;
     uint16_t mag_z;
 
-    // TODO uniks: velNED needed or claculated by internal gyro?
-    int32_t vel_x;
+    int32_t vel_x;  // cm/s
     int32_t vel_y;
     int32_t vel_z;
 

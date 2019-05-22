@@ -214,6 +214,7 @@ void onNewGPSData(void)
             magDeclinationSet = true;
         }
 #endif
+        // TODO uniks: check if position from pozyx is used correctly
 
         /* Process position update if GPS origin is already set, or precision is good enough */
         // FIXME: Add HDOP check for acquisition of GPS origin
@@ -240,11 +241,11 @@ void onNewGPSData(void)
                 //float gpsScaleLonDown = constrainf(cos_approx((ABS(gpsSol.llh.lat)) * 0.0174532925f), 0.01f, 1.0f);
                 float gpsScaleLonDown = 1.0f;
                 if (positionEstimationConfig()->use_gps_velned && gpsSol.flags.validVelNE) {
-                    // TODO uniks: make arduino calculate velned from pozyx data?
                     posEstimator.gps.vel.x = gpsSol.velNED[0];
                     posEstimator.gps.vel.y = gpsSol.velNED[1];
                 }
                 else {
+                    // TODO uniks: make fc calculate velNED with correct distance in DISTANCE_BETWEEN_TWO_LONGITUDE_POINTS_AT_EQUATOR
                     posEstimator.gps.vel.x = (posEstimator.gps.vel.x + (DISTANCE_BETWEEN_TWO_LONGITUDE_POINTS_AT_EQUATOR * (gpsSol.llh.lat - previousLat) / dT)) / 2.0f;
                     posEstimator.gps.vel.y = (posEstimator.gps.vel.y + (gpsScaleLonDown * DISTANCE_BETWEEN_TWO_LONGITUDE_POINTS_AT_EQUATOR * (gpsSol.llh.lon - previousLon) / dT)) / 2.0f;
                 }
@@ -649,6 +650,7 @@ static void updateEstimatedTopic(timeUs_t currentTimeUs)
         return;
     }
 
+    // TODO uniks: check if position from pozyx is used correctly
     /* Calculate new EPH and EPV for the case we didn't update postion */
     ctx.newEPH = posEstimator.est.eph * ((posEstimator.est.eph <= positionEstimationConfig()->max_eph_epv) ? 1.0f + ctx.dt : 1.0f);
     ctx.newEPV = posEstimator.est.epv * ((posEstimator.est.epv <= positionEstimationConfig()->max_eph_epv) ? 1.0f + ctx.dt : 1.0f);

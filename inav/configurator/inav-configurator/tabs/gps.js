@@ -18,7 +18,7 @@ TABS.gps.initialize = function (callback) {
         localize();
 
         function get_raw_gps_data() {
-            MSP.send_message(MSPCodes.MSP_RAW_GPS_POZYX, false, false, get_comp_gps_data);
+            MSP.send_message(MSPCodes.MSP_RAW_GPS, false, false, get_comp_gps_data);
         }
 
         function get_comp_gps_data() {

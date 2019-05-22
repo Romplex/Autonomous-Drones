@@ -58,6 +58,7 @@ var CONFIG,
     SETTINGS;
 
 var POZYX = require('./resources/pozyx-settings.json');
+POZYX.geoToLocal = 1.113195e8;  // TODO is magic nr precise enough?
 
 var FC = {
     MAX_SERVO_RATE: 125,

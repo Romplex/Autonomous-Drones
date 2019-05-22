@@ -257,16 +257,16 @@ static uint8_t dispatchMeasurementRequest(ibusAddress_t address) {
 #endif
         return sendIbusMeasurement2(address, 0);
     } else if (SENSOR_ADDRESS_TYPE_LOOKUP[address].value == IBUS_MEAS_VALUE_GPS_LAT2) { //GPS_LAT2 //Lattitude * 1e+7
-//FIXME[uniks]: gpsSol.llh.lat is double, do modulo?
-//#if defined(USE_GPS)
-//        if (sensors(SENSOR_GPS)) return sendIbusMeasurement2(address, (uint16_t) ((gpsSol.llh.lat % 100000)/10));
-//#endif
+//FIXME[uniks]: gpsSol.llh.lat
+#if defined(USE_GPS)
+        if (sensors(SENSOR_GPS)) return sendIbusMeasurement2(address, (uint16_t) ((gpsSol.llh.lat % 100000)/10));
+#endif
         return sendIbusMeasurement2(address, 0);
     } else if (SENSOR_ADDRESS_TYPE_LOOKUP[address].value == IBUS_MEAS_VALUE_GPS_LON2) { //GPS_LON2 //Longitude * 1e+7
-//FIXME[uniks]: gpsSol.llh.lon is double, do modulo?
-//#if defined(USE_GPS)
-//        if (sensors(SENSOR_GPS)) return sendIbusMeasurement2(address, (uint16_t) ((gpsSol.llh.lon % 100000)/10)); else
-//#endif
+//FIXME[uniks]: gpsSol.llh.lon
+#if defined(USE_GPS)
+        if (sensors(SENSOR_GPS)) return sendIbusMeasurement2(address, (uint16_t) ((gpsSol.llh.lon % 100000)/10)); else
+#endif
         return sendIbusMeasurement2(address, 0);
     } else if (SENSOR_ADDRESS_TYPE_LOOKUP[address].value == IBUS_MEAS_VALUE_GALT4) { //GPS_ALT //In cm => m
 #if defined(USE_GPS)

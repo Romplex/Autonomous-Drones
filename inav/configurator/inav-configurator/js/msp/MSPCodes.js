@@ -78,14 +78,13 @@ var MSPCodes = {
     MSP_SET_SENSOR_CONFIG:      97,
 
     // POZYX commands 140-149 can be used
-    MSP_RAW_GPS_POZYX:          140,
+    // TODO uniks : remove?
     MSP_NAV_POSHOLD_POZYX:      141,
     MSP_SET_NAV_POSHOLD_POZYX:  142, //TODO[uniks] needed?
     MSP_WP_MISSION_LOAD_POZYX:  143,
     MSP_WP_MISSION_SAVE_POZYX:  144,
     MSP_WP_POZYX:               145,
 
-    MSP_SET_RAW_GPS_POZYX:      145,
     MSP_SET_WP_POZYX:           146,
 
     // Multiwii MSP commands

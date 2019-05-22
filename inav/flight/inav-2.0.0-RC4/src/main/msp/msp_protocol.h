@@ -248,14 +248,12 @@
 //
 // POZYX commands 140-149 can be used
 //
-#define MSP_RAW_GPS_POZYX               140 //out message           time, pozyx_x, sign_x, pozyx_y, sign_y, pozyx_z, sign_z
 #define MSP_NAV_POSHOLD_POZYX           141
 #define MSP_SET_NAV_POSHOLD_POZYX       142 //TODO[uniks] needed?
 #define MSP_WP_MISSION_LOAD_POZYX       143
 #define MSP_WP_MISSION_SAVE_POZYX       144
 #define MSP_WP_POZYX                    145 //out message           get a WP, WP# is in the payload, returns (WP#, lat, lon, alt, flags) WP#0-home, WP#16-poshold
 
-#define MSP_SET_RAW_GPS_POZYX           145 //in message            time, pozyx_x, sign_x, pozyx_y, sign_y, pozyx_z, sign_z
 #define MSP_SET_WP_POZYX                146 //in message            set a WP, WP# is in the payload, returns (WP#, lat, lon, alt, flags) WP#0-home, WP#16-poshold
 
 //

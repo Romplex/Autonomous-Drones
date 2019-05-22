@@ -110,7 +110,6 @@ static bool gpsNewFramePOZYX(char c)
                 } else if (strcmp(string, "DIR") == 0) {
                     gps_frame = FRAME_MAG;
                 }
-                // TODO uniks add anchor init frame wich sets anchor position X,Y,Z
             }
 
             switch (gps_frame) {
@@ -133,7 +132,6 @@ static bool gpsNewFramePOZYX(char c)
                         case 5:
                             gps_Msg.pos_z = grab_fields(string, 8) / 10;  // Pozyx sends mm
                             break;
-                         // TODO uniks add pozyx error and calculate dop values
                     }
                     break;
                 case FRAME_MAG:
@@ -183,6 +181,7 @@ static bool gpsNewFramePOZYX(char c)
                             // hdop,eph,epv,numsat,groundspeed,groundcourse
                             // flags validVelNE,validVelD,validEPE,validTime
 
+                            // TODO uniks correct directions?
                             gpsSol.llh.lat = gps_Msg.pos_x;
                             gpsSol.llh.lon = -gps_Msg.pos_y;
                             gpsSol.llh.alt = gps_Msg.pos_z/10;
@@ -203,14 +202,14 @@ static bool gpsNewFramePOZYX(char c)
 
                             gpsSol.fixType = GPS_FIX_3D;
 
-                            /*  TODO uniks: maybe its possible to get horizontal and vertical accuracy from pozyx
+                            /*  TODO uniks: remove dop values and set flags to 0?
                                 calculate dop values */
                             gpsSol.hdop = 1;  // PDOP
                             gpsSol.eph = 1;   // hAcc in cm
                             gpsSol.epv = 1;   // vAcc in cm
                             gpsSol.flags.validEPE = 1;
 
-                            gpsSol.numSat = 12;  // nr of pozyx anchors
+                            gpsSol.numSat = 12;
 
                             _new_position = true;
                             break;
@@ -221,6 +220,7 @@ static bool gpsNewFramePOZYX(char c)
                             gpsSol.magData[2] = gps_Msg.mag_z;
 
                             // vel xyz
+                            // TODO uniks correct directions?
                             gpsSol.velNED[0] = -gps_Msg.vel_z;  // vel north cm/s
                             gpsSol.velNED[1] = gps_Msg.vel_x;  // vel  east cm/s
                             gpsSol.velNED[2] = -gps_Msg.vel_y;  // vel  down cm/s
