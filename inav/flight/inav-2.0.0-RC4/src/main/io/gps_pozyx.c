@@ -146,13 +146,13 @@ static bool gpsNewFramePOZYX(char c)
                             gps_Msg.mag_z = grab_fields(string, 2); // POZYX sends µT
                             break;
                         case 4:
-                            gps_Msg.vel_x = grab_fields(string, 0);  // POZYX sends cm/s
+                            gps_Msg.vel.x = grab_fields(string, 0);  // POZYX sends cm/s
                             break;
                         case 5:
-                            gps_Msg.vel_y = grab_fields(string, 0);  // POZYX sends cm/s
+                            gps_Msg.vel.y = grab_fields(string, 0);  // POZYX sends cm/s
                             break;
                         case 6:
-                            gps_Msg.vel_z = grab_fields(string, 0);  // POZYX sends cm/s
+                            gps_Msg.vel.z = grab_fields(string, 0);  // POZYX sends cm/s
                             break;
                     }
                     break;
@@ -182,9 +182,10 @@ static bool gpsNewFramePOZYX(char c)
                             // flags validVelNE,validVelD,validEPE,validTime
 
                             // TODO uniks correct directions?
-                            gpsSol.llh.lat = gps_Msg.pos_x;
-                            gpsSol.llh.lon = -gps_Msg.pos_y;
-                            gpsSol.llh.alt = gps_Msg.pos_z/10;
+                            // TODO uniks correct dimensions?
+                            gpsSol.llh.lat = gps_Msg.pos_y;
+                            gpsSol.llh.lon = -gps_Msg.pos_x;
+                            gpsSol.llh.alt = gps_Msg.pos_z/100;
 
                             // This check will miss 00:00:00.00, but we shouldn't care - next report will be valid
                             if (gps_Msg.date != 0 && gps_Msg.time != 0) {
@@ -202,8 +203,7 @@ static bool gpsNewFramePOZYX(char c)
 
                             gpsSol.fixType = GPS_FIX_3D;
 
-                            /*  TODO uniks: remove dop values and set flags to 0?
-                                calculate dop values */
+                            /*  calculate dop values */
                             gpsSol.hdop = 1;  // PDOP
                             gpsSol.eph = 1;   // hAcc in cm
                             gpsSol.epv = 1;   // vAcc in cm
@@ -221,9 +221,14 @@ static bool gpsNewFramePOZYX(char c)
 
                             // vel xyz
                             // TODO uniks correct directions?
-                            gpsSol.velNED[0] = -gps_Msg.vel_z;  // vel north cm/s
-                            gpsSol.velNED[1] = gps_Msg.vel_x;  // vel  east cm/s
-                            gpsSol.velNED[2] = -gps_Msg.vel_y;  // vel  down cm/s
+                            // TODO uniks convert to neu coordinate system
+
+                            /* Rotate vector to Earth frame - from Forward-Right-Down to North-East-Up*/
+                            imuTransformVectorBodyToEarth(&gps_Msg.vel);
+
+                            gpsSol.velNED[0] = -gps_Msg.vel.z;  // vel north cm/s
+                            gpsSol.velNED[1] = gps_Msg.vel.x;  // vel  east cm/s
+                            gpsSol.velNED[2] = -gps_Msg.vel.y;  // vel  down cm/s
 
                             gpsSol.groundSpeed = sqrtf(powf(gpsSol.velNED[0], 2)+powf(gpsSol.velNED[1], 2)); //cm/s
 
@@ -232,9 +237,9 @@ static bool gpsNewFramePOZYX(char c)
 
                             gpsSol.flags.validVelNE = 1;
                             gpsSol.flags.validVelD = 1;
+                            gpsSol.flags.validMag = 1;
 
                             _new_speed = true;
-                            gpsSol.flags.validMag = 1;
                             break;
                     } // end switch
                 } else {

@@ -23,6 +23,9 @@
 
 #include "common/time.h"
 
+#include "common/vector.h"
+#include "flight/imu.h"
+
 #define GPS_DBHZ_MIN 0
 #define GPS_DBHZ_MAX 55
 
@@ -47,9 +50,7 @@ typedef struct gpsDataPozyx_s {
     uint16_t mag_y;
     uint16_t mag_z;
 
-    int32_t vel_x;  // cm/s
-    int32_t vel_y;
-    int32_t vel_z;
+    fpVector3_t vel; //cm/s
 
 	uint32_t time;
 	uint32_t date;
