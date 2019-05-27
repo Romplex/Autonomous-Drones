@@ -54,10 +54,11 @@
 #include "sensors/acceleration.h"
 #include "sensors/boardalignment.h"
 
+#define POZYX_SAFETY 0.05   //  1/20
 
 // Multirotors:
-#define MR_RTH_CLIMB_OVERSHOOT_CM   100  // target this amount of cm *above* the target altitude to ensure it is actually reached (Vz > 0 at target alt)
-#define MR_RTH_CLIMB_MARGIN_MIN_CM  100  // start cruising home this amount of cm *before* reaching the cruise altitude (while continuing the ascend)
+#define MR_RTH_CLIMB_OVERSHOOT_CM   25  // target this amount of cm *above* the target altitude to ensure it is actually reached (Vz > 0 at target alt)
+#define MR_RTH_CLIMB_MARGIN_MIN_CM  25  // start cruising home this amount of cm *before* reaching the cruise altitude (while continuing the ascend)
 #define MR_RTH_CLIMB_MARGIN_PERCENT 15   // on high RTH altitudes use even bigger margin - percent of the altitude set
 // Planes:
 #define FW_RTH_CLIMB_OVERSHOOT_CM   100
@@ -79,6 +80,7 @@ PG_REGISTER_ARRAY(navWaypoint_t, NAV_MAX_WAYPOINTS, nonVolatileWaypointList, PG_
 
 PG_REGISTER_WITH_RESET_TEMPLATE(navConfig_t, navConfig, PG_NAV_CONFIG, 2);
 
+//TODO uniks set general settings
 PG_RESET_TEMPLATE(navConfig_t, navConfig,
     .general = {
 
@@ -96,20 +98,20 @@ PG_RESET_TEMPLATE(navConfig_t, navConfig,
 
         // General navigation parameters
         .pos_failure_timeout = 5,     // 5 sec
-        .waypoint_radius = 100,       // 2m diameter
+        .waypoint_radius = 100*POZYX_SAFETY,       // 2m diameter
         .waypoint_safe_distance = 10000,    // 100m - first waypoint should be closer than this
-        .max_auto_speed = 300,             // 3 m/s = 10.8 km/h
-        .max_auto_climb_rate = 500,        // 5 m/s
+        .max_auto_speed = 300*POZYX_SAFETY,             // 3 m/s = 10.8 km/h
+        .max_auto_climb_rate = 500*POZYX_SAFETY,        // 5 m/s
         .max_manual_speed = 500,
         .max_manual_climb_rate = 200,
-        .land_descent_rate = 200,     // 2 m/s
-        .land_slowdown_minalt = 500,  // 5 meters of altitude
-        .land_slowdown_maxalt = 2000, // 20 meters of altitude
-        .emerg_descent_rate = 500,    // 5 m/s
-        .min_rth_distance = 500,      // If closer than 5m - land immediately
-        .rth_altitude = 1000,         // 10m
+        .land_descent_rate = 200*POZYX_SAFETY,     // 2 m/s
+        .land_slowdown_minalt = 25,  // 0.25 meters of altitude
+        .land_slowdown_maxalt = 500, // 5 meters of altitude
+        .emerg_descent_rate = 500*POZYX_SAFETY,    // 5 m/s
+        .min_rth_distance = 50,      // If closer than 0.5m - land immediately
+        .rth_altitude = 1000*POZYX_SAFETY,         // 10m
         .rth_home_altitude = 0,
-        .rth_abort_threshold = 50000, // 500m - should be safe for all aircraft
+        .rth_abort_threshold = 50000*POZYX_SAFETY, // 500m - should be safe for all aircraft
         .max_terrain_follow_altitude = 100,     // max 1m altitude in terrain following mode
     },
 

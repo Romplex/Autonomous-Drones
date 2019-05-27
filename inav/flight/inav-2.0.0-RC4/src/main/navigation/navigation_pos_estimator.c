@@ -553,7 +553,15 @@ static bool estimationCalculateCorrection_Z(estimationContext_t * ctx)
 
         return true;
     }
+#if defined(USE_GPS) && defined(USE_GPS_PROTO_POZYX)
+    else if (ctx->newFlags & EST_GPS_Z_VALID) {
+#else
     else if (STATE(FIXED_WING) && (ctx->newFlags & EST_GPS_Z_VALID)) {
+#endif
+
+        // TODO uniks https://github.com/iNavFlight/inav/wiki/Developer-info
+        // GPS altitude is very noisy and is limited to FIXED_WING aircraft (experimental and untested).
+
         // If baro is not available - use GPS Z for correction on a plane
         // Reset current estimate to GPS altitude if estimate not valid
         if (!(ctx->newFlags & EST_Z_VALID)) {

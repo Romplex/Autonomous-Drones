@@ -84,6 +84,10 @@ void estimationCalculateAGL(estimationContext_t * ctx)
 {
 #if defined(USE_RANGEFINDER) && defined(USE_BARO)
     if ((ctx->newFlags & EST_SURFACE_VALID) && (ctx->newFlags & EST_BARO_VALID)) {
+
+        // TODO uniks https://github.com/iNavFlight/inav/wiki/Developer-info
+        // GPS altitude is very noisy and is limited to FIXED_WING aircraft (experimental and untested).
+
         navAGLEstimateQuality_e newAglQuality = posEstimator.est.aglQual;
         bool resetSurfaceEstimate = false;
         switch (posEstimator.est.aglQual) {
