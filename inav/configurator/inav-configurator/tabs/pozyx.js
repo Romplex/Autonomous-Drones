@@ -32,6 +32,8 @@ TABS.pozyx.initialize = function (callback) {
             }
             pozyx.pozyxWorker.errDialogueOpen = true;
           } else {
+            console.log(data.x);
+            console.log(data.y);
             GPS_DATA.lat =
               parseFloat(POZYX.anchors[0].lat) + data.y / POZYX.geoToLocal;
             GPS_DATA.lon =
@@ -42,7 +44,7 @@ TABS.pozyx.initialize = function (callback) {
     }, 20);
   };
 
-  stopPositioning = function (callback) {
+  var stopPositioning = function (callback) {
     if (pozyx.pozyxWorker.positioning) {
       clearInterval(pozyx.pozyxWorker.positioning);
       GUI.log('[uniks] Waiting for positioning to stop...');
@@ -58,21 +60,21 @@ TABS.pozyx.initialize = function (callback) {
     }
   };
 
-  updateTagIds = function () {
-    pozyx.pozyxpy
-      .getTagIds()
-      .then(tagIds => {
-        const tagList = $('#tag_select');
-        tagList.empty();
-        tagList.append('<option value="None">None</option>');
-        tagIds.forEach(tId => {
-          tagList.append(
-            `<option value="${tId}">0x${tId.toString(16)}</option>`
-          );
-        });
-      })
-      .catch(err => GUI.log(err + ''));
-  };
+  // updateTagIds = function () {
+  //   pozyx.pozyxpy
+  //     .getTagIds()
+  //     .then(tagIds => {
+  //       const tagList = $('#tag_select');
+  //       tagList.empty();
+  //       tagList.append('<option value="None">None</option>');
+  //       tagIds.forEach(tId => {
+  //         tagList.append(
+  //           `<option value="${tId}">0x${tId.toString(16)}</option>`
+  //         );
+  //       });
+  //     })
+  //     .catch(err => GUI.log(err + ''));
+  // };
 
   pozyx.pozyxWorker.startPositioning = startPositioning;
   pozyx.pozyxWorker.stopPositioning = stopPositioning;
@@ -82,7 +84,7 @@ TABS.pozyx.initialize = function (callback) {
     startPositioning();
   }
 
-  updateTagIds();
+  // updateTagIds();
 
   var loadChainer = new MSPChainerClass();
   loadChainer.setChain([mspHelper.getMissionInfo]);
@@ -170,7 +172,7 @@ TABS.pozyx.initialize = function (callback) {
         map.addLayer(positionLayer);
 
         map.getView().setCenter(newCenter);
-      }
+      };
 
       let showAnchors = function () {
         let anchorsFeatures = new Array(5);
@@ -211,7 +213,7 @@ TABS.pozyx.initialize = function (callback) {
         map.removeLayer(anchorLayer);
         anchorLayer = vectorLayer;
         map.addLayer(anchorLayer);
-      }
+      };
 
       if (GPS_DATA.fix > 0) {
         $('#loadmap').show();
