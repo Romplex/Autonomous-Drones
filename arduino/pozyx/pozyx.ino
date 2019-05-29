@@ -25,9 +25,13 @@ typedef struct __attribute__((packed))_pozyx_data {
 } pozyx_data_t;
 
 volatile pozyx_data_t pozyx_data;
+bool newOrientation = false;
+bool newPosition = false;
 
 //#define DEBUG
 #define USE_POZYX
+#define PRINT_POSITION
+#define PRINT_ORIENTATION
 
 #ifndef USE_POZYX
 pozyx_data.coordinates.x = pozyx_data.coordinates.y = 0;  // mm
@@ -163,45 +167,50 @@ void loop() {
 
   /*if(Pozyx.waitForFlag(POZYX_INT_STATUS_ERR, 1)) {
     printErrorCode("");
-  }*/
+    }*/
 
   if (Pozyx.waitForFlag(POZYX_INT_STATUS_IMU, 1)) {
     // update new magnetic and vel data
     Pozyx.getMagnetic_uT(&pozyx_data.magnetic);
     linear_acceleration_t accel;
     Pozyx.getLinearAcceleration_mg(&accel);
-    
-    if(pozyx_data.last_time != 0) {
+
+    if (pozyx_data.last_time != 0) {
       // calculate linear velocity
       unsigned long delta_t = currentTime - pozyx_data.last_time;
-      
+
       pozyx_data.linear_velocity.x = accel.x * delta_t / 10; // cm/s
       pozyx_data.linear_velocity.y = accel.y * delta_t / 10; // cm/s
       pozyx_data.linear_velocity.z = accel.z * delta_t / 10; // cm/s
     }
     pozyx_data.last_time = currentTime;
 
+    newOrientation = true;
+
   }
 
-  if (Pozyx.waitForFlag(POZYX_INT_STATUS_POS, 1)) {
+  if (Pozyx.waitForFlag(POZYX_INT_STATUS_POS, 2)) {
     Pozyx.getCoordinates(&pozyx_data.coordinates);
-    //Pozyx.getPositionError(&pozyx_data.pos_error);
+    //    Pozyx.getPositionError(&pozyx_data.pos_error);
     // TODO caluclate dilution of precision from pos error
+    newPosition = true;
   }
 
-  if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 1))
+  /*if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 1))
     // we have received a message via pozyx
-    forwardMsgToFC();
+    forwardMsgToFC();*/
 #endif
 
-  if (currentTime - t_gps >= GPS_INTERVAL) {
+  if (currentTime - t_gps >= GPS_INTERVAL && newPosition) {
     // time to send position
     forwardNavigation(millis());
+    newPosition = false;
   }
 
-  if (currentTime - t_mag >= MAG_INTERVAL) {
+  if (currentTime - t_mag >= MAG_INTERVAL && newOrientation) {
     // time to send orientation
     forwardOrientation(millis());
+    newOrientation = false;
   }
 
   while (msp.available()) {
@@ -378,7 +387,9 @@ void forwardNavigation(unsigned long currentTime) {
   str.toCharArray(buff, len);
   String gps_msg = str + calcCRC(buff, sizeof(buff));
 
+#ifdef PRINT_POSITION
   Serial.println(gps_msg);
+#endif
 }
 
 void forwardOrientation(unsigned long currentTime) {
@@ -401,5 +412,7 @@ void forwardOrientation(unsigned long currentTime) {
   // TODO: fix String->Char, Char->String conversions!
   str.toCharArray(buff, len);
   String mag_msg = str + calcCRC(buff, sizeof(buff));
+#ifdef PRINT_ORIENTATION
   Serial.println(mag_msg);
+#endif
 }
