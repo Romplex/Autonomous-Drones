@@ -70,15 +70,14 @@ def check_connection(func):
     """Check for errors before executing a pozyx function"""
 
     @wraps(func)
-    def check():
+    def check(*args):
         if not PYPOZYX_INSTALLED:
             return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
         if not POZYX_CONNECTED_TO_BASE:
             return send_error_msg('No pozyx device connected! Check USB connection')
         if serial_port not in get_serial_port_names():
             return send_error_msg('Connection to pozyx device lost! Check USB connection')
-        return func()
-
+        return func(*args)
     return check
 
 
@@ -89,19 +88,22 @@ def send_msp_message(msg):
     if size > 27:
         return {'error': 'message too long!'}
     d = Data(data=message, data_format=size * 'B')
-    pozyx.sendData(destination=0, data=d)
+    pozyx.sendData(destination=remote_id, data=d)
     return {'success': 'WP sent'}
 
 
-@check_connection
-def send_msp_private_message(msg):
-    message = list(msg.values())
-    size = len(message)
-    if size > 27:
-        return {'error': 'message too long!'}
-    d = Data(data=message, data_format=size * 'B')
-    pozyx.sendData(destination=0, data=d)
-    return {'success': 'WP sent'}
+def set_remote_id(r_id):
+    global remote_id
+    try:
+        r_id = int(r_id)
+        r_id = None if r_id == 1 else r_id
+        if r_id == remote_id:
+            return {'success': 'remote id remains unchanged.'}
+        remote_id = r_id
+        return {'success': 'remote id set to {}'.format(remote_id)}
+    except ValueError:
+        remote_id = None
+        return {'error': 'Can\'t set remote id!'}
 
 
 @check_connection
@@ -140,8 +142,10 @@ def get_tag_ids():
     pozyx.getDeviceListSize(list_size)
     device_list = DeviceList(list_size=list_size[0])
     pozyx.getDeviceIds(device_list)
-    return {d for d in device_list} - IDs
+    return list({d for d in device_list} - IDs)
 
 
-if __name__ == '__main__':
-    print(get_tag_ids())
+# if __name__ == '__main__':
+#     while True:
+#         set_remote_id(1)
+#         print(get_position())
