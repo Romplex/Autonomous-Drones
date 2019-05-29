@@ -14,26 +14,26 @@ var pozyx = {
 
 TABS.pozyx = {};
 TABS.pozyx.isYmapLoad = false;
-TABS.pozyx.initialize = function (callback) {
+TABS.pozyx.initialize = function(callback) {
   if (GUI.active_tab != 'pozyx') {
     GUI.active_tab = 'pozyx';
     googleAnalytics.sendAppView('Pozyx');
   }
 
-  startPositioning = function () {
-    pozyx.pozyxWorker.positioning = setInterval(function () {
+  startPositioning = function() {
+    pozyx.pozyxWorker.positioning = setInterval(function() {
       pozyx.pozyxpy
         .getPosition()
         .then(data => {
           if (data.error) {
-            stopPositioning(() => { });
+            stopPositioning(() => {});
             if (!pozyx.pozyxWorker.errDialogueOpen) {
               confirm(data.error);
             }
             pozyx.pozyxWorker.errDialogueOpen = true;
           } else {
-            console.log(data.x);
-            console.log(data.y);
+            // console.log(data.x);
+            // console.log(data.y);
             GPS_DATA.lat =
               parseFloat(POZYX.anchors[0].lat) + data.y / POZYX.geoToLocal;
             GPS_DATA.lon =
@@ -44,7 +44,7 @@ TABS.pozyx.initialize = function (callback) {
     }, 20);
   };
 
-  var stopPositioning = function (callback) {
+  var stopPositioning = function(callback) {
     if (pozyx.pozyxWorker.positioning) {
       clearInterval(pozyx.pozyxWorker.positioning);
       GUI.log('[uniks] Waiting for positioning to stop...');
@@ -108,7 +108,7 @@ TABS.pozyx.initialize = function (callback) {
 
   function process_html() {
     if (typeof require !== 'undefined') {
-      chrome.storage.local.get('missionPlanerSettings', function (result) {
+      chrome.storage.local.get('missionPlanerSettings', function(result) {
         if (result.missionPlanerSettings) {
           $('#MPdefaultPointAlt').val(result.missionPlanerSettings.alt);
           $('#MPdefaultPointSpeed').val(result.missionPlanerSettings.speed);
@@ -129,12 +129,7 @@ TABS.pozyx.initialize = function (callback) {
     localize();
 
     function get_raw_gps_pozyx_data() {
-      MSP.send_message(
-        MSPCodes.MSP_RAW_GPS,
-        false,
-        false,
-        get_comp_gps_data
-      );
+      MSP.send_message(MSPCodes.MSP_RAW_GPS, false, false, get_comp_gps_data);
     }
 
     function get_comp_gps_data() {
@@ -151,7 +146,7 @@ TABS.pozyx.initialize = function (callback) {
     }
 
     function update_ui() {
-      let showPosition = function () {
+      let showPosition = function() {
         let iconFeature = new ol.Feature({
           geometry: new ol.geom.Point(newCenter)
         });
@@ -170,11 +165,9 @@ TABS.pozyx.initialize = function (callback) {
         map.removeLayer(positionLayer);
         positionLayer = vectorLayer;
         map.addLayer(positionLayer);
-
-        map.getView().setCenter(newCenter);
       };
 
-      let showAnchors = function () {
+      let showAnchors = function() {
         let anchorsFeatures = new Array(5);
         for (var i = 0; i < 5; ++i) {
           // TODO uniks scale of anchors' coordinates looks wrong
@@ -183,11 +176,16 @@ TABS.pozyx.initialize = function (callback) {
           let anchor_z = POZYX.anchors[i].Coordinates[2] / 200;
 
           anchorsFeatures[i] = new ol.Feature({
-            'geometry': new ol.geom.Point(ol.proj.fromLonLat([lon + anchor_x / POZYX.geoToLocal, lat + anchor_y / POZYX.geoToLocal])),
+            geometry: new ol.geom.Point(
+              ol.proj.fromLonLat([
+                lon + anchor_x / POZYX.geoToLocal,
+                lat + anchor_y / POZYX.geoToLocal
+              ])
+            ),
             //'geometry': new ol.geom.Point([newCenter[0] + anchor_x*factor, newCenter[1] + anchor_y*factor]),
-            'i': i,
-            'id': POZYX.anchors[i].id,
-            'size': Math.max(4, Math.abs(anchor_z))
+            i: i,
+            id: POZYX.anchors[i].id,
+            size: Math.max(4, Math.abs(anchor_z))
           });
         }
 
@@ -198,7 +196,7 @@ TABS.pozyx.initialize = function (callback) {
 
         let vectorLayer = new ol.layer.Vector({
           source: vectorSource,
-          style: function (feature) {
+          style: function(feature) {
             let style = new ol.style.Style({
               image: new ol.style.Circle({
                 radius: feature.get('size'),
@@ -256,22 +254,23 @@ TABS.pozyx.initialize = function (callback) {
 
       let mapFollowDrone = $('#followdrone').is(':checked');
 
-      if (oldCenter[0] !== newCenter[0] && oldCenter[1] !== newCenter[1] && mapFollowDrone) {
-        GUI.log('[uniks] update center position');
+      if (
+        oldCenter[0] !== newCenter[0] &&
+        oldCenter[1] !== newCenter[1] &&
+        mapFollowDrone
+      ) {
         map.getView().setCenter(newCenter);
       }
 
-      if (!positionLayer) {
-        showPosition();
-        map.getView().setCenter(newCenter);
-      }
+      // update position every time the map is updated
+      showPosition();
 
       if (!anchorLayer) {
         showAnchors();
       }
     }
 
-    $('#followdrone').on('change', function () {
+    $('#followdrone').on('change', function() {
       update_ui();
     });
 
@@ -321,7 +320,7 @@ TABS.pozyx.initialize = function (callback) {
     lines = [];
     $('#missionDistance').text(0);
 
-    map.getLayers().forEach(function (t) {
+    map.getLayers().forEach(function(t) {
       //feature.getGeometry().getType()
       if (t instanceof ol.layer.Vector && typeof t.alt !== 'undefined') {
         var geometry = t
@@ -433,7 +432,7 @@ TABS.pozyx.initialize = function (callback) {
      * @constructor
      * @extends {ol.interaction.Pointer}
      */
-    app.Drag = function () {
+    app.Drag = function() {
       ol.interaction.Pointer.call(this, {
         handleDownEvent: app.Drag.prototype.handleDownEvent,
         handleDragEvent: app.Drag.prototype.handleDragEvent,
@@ -472,7 +471,7 @@ TABS.pozyx.initialize = function (callback) {
      * @extends {ol.control.Control}
      * @param {Object=} opt_options Control options.
      */
-    app.PlannerSettingsControl = function (opt_options) {
+    app.PlannerSettingsControl = function(opt_options) {
       var options = opt_options || {};
       var button = document.createElement('button');
 
@@ -480,16 +479,16 @@ TABS.pozyx.initialize = function (callback) {
       button.style =
         "background: url('../images/CF_settings_white.svg') no-repeat 1px -1px;background-color: rgba(0,60,136,.5);";
 
-      var handleShowSettings = function () {
+      var handleShowSettings = function() {
         $('#MPeditPoint, #missionPlanerTotalInfo').hide();
         $('#missionPlanerSettings').fadeIn(300);
       };
 
-      var handleChangePozyxSettings = function () {
+      var handleChangePozyxSettings = function() {
         $('#savePozyxAnchorSettings').removeClass('is-hidden');
       };
 
-      $('#savePozyxAnchorSettings').on('click', function () {
+      $('#savePozyxAnchorSettings').on('click', function() {
         // save anchor settings in resource/pozyx-settings.json
         $('#savePozyxAnchorSettings').addClass('is-hidden');
         let data = $('.pozyxAnchorSettingData');
@@ -545,10 +544,10 @@ TABS.pozyx.initialize = function (callback) {
      * @param {ol.MapBrowserEvent} evt Map browser event.
      * @return {boolean} `true` to start the drag sequence.
      */
-    app.Drag.prototype.handleDownEvent = function (evt) {
+    app.Drag.prototype.handleDownEvent = function(evt) {
       var map = evt.map;
 
-      var feature = map.forEachFeatureAtPixel(evt.pixel, function (
+      var feature = map.forEachFeatureAtPixel(evt.pixel, function(
         feature,
         layer
       ) {
@@ -566,10 +565,10 @@ TABS.pozyx.initialize = function (callback) {
     /**
      * @param {ol.MapBrowserEvent} evt Map browser event.
      */
-    app.Drag.prototype.handleDragEvent = function (evt) {
+    app.Drag.prototype.handleDragEvent = function(evt) {
       var map = evt.map;
 
-      var feature = map.forEachFeatureAtPixel(evt.pixel, function (
+      var feature = map.forEachFeatureAtPixel(evt.pixel, function(
         feature,
         layer
       ) {
@@ -590,10 +589,10 @@ TABS.pozyx.initialize = function (callback) {
     /**
      * @param {ol.MapBrowserEvent} evt Event.
      */
-    app.Drag.prototype.handleMoveEvent = function (evt) {
+    app.Drag.prototype.handleMoveEvent = function(evt) {
       if (this.cursor_) {
         var map = evt.map;
-        var feature = map.forEachFeatureAtPixel(evt.pixel, function (
+        var feature = map.forEachFeatureAtPixel(evt.pixel, function(
           feature,
           layer
         ) {
@@ -616,7 +615,7 @@ TABS.pozyx.initialize = function (callback) {
      * @param {ol.MapBrowserEvent} evt Map browser event.
      * @return {boolean} `false` to stop the drag sequence.
      */
-    app.Drag.prototype.handleUpEvent = function (evt) {
+    app.Drag.prototype.handleUpEvent = function(evt) {
       this.coordinate_ = null;
       this.feature_ = null;
       return false;
@@ -652,7 +651,7 @@ TABS.pozyx.initialize = function (callback) {
     // Set the attribute link to open on an external browser window, so
     // it doesn't interfere with the configurator.
     var interval;
-    interval = setInterval(function () {
+    interval = setInterval(function() {
       var anchor = $('.ol-attribution a');
       if (anchor.length) {
         anchor.attr('target', '_blank');
@@ -660,7 +659,7 @@ TABS.pozyx.initialize = function (callback) {
       }
     }, 100);
 
-    map.on('click', function (evt) {
+    map.on('click', function(evt) {
       if (selectedMarker != null) {
         try {
           selectedMarker
@@ -674,13 +673,13 @@ TABS.pozyx.initialize = function (callback) {
         }
       }
 
-      var selectedFeature = map.forEachFeatureAtPixel(evt.pixel, function (
+      var selectedFeature = map.forEachFeatureAtPixel(evt.pixel, function(
         feature,
         layer
       ) {
         return feature;
       });
-      selectedMarker = map.forEachFeatureAtPixel(evt.pixel, function (
+      selectedMarker = map.forEachFeatureAtPixel(evt.pixel, function(
         feature,
         layer
       ) {
@@ -712,9 +711,9 @@ TABS.pozyx.initialize = function (callback) {
     });
 
     // change mouse cursor when over marker
-    $(map.getViewport()).on('mousemove', function (e) {
+    $(map.getViewport()).on('mousemove', function(e) {
       var pixel = map.getEventPixel(e.originalEvent);
-      var hit = map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+      var hit = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
         return true;
       });
       if (hit) {
@@ -724,13 +723,13 @@ TABS.pozyx.initialize = function (callback) {
       }
     });
 
-    $('#removeAllPoints').on('click', function () {
+    $('#removeAllPoints').on('click', function() {
       if (confirm(chrome.i18n.getMessage('confirm_delete_all_points'))) {
         removeAllPoints();
       }
     });
 
-    $('#removePoint').on('click', function () {
+    $('#removePoint').on('click', function() {
       if (selectedMarker) {
         var tmp = [];
         for (var i in markers) {
@@ -750,9 +749,9 @@ TABS.pozyx.initialize = function (callback) {
       }
     });
 
-    $('#savePoint').on('click', function () {
+    $('#savePoint').on('click', function() {
       if (selectedMarker) {
-        map.getLayers().forEach(function (t) {
+        map.getLayers().forEach(function(t) {
           if (t === selectedMarker) {
             var geometry = t
               .getSource()
@@ -790,7 +789,7 @@ TABS.pozyx.initialize = function (callback) {
       });
     });
 
-    $('#loadPOZYXMissionButton').on('click', function () {
+    $('#loadPOZYXMissionButton').on('click', function() {
       if (markers.length) {
         if (!confirm(chrome.i18n.getMessage('confirm_delete_all_points'))) {
           return;
@@ -802,7 +801,7 @@ TABS.pozyx.initialize = function (callback) {
       loadPoints();
     });
 
-    $('#savePOZYXMissionButton').on('click', function () {
+    $('#savePOZYXMissionButton').on('click', function() {
       GUI.log(chrome.i18n.getMessage('pozyx_saved_ok'));
       $(this).addClass('disabled');
       GUI.log('Start send point');
@@ -811,7 +810,7 @@ TABS.pozyx.initialize = function (callback) {
       sendNextPoint();
     });
 
-    $('#showPozyxSettings').on('click', function () {
+    $('#showPozyxSettings').on('click', function() {
       var visible = $(this).data('visible');
 
       if (visible) {
@@ -838,12 +837,12 @@ TABS.pozyx.initialize = function (callback) {
       $(this).data('visible', visible);
     });
 
-    $('#runPyScriptButton').on('click', function () {
+    $('#runPyScriptButton').on('click', function() {
       // TODO uniks
       GUI.log('button clicked');
     });
 
-    $('#rthEndMission').on('change', function () {
+    $('#rthEndMission').on('change', function() {
       if ($(this).is(':checked')) {
         $('#rthSettings').fadeIn(300);
       } else {
@@ -851,7 +850,7 @@ TABS.pozyx.initialize = function (callback) {
       }
     });
 
-    $('#saveSettings').on('click', function () {
+    $('#saveSettings').on('click', function() {
       chrome.storage.local.set({
         missionPlanerSettings: {
           speed: $('#MPdefaultPointSpeed').val(),
@@ -1013,7 +1012,7 @@ TABS.pozyx.initialize = function (callback) {
   }
 };
 
-TABS.pozyx.cleanup = function (callback) {
+TABS.pozyx.cleanup = function(callback) {
   console.log(pozyx);
 
   pozyx.pozyxWorker.stopPositioning(() => {
