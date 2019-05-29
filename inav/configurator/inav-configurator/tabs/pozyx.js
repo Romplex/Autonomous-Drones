@@ -230,7 +230,7 @@ TABS.pozyx.initialize = function (callback) {
       var lon = GPS_DATA.lon;
 
       $('.GPS_info td.fix').html(gpsFixType);
-      $('.GPS_info td.alt').text(GPS_DATA.alt + ' m');
+      $('.GPS_info td.alt').text(GPS_DATA.alt + 'cm');
       $('.GPS_info td.lat').text(lat.toFixed(7) + ' deg');
       $('.GPS_info td.lon').text(lon.toFixed(7) + ' deg');
       $('.GPS_info td.speed').text(GPS_DATA.speed + ' cm/s');
