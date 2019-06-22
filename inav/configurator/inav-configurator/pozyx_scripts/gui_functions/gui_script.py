@@ -145,7 +145,6 @@ def get_tag_ids():
     return list({d for d in device_list} - IDs)
 
 
-# if __name__ == '__main__':
-#     while True:
-#         set_remote_id(1)
-#         print(get_position())
+if __name__ == '__main__':
+    while True:
+        print(get_position())
