@@ -130,7 +130,7 @@ static bool gpsNewFramePOZYX(char c)
                             gps_Msg.pos_y = grab_fields(string,8);  // Pozyx sends mm
                             break;
                         case 5:
-                            gps_Msg.pos_z = grab_fields(string, 8) / 10;  // Pozyx sends mm
+                            gps_Msg.pos_z = grab_fields(string, 8);  // Pozyx sends mm
                             break;
                     }
                     break;
@@ -181,11 +181,9 @@ static bool gpsNewFramePOZYX(char c)
                             // hdop,eph,epv,numsat,groundspeed,groundcourse
                             // flags validVelNE,validVelD,validEPE,validTime
 
-                            // TODO uniks correct directions?
-                            // TODO uniks correct dimensions?
-                            gpsSol.llh.lat = gps_Msg.pos_y;
-                            gpsSol.llh.lon = -gps_Msg.pos_x;
-                            gpsSol.llh.alt = gps_Msg.pos_z/100;
+                            gpsSol.llh.lat = gps_Msg.pos_x;
+                            gpsSol.llh.lon = -gps_Msg.pos_y;
+                            gpsSol.llh.alt = gps_Msg.pos_z/10; // mm -> cm
 
                             // This check will miss 00:00:00.00, but we shouldn't care - next report will be valid
                             if (gps_Msg.date != 0 && gps_Msg.time != 0) {
@@ -204,9 +202,9 @@ static bool gpsNewFramePOZYX(char c)
                             gpsSol.fixType = GPS_FIX_3D;
 
                             /*  calculate dop values */
-                            gpsSol.hdop = 1;  // PDOP
-                            gpsSol.eph = 1;   // hAcc in cm
-                            gpsSol.epv = 1;   // vAcc in cm
+                            gpsSol.hdop = 1*HDOP_SCALE;  // PDOP
+                            gpsSol.eph = 1*HDOP_SCALE;   // hAcc in cm
+                            gpsSol.epv = 1*HDOP_SCALE;   // vAcc in cm
                             gpsSol.flags.validEPE = 1;
 
                             gpsSol.numSat = 12;

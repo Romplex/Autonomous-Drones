@@ -46,7 +46,7 @@ TABS.gps.initialize = function (callback) {
                 gpsFixType = chrome.i18n.getMessage('gpsFix2D');
 
             $('.GPS_info td.fix').html(gpsFixType);
-            $('.GPS_info td.alt').text(GPS_DATA.alt + ' m');
+            $('.GPS_info td.alt').text(GPS_DATA.alt + ' cm');
             $('.GPS_info td.lat').text(GPS_DATA.lat.toFixed(7) + ' deg');
             $('.GPS_info td.lon').text(GPS_DATA.lon.toFixed(7) + ' deg');
             $('.GPS_info td.speed').text(GPS_DATA.speed + ' cm/s');
