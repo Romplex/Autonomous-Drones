@@ -1,4 +1,3 @@
-from contextlib import suppress
 from functools import wraps
 
 PYPOZYX_INSTALLED = True
@@ -11,16 +10,22 @@ except ModuleNotFoundError:
 
 
 def inspect_port(port):
-    with suppress(TypeError):
+    try:
         if 'Pozyx Labs' in port.manufacturer:
             return True
-    with suppress(TypeError):
+    except TypeError:
+        pass
+    try:
         if 'Pozyx' in port.product:
             return True
-    with suppress(TypeError):
+    except TypeError:
+        pass
+    try:
         # assure it is NOT the flight controller
         if '0483:' in port.hwid and not port.serial_number.lower().startswith('0x'):
             return True
+    except TypeError:
+        pass
     return False
 
 
