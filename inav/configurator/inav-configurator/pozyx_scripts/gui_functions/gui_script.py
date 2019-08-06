@@ -1,9 +1,11 @@
 from functools import wraps
 
 PYPOZYX_INSTALLED = True
+BUSY_SERIAL = False
 
 try:
-    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister, DeviceList
+    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister, DeviceList, \
+        PozyxConnectionError
     from pypozyx import Coordinates, POZYX_SUCCESS, PozyxConstants, Data
 except ModuleNotFoundError:
     PYPOZYX_INSTALLED = False
@@ -62,18 +64,22 @@ if PYPOZYX_INSTALLED:
     if serial_port is None:
         POZYX_CONNECTED_TO_BASE = False
     else:
-        pozyx = PozyxSerial(serial_port)
-        # set anchors
-        status = pozyx.clearDevices()
-        for anchor in anchors:
-            status &= pozyx.addDevice(anchor)
+        try:
+            pozyx = PozyxSerial(serial_port)
+            status = pozyx.clearDevices()
 
-        remote_check = SingleRegister()
-        pozyx.getWhoAmI(remote_check, remote_id=remote_id)
-        if remote_check.data == [0]:
-            remote_id = None
+            for anchor in anchors:
+                status &= pozyx.addDevice(anchor)
 
-    MAX_TRIES = 1000
+            remote_check = SingleRegister()
+            pozyx.getWhoAmI(remote_check, remote_id=remote_id)
+            if remote_check.data == [0]:
+                remote_id = None
+
+            MAX_TRIES = 1000
+        except PozyxConnectionError:
+            BUSY_SERIAL = True
+
 
 
 def check_connection(func):
@@ -81,6 +87,8 @@ def check_connection(func):
 
     @wraps(func)
     def check(*args):
+        if BUSY_SERIAL:
+            return {'error': 'Busy serial port! You may need to reboot your PC.'}
         if not PYPOZYX_INSTALLED:
             return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
         if not POZYX_CONNECTED_TO_BASE:
@@ -155,6 +163,6 @@ def get_tag_ids():
     return list({d for d in device_list} - IDs)
 
 
-# if __name__ == '__main__':
-#     while True:
-#         print(get_position())
+if __name__ == '__main__':
+    while True:
+        print(get_position())
