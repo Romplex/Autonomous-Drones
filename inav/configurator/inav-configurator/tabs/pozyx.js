@@ -25,7 +25,7 @@ TABS.pozyx.initialize = function (callback) {
             pozyx.pozyxpy
                 .getPosition()
                 .then(data => {
-                    console.log(data);
+                    //console.log(data);
                     if (data.error) {
                         stopPositioning(() => {
                         });
@@ -174,12 +174,15 @@ TABS.pozyx.initialize = function (callback) {
                     let anchor_x = POZYX.anchors[i].Coordinates[0];
                     let anchor_y = POZYX.anchors[i].Coordinates[1];
                     let anchor_z = POZYX.anchors[i].Coordinates[2] / 200;
+                    let anchorLat = 51.311635;
+                    let anchorLon = 9.47362;
+                    console.log(lat + "   " + lon);
 
                     anchorsFeatures[i] = new ol.Feature({
                         geometry: new ol.geom.Point(
                             ol.proj.fromLonLat([
-                                lon + anchor_x / POZYX.geoToLocal,
-                                lat + anchor_y / POZYX.geoToLocal
+                                anchorLon + anchor_x / POZYX.geoToLocal,
+                                anchorLat + anchor_y / POZYX.geoToLocal
                             ])
                         ),
                         //'geometry': new ol.geom.Point([newCenter[0] + anchor_x*factor, newCenter[1] + anchor_y*factor]),
