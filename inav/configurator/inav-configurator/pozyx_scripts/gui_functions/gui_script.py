@@ -44,7 +44,7 @@ def send_error_msg(msg):
 
 
 if PYPOZYX_INSTALLED:
-    remote_id = None
+    remote_id = 0x6758
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
@@ -67,6 +67,11 @@ if PYPOZYX_INSTALLED:
         status = pozyx.clearDevices()
         for anchor in anchors:
             status &= pozyx.addDevice(anchor)
+
+        remote_check = SingleRegister()
+        pozyx.getWhoAmI(remote_check, remote_id=remote_id)
+        if remote_check.data == [0]:
+            remote_id = None
 
     MAX_TRIES = 1000
 
@@ -128,7 +133,7 @@ def get_position():
     if remote_id:
         network_id = SingleRegister()
         pozyx.getWhoAmI(network_id, remote_id=remote_id)
-        if not network_id.data:
+        if network_id.data == [0]:
             return send_error_msg('Could not establish connection to device with ID {}'.format(remote_id.decode('utf-8')))
     for a in anchors:
         network_id = SingleRegister()
@@ -152,5 +157,4 @@ def get_tag_ids():
 
 # if __name__ == '__main__':
 #     while True:
-#         set_remote_id(1)
 #         print(get_position())
