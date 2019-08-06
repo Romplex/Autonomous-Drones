@@ -59,28 +59,28 @@ TABS.pozyx.initialize = function (callback) {
             callback();
         }
     };
-
-    var updateTagIds = function () {
-        pozyx.pozyxpy
-            .getTagIds()
-            .then(tagIds => {
-                const tagList = $('#tag_select');
-                tagList.empty();
-                tagList.append('<option value="1">None</option>');
-                tagIds.forEach(tId => {
-                    tagList.append(
-                        `<option value="${tId}">0x${tId.toString(16)}</option>`
-                    );
-                });
-            })
-            .catch(err => GUI.log(err + ''));
-    };
+    //
+    // var updateTagIds = function () {
+    //     pozyx.pozyxpy
+    //         .getTagIds()
+    //         .then(tagIds => {
+    //             const tagList = $('#tag_select');
+    //             tagList.empty();
+    //             tagList.append('<option value="1">None</option>');
+    //             tagIds.forEach(tId => {
+    //                 tagList.append(
+    //                     `<option value="${tId}">0x${tId.toString(16)}</option>`
+    //                 );
+    //             });
+    //         })
+    //         .catch(err => GUI.log(err + ''));
+    // };
 
     pozyx.pozyxpy = new PozyxPy();
     pozyx.pozyxWorker.startPositioning = startPositioning;
     pozyx.pozyxWorker.stopPositioning = stopPositioning;
 
-    updateTagIds();
+    //updateTagIds();
 
     if (!pozyx.pozyxWorker.positioning) {
         startPositioning();
@@ -779,25 +779,25 @@ TABS.pozyx.initialize = function (callback) {
             }
         });
 
-        const tags = $('#tag_select');
-        tags.on('change', () => {
-            stopPositioning(() => {
-                GUI.log(tags.val());
-                pozyx.pozyxpy.setRemoteId(tags.val())
-                    .then(data => {
-                        if (data.error) {
-                            console.log(data.error);
-                        } else {
-                            GUI.log(data.success);
-                        }
-                    })
-                    .catch(err => GUI.log(err + ''));
-                setTimeout(() => {
-                    console.log("XD");
-                    startPositioning();
-                }, 1000);
-            });
-        });
+        // const tags = $('#tag_select');
+        // tags.on('change', () => {
+        //     stopPositioning(() => {
+        //         GUI.log(tags.val());
+        //         pozyx.pozyxpy.setRemoteId(tags.val())
+        //             .then(data => {
+        //                 if (data.error) {
+        //                     console.log(data.error);
+        //                 } else {
+        //                     GUI.log(data.success);
+        //                 }
+        //             })
+        //             .catch(err => GUI.log(err + ''));
+        //         setTimeout(() => {
+        //             console.log("XD");
+        //             startPositioning();
+        //         }, 1000);
+        //     });
+        // });
 
         $('#loadPOZYXMissionButton').on('click', function () {
             if (markers.length) {
