@@ -49,6 +49,7 @@ ultra-wideband channel 5, preamble length 1024, prf 64MHz, and bitrate 110kbps
 * Arduino Nano Flash: old bootloader
 
 ## Verkabelung
+![Drone Schaltplan](Drone_Schaltplan.png "Drone Schaltplan")
 ![Drone Pinout](drone-pinout.png "Drone Pinout")
 
 ### POZYX -> Arduino Nano
