@@ -63,6 +63,15 @@ static bool _new_position;
 // do we have new speed information?
 static bool _new_speed;
 
+static const float ANCHOR_LAT = 51.311644;    // default anchor latitude 51.311644
+static const float ANCHOR_LON = 9.473625;     // default anchor longitude 9.473625
+//static const float ANCHOR_ALTITUDE = 0;       // default anchor altitude 166m
+
+// TODO[uniks] make fc use double values correctly
+static const float EARTH_R = 6.365317e9;       // in mm
+
+static const float RAD_TO_DEGREE = 180.0/M_PI; // 180/PI
+
 static uint32_t grab_fields(char *src, uint8_t mult)
 {                               // convert string to uint32
     uint32_t i;
@@ -183,8 +192,11 @@ static bool gpsNewFramePOZYX(char c)
 
                             // TODO uniks correct directions?
                             // TODO uniks correct dimensions?
-                            gpsSol.llh.lat = gps_Msg.pos_y;
-                            gpsSol.llh.lon = -gps_Msg.pos_x;
+
+                            // convert pozyx to gps location
+                            gpsSol.llh.lat = ANCHOR_LAT + (gps_Msg.pos_y/EARTH_R) * RAD_TO_DEGREE;
+	                        gpsSol.llh.lon = ANCHOR_LON + (gps_Msg.pos_x/EARTH_R) * RAD_TO_DEGREE / (float)cos(gpsSol.llh.lat * RAD_TO_DEGREE);
+
                             gpsSol.llh.alt = gps_Msg.pos_z/100;
 
                             // This check will miss 00:00:00.00, but we shouldn't care - next report will be valid

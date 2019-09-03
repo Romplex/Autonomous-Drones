@@ -19,8 +19,8 @@
 
 //TODO [uniks] 1.113195e5: Magic number converts geo distances to meter so
 // we need to change magic number to 1e-5 to use our pozyx in Meter
-//#define DISTANCE_BETWEEN_TWO_LONGITUDE_POINTS_AT_EQUATOR    1.113195f  // MagicEarthNumber from APM
-#define DISTANCE_BETWEEN_TWO_LONGITUDE_POINTS_AT_EQUATOR    1  // MagicEarthNumber from APM
+#define DISTANCE_BETWEEN_TWO_LONGITUDE_POINTS_AT_EQUATOR    1.113195f  // MagicEarthNumber from APM
+//#define DISTANCE_BETWEEN_TWO_LONGITUDE_POINTS_AT_EQUATOR    1  // MagicEarthNumber from APM
 
 #if defined(USE_NAV)
 

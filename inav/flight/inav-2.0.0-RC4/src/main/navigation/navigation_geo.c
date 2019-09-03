@@ -140,9 +140,10 @@ void geoSetOrigin(gpsOrigin_s * origin, const gpsLocation_t * llh, geoOriginRese
         origin->lat = llh->lat;
         origin->lon = llh->lon;
         origin->alt = llh->alt;
-//        origin->scale = constrainf(cos_approx((ABS(origin->lat) / 10000000.0f) * 0.0174532925f), 0.01f, 1.0f);
+        // uniks
+        origin->scale = constrainf(cos_approx((ABS(origin->lat) / 10000000.0f) * 0.0174532925f), 0.01f, 1.0f);
 //        origin->scale = constrainf(cos_approx((ABS(origin->lat)) * 0.0174532925f), 0.01f, 1.0f);
-        origin->scale = 1;
+        //origin->scale = 1;
     }
     else if (origin->valid && (resetMode == GEO_ORIGIN_RESET_ALTITUDE)) {
         origin->alt = llh->alt;
