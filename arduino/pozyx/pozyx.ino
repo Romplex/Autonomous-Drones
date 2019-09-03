@@ -30,11 +30,14 @@ volatile pozyx_data_t pozyx_data;
 #define USE_POZYX
 
 #ifndef USE_POZYX
-pozyx_data.coordinates.x = pozyx_data.coordinates.y = 0;  // mm
-pozyx_data.coordinates.z = 0;                             // mm
+pozyx_data.coordinates.x = 0; // mm
+pozyx_data.coordinates.y = 0;
+pozyx_data.coordinates.z = 0;
 
 //pozyx_data.angular_vel.x = pozyx_data.angular_vel.y = pozyx_data.angular_vel.z = 0; // degrees per second
-pozyx_data.magnetic.x = pozyx_data.magnetic.y = pozyx_data.magnetic.z = 0;  // µT
+pozyx_data.magnetic.x = 0;    // µT
+pozyx_data.magnetic.y = 0;
+pozyx_data.magnetic.z = 0;
 #endif
 
 SoftwareSerial msp(A1, A2); // rx/tx
@@ -161,9 +164,9 @@ void loop() {
   //    POZYX_INT_STATUS_ERR, POZYX_INT_STATUS_POS, POZYX_INT_STATUS_IMU,
   //    POZYX_INT_STATUS_RX_DATA, POZYX_INT_STATUS_FUNC
 
-  /*if(Pozyx.waitForFlag(POZYX_INT_STATUS_ERR, 1)) {
+  if(Pozyx.waitForFlag(POZYX_INT_STATUS_ERR, 1)) {
     printErrorCode("");
-  }*/
+  }
 
   if (Pozyx.waitForFlag(POZYX_INT_STATUS_IMU, 1)) {
     // update new magnetic and vel data
@@ -189,9 +192,9 @@ void loop() {
     // TODO caluclate dilution of precision from pos error
   }
 
-  if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 1))
+  /*if (Pozyx.waitForFlag(POZYX_INT_STATUS_RX_DATA, 1))
     // we have received a message via pozyx
-    forwardMsgToFC();
+    forwardMsgToFC();*/
 #endif
 
   if (currentTime - t_gps >= GPS_INTERVAL) {
@@ -204,7 +207,7 @@ void loop() {
     forwardOrientation(millis());
   }
 
-  while (msp.available()) {
+  /*while (msp.available()) {
     // get msp msg from fc
     char inChar = (char)msp.read();
 
@@ -218,7 +221,7 @@ void loop() {
 #ifdef DEBUG
     Serial.print("incoming msp msg: "); Serial.println(inputString);
 #endif
-  }
+  }*/
 
   if (stringComplete) {
     forwardMsgToPOZYX();
@@ -331,7 +334,7 @@ void forwardMsgToPOZYX() {
   stringComplete = false;
 }
 
-void forwardMsgToFC() {
+/*void forwardMsgToFC() {
   uint8_t msg_length = 0;
   uint16_t messenger = 0x00;
   delay(1);
@@ -354,7 +357,7 @@ void forwardMsgToFC() {
 
   // send data over uart to fc
   msp.write(data, msg_length);
-}
+}*/
 
 void forwardNavigation(unsigned long currentTime) {
 

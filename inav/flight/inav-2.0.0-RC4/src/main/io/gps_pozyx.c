@@ -219,7 +219,7 @@ static bool gpsNewFramePOZYX(char c)
                             gpsSol.hdop = 1;  // PDOP
                             gpsSol.eph = 1;   // hAcc in cm
                             gpsSol.epv = 1;   // vAcc in cm
-                            gpsSol.flags.validEPE = 1;
+                            gpsSol.flags.validEPE = 0;
 
                             gpsSol.numSat = 12;
 
