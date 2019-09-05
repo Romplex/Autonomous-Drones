@@ -25,7 +25,7 @@ TABS.pozyx.initialize = function (callback) {
             pozyx.pozyxpy
                 .getPosition()
                 .then(data => {
-                    console.log(data);
+                    //console.log(data);
                     if (data.error) {
                         stopPositioning(() => {
                         });
@@ -80,7 +80,7 @@ TABS.pozyx.initialize = function (callback) {
     pozyx.pozyxWorker.startPositioning = startPositioning;
     pozyx.pozyxWorker.stopPositioning = stopPositioning;
 
-    // updateTagIds();
+    //updateTagIds();
 
     if (!pozyx.pozyxWorker.positioning) {
         startPositioning();
@@ -174,12 +174,15 @@ TABS.pozyx.initialize = function (callback) {
                     let anchor_x = POZYX.anchors[i].Coordinates[0];
                     let anchor_y = POZYX.anchors[i].Coordinates[1];
                     let anchor_z = POZYX.anchors[i].Coordinates[2] / 200;
+                    let anchorLat = 51.311635;
+                    let anchorLon = 9.47362;
+                    console.log(lat + "   " + lon);
 
                     anchorsFeatures[i] = new ol.Feature({
                         geometry: new ol.geom.Point(
                             ol.proj.fromLonLat([
-                                lon + anchor_x / POZYX.geoToLocal,
-                                lat + anchor_y / POZYX.geoToLocal
+                                anchorLon + anchor_x / POZYX.geoToLocal,
+                                anchorLat + anchor_y / POZYX.geoToLocal
                             ])
                         ),
                         //'geometry': new ol.geom.Point([newCenter[0] + anchor_x*factor, newCenter[1] + anchor_y*factor]),
@@ -225,12 +228,6 @@ TABS.pozyx.initialize = function (callback) {
             if (GPS_DATA.fix >= 2) gpsFixType = chrome.i18n.getMessage('gpsFix3D');
             else if (GPS_DATA.fix >= 1)
                 gpsFixType = chrome.i18n.getMessage('gpsFix2D');
-      $('.GPS_info td.fix').html(gpsFixType);
-      $('.GPS_info td.alt').text(GPS_DATA.alt + 'cm');
-      $('.GPS_info td.lat').text(lat.toFixed(7) + ' deg');
-      $('.GPS_info td.lon').text(lon.toFixed(7) + ' deg');
-      $('.GPS_info td.speed').text(GPS_DATA.speed + ' cm/s');
-      $('.GPS_info td.distToHome').text(GPS_DATA.distanceToHome + ' m');
 
             var lat = GPS_DATA.lat;
             var lon = GPS_DATA.lon;
@@ -785,25 +782,25 @@ TABS.pozyx.initialize = function (callback) {
             }
         });
 
-        const tags = $('#tag_select');
-        tags.on('change', () => {
-            stopPositioning(() => {
-                GUI.log(tags.val());
-                pozyx.pozyxpy.setRemoteId(tags.val())
-                    .then(data => {
-                        if (data.error) {
-                            console.log(data.error);
-                        } else {
-                            GUI.log(data.success);
-                        }
-                    })
-                    .catch(err => GUI.log(err + ''));
-                setTimeout(() => {
-                    console.log("XD");
-                    startPositioning();
-                }, 1000);
-            });
-        });
+        // const tags = $('#tag_select');
+        // tags.on('change', () => {
+        //     stopPositioning(() => {
+        //         GUI.log(tags.val());
+        //         pozyx.pozyxpy.setRemoteId(tags.val())
+        //             .then(data => {
+        //                 if (data.error) {
+        //                     console.log(data.error);
+        //                 } else {
+        //                     GUI.log(data.success);
+        //                 }
+        //             })
+        //             .catch(err => GUI.log(err + ''));
+        //         setTimeout(() => {
+        //             console.log("XD");
+        //             startPositioning();
+        //         }, 1000);
+        //     });
+        // });
 
         $('#loadPOZYXMissionButton').on('click', function () {
             if (markers.length) {

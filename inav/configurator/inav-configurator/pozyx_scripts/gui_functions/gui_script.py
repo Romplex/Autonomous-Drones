@@ -1,26 +1,33 @@
-from contextlib import suppress
 from functools import wraps
 
 PYPOZYX_INSTALLED = True
+BUSY_SERIAL = False
 
 try:
-    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister, DeviceList
+    from pypozyx import PozyxSerial, get_serial_ports, DeviceCoordinates, SingleRegister, DeviceList, \
+        PozyxConnectionError
     from pypozyx import Coordinates, POZYX_SUCCESS, PozyxConstants, Data
 except ModuleNotFoundError:
     PYPOZYX_INSTALLED = False
 
 
 def inspect_port(port):
-    with suppress(TypeError):
+    try:
         if 'Pozyx Labs' in port.manufacturer:
             return True
-    with suppress(TypeError):
+    except TypeError:
+        pass
+    try:
         if 'Pozyx' in port.product:
             return True
-    with suppress(TypeError):
+    except TypeError:
+        pass
+    try:
         # assure it is NOT the flight controller
         if '0483:' in port.hwid and not port.serial_number.lower().startswith('0x'):
             return True
+    except TypeError:
+        pass
     return False
 
 
@@ -39,7 +46,7 @@ def send_error_msg(msg):
 
 
 if PYPOZYX_INSTALLED:
-    remote_id = None
+    remote_id = 0x6758
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
@@ -57,13 +64,22 @@ if PYPOZYX_INSTALLED:
     if serial_port is None:
         POZYX_CONNECTED_TO_BASE = False
     else:
-        pozyx = PozyxSerial(serial_port)
-        # set anchors
-        status = pozyx.clearDevices()
-        for anchor in anchors:
-            status &= pozyx.addDevice(anchor)
+        try:
+            pozyx = PozyxSerial(serial_port)
+            status = pozyx.clearDevices()
 
-    MAX_TRIES = 1000
+            for anchor in anchors:
+                status &= pozyx.addDevice(anchor)
+
+            remote_check = SingleRegister()
+            pozyx.getWhoAmI(remote_check, remote_id=remote_id)
+            if remote_check.data == [0]:
+                remote_id = None
+
+            MAX_TRIES = 1000
+        except PozyxConnectionError:
+            BUSY_SERIAL = True
+
 
 
 def check_connection(func):
@@ -71,6 +87,8 @@ def check_connection(func):
 
     @wraps(func)
     def check(*args):
+        if BUSY_SERIAL:
+            return {'error': 'Busy serial port! You may need to reboot your PC.'}
         if not PYPOZYX_INSTALLED:
             return send_error_msg('PyPozyx not installed!. Run - pip install pypozyx')
         if not POZYX_CONNECTED_TO_BASE:
@@ -123,7 +141,7 @@ def get_position():
     if remote_id:
         network_id = SingleRegister()
         pozyx.getWhoAmI(network_id, remote_id=remote_id)
-        if not network_id.data:
+        if network_id.data == [0]:
             return send_error_msg('Could not establish connection to device with ID {}'.format(remote_id.decode('utf-8')))
     for a in anchors:
         network_id = SingleRegister()
