@@ -10,7 +10,7 @@ const PozyxPy = function() {
   this.py = pythonBridge();
 
   this.py
-    .exFile('./pozyx_scripts/gui_functions/gui_script.py')
+    .exFile('./pozyx_scripts/gui_script.py')
     .catch(printPozyxError);
 };
 

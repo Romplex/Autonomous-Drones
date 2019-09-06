@@ -1,3 +1,4 @@
+import json
 from functools import wraps
 
 PYPOZYX_INSTALLED = True
@@ -50,7 +51,7 @@ if PYPOZYX_INSTALLED:
     algorithm = PozyxConstants.POSITIONING_ALGORITHM_UWB_ONLY
     dimension = PozyxConstants.DIMENSION_3D
     height = 1000
-    IDs = {0x6951, 0x6e59, 0x695d, 0x690b, 0x6748}
+
     anchors = [DeviceCoordinates(0x6951, 1, Coordinates(0, 0, 1500)),
                DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
                DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
@@ -81,7 +82,6 @@ if PYPOZYX_INSTALLED:
             BUSY_SERIAL = True
 
 
-
 def check_connection(func):
     """Check for errors before executing a pozyx function"""
 
@@ -96,6 +96,7 @@ def check_connection(func):
         if serial_port not in get_serial_port_names():
             return send_error_msg('Connection to pozyx device lost! Check USB connection')
         return func(*args)
+
     return check
 
 
@@ -142,7 +143,8 @@ def get_position():
         network_id = SingleRegister()
         pozyx.getWhoAmI(network_id, remote_id=remote_id)
         if network_id.data == [0]:
-            return send_error_msg('Could not establish connection to device with ID {}'.format(remote_id.decode('utf-8')))
+            return send_error_msg(
+                'Could not establish connection to device with ID {}'.format(remote_id.decode('utf-8')))
     for a in anchors:
         network_id = SingleRegister()
         pozyx.getWhoAmI(network_id, remote_id=a.network_id)
@@ -152,17 +154,3 @@ def get_position():
         return send_error_msg(
             'Can\'t connect to at least {} anchors. Check the anchor\'s power connection '
             'and the pozyx\'s USB connection'.format(inactive_anchors))
-
-
-def get_tag_ids():
-    pozyx.doDiscovery(discovery_type=PozyxConstants.DISCOVERY_ALL_DEVICES)
-    list_size = SingleRegister()
-    pozyx.getDeviceListSize(list_size)
-    device_list = DeviceList(list_size=list_size[0])
-    pozyx.getDeviceIds(device_list)
-    return list({d for d in device_list} - IDs)
-
-
-if __name__ == '__main__':
-    while True:
-        print(get_position())
