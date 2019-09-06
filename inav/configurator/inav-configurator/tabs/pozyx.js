@@ -34,10 +34,8 @@ TABS.pozyx.initialize = function (callback) {
                         }
                         pozyx.pozyxWorker.errDialogueOpen = true;
                     } else {
-                        GPS_DATA.lat =
-                            parseFloat(POZYX.anchors[0].lat) + data.y / POZYX.geoToLocal;
-                        GPS_DATA.lon =
-                            parseFloat(POZYX.anchors[0].lon) + data.x / POZYX.geoToLocal;
+                        GPS_DATA.lat = parseFloat(POZYX.anchors[0].lat) + data.y/POZYX.earthRadius * 180.0/Math.PI;
+                        GPS_DATA.lon = parseFloat(POZYX.anchors[0].lon) + data.x/POZYX.earthRadius * 180.0/Math.PI / Math.cos(GPS_DATA.lat * 180.0/Math.PI);
                     }
                 })
                 .catch(err => GUI.log(err + ''));
@@ -169,20 +167,23 @@ TABS.pozyx.initialize = function (callback) {
 
             let showAnchors = function () {
                 let anchorsFeatures = new Array(5);
+                let anchorDefaultLat = parseFloat(POZYX.anchors[0].lat);
+                let anchorDefaultLon = parseFloat(POZYX.anchors[0].lon);
                 for (var i = 0; i < 5; ++i) {
                     // TODO uniks scale of anchors' coordinates looks wrong
                     let anchor_x = POZYX.anchors[i].Coordinates[0];
                     let anchor_y = POZYX.anchors[i].Coordinates[1];
                     let anchor_z = POZYX.anchors[i].Coordinates[2] / 200;
-                    let anchorLat = 51.311635;
-                    let anchorLon = 9.47362;
+                    
                     console.log(lat + "   " + lon);
+                    let anchorLat = anchorDefaultLat + (anchor_y/POZYX.earthRadius) * 180.0/Math.PI;
+	                let anchorLon = anchorDefaultLon + (anchor_x/POZYX.earthRadius) * 180.0/Math.PI / Math.cos(anchorLat * 180.0/Math.PI);
 
                     anchorsFeatures[i] = new ol.Feature({
                         geometry: new ol.geom.Point(
                             ol.proj.fromLonLat([
-                                anchorLon + anchor_x / POZYX.geoToLocal,
-                                anchorLat + anchor_y / POZYX.geoToLocal
+                                anchorLon,
+                                anchorLat
                             ])
                         ),
                         //'geometry': new ol.geom.Point([newCenter[0] + anchor_x*factor, newCenter[1] + anchor_y*factor]),

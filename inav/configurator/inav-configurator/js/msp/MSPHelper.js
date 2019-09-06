@@ -249,8 +249,9 @@ var mspHelper = (function (gui) {
                 // get pozyx cartesian coordinates and convert them to spherical coordiantes with magic nr
                 let x = data.getInt32(2, true);
                 let y = data.getInt32(6, true);
-                GPS_DATA.lat = parseFloat(POZYX.anchors[0].lat) + y/POZYX.geoToLocal;
-                GPS_DATA.lon = parseFloat(POZYX.anchors[0].lon) + x/POZYX.geoToLocal;
+                
+                GPS_DATA.lat = parseFloat(POZYX.anchors[0].lat) + y/POZYX.earthRadius * 180.0/Math.PI;
+                GPS_DATA.lon = parseFloat(POZYX.anchors[0].lon) + x/POZYX.earthRadius * 180.0/Math.PI / Math.cos(GPS_DATA.lat * 180.0/Math.PI);
 
                 GPS_DATA.alt = data.getInt16(10, true);
                 GPS_DATA.speed = data.getUint16(12, true);

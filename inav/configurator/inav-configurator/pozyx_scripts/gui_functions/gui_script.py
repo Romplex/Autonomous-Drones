@@ -55,7 +55,7 @@ if PYPOZYX_INSTALLED:
                DeviceCoordinates(0x6e59, 2, Coordinates(5340, 0, 2000)),
                DeviceCoordinates(0x695d, 3, Coordinates(6812, -8923, 2500)),
                DeviceCoordinates(0x690b, 4, Coordinates(-541, -10979, 3000)),
-               DeviceCoordinates(0x6748, 5, Coordinates(6812, -4581, 20))]
+               DeviceCoordinates(0x6748, 5, Coordinates(6812, -4581, 200))]
 
     POZYX_CONNECTED_TO_BASE = True
 

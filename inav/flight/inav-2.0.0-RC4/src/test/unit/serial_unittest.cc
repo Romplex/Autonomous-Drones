@@ -3,8 +3,8 @@
 #include <math.h>
 
 
-static const float ANCHOR_LAT = 51.311644;       // default anchor latitude 51.311644
-static const float ANCHOR_LON = 9.473625;       // default anchor longitude 9.473625
+static const float ANCHOR_LAT = 51.311635;       // default anchor latitude 51.311644
+static const float ANCHOR_LON = 9.4736200;       // default anchor longitude 9.473625
 static const float ANCHOR_ALTITUDE = 0;       // default anchor altitude 166m
 
 // TODO[uniks] make fc use double values correctly
